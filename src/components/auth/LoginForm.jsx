@@ -24,7 +24,6 @@ const LoginForm = () => {
         alert('Login successful');
         // Redirect or show success message
 
-
         navigate('/home');
       } else {
         dispatch(loginFailure('Invalid email or password'));

@@ -15,7 +15,7 @@ export const formSlice = createSlice({
       email: '',
       phoneNumber: '',
       address: '',
-      city: '',
+      city: 'Lagos',
       stateCode: '',
       postalCode: '',
       country: 'Nigeria',
