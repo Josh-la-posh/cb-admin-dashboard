@@ -14,7 +14,7 @@ const Header = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     setTimeout(() => {
-      dispatch(logout);
+      dispatch(logout());
       alert('Logout successful');
       navigate('/');
 
