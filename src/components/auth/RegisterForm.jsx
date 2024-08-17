@@ -17,6 +17,7 @@ const industryCategories = [
 ];
 
 const RegisterForm = () => {
+    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
     const [formData, setFormData] = useState({
         country: 'NG',
         businessName: '',
@@ -43,7 +44,7 @@ const RegisterForm = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:4000/api/onboard', {
+            const response = await fetch(`${baseUrl}/api/onboard`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

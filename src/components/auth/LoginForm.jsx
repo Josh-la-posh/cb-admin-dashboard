@@ -10,13 +10,14 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
 
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
 
     try {
-      const response = await fetch('http://localhost:4000/api/Account', {
+      const response = await fetch(`${baseUrl}/api/Account`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -67,7 +68,7 @@ const LoginForm = () => {
 
         // Fetch merchant compliance data
         const merchantCode = data.responseData.merchants[0].merchantCode; // Replace with the actual merchant code
-        const complianceResponse = await fetch(`http://localhost:4000/api/merchant-compliance/${merchantCode}`, {
+        const complianceResponse = await fetch(`${baseUrl}/api/merchant-compliance/${merchantCode}`, {
           headers: {
             'Authorization': `Bearer ${data.responseData.accessToken}`,
             'Accept': 'application/json',

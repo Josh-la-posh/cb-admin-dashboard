@@ -10,6 +10,7 @@ import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
 import Transactions from '../pages/Transactions';
+import ConfirmEmailPage from '../pages/auth/ConfirmEmailPage';
 
 const RoutesSystem = () => {
 
@@ -21,6 +22,7 @@ const RoutesSystem = () => {
           ? <Routes>
             <Route index element={<LoginPage />} />
             <Route path='register' element={<RegisterPage />} />
+            <Route path='confirm-email' element={<ConfirmEmailPage />} />
             <Route path='complete-registration' element={<RegisterMultiStepPage />} />
           </Routes>
           : <MainLayout>
