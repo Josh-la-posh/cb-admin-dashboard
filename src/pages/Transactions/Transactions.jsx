@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
 import TransactionTable from './components/TransactionTable';
 
-const allTransactions = [
-  { id: 1, date: '2024-08-01', description: 'Payment from John Doe', amount: '₦12,345', status: 'Completed', merchant: 'John Doe Store', paymentChannel: 'Card' },
-  { id: 2, date: '2024-08-02', description: 'Payment from Jane Smith', amount: '₦8,900', status: 'Pending', merchant: 'Jane Smith Boutique', paymentChannel: 'Virtual Account' },
-  { id: 3, date: '2024-08-03', description: 'Payment from Acme Corp.', amount: '₦25,000', status: 'Failed', merchant: 'Acme Corporation', paymentChannel: 'USSD' },
-  { id: 4, date: '2024-08-04', description: 'Payment from XYZ Ltd.', amount: '₦15,000', status: 'Completed', merchant: 'XYZ Limited', paymentChannel: 'Bank Account' },
-  { id: 5, date: '2024-08-05', description: 'Payment from ABC Inc.', amount: '₦9,500', status: 'Pending', merchant: 'ABC Inc.', paymentChannel: 'Card' },
-  { id: 6, date: '2024-08-06', description: 'Payment from DEF LLC', amount: '₦7,200', status: 'Failed', merchant: 'DEF LLC', paymentChannel: 'Virtual Account' },
-  { id: 7, date: '2024-08-07', description: 'Payment from GHI Corp.', amount: '₦11,800', status: 'Completed', merchant: 'GHI Corporation', paymentChannel: 'USSD' },
-  { id: 8, date: '2024-08-08', description: 'Payment from JKL Ltd.', amount: '₦14,400', status: 'Pending', merchant: 'JKL Limited', paymentChannel: 'Bank Account' },
-  { id: 9, date: '2024-08-09', description: 'Payment from MNO Ltd.', amount: '₦13,200', status: 'Failed', merchant: 'MNO Limited', paymentChannel: 'Card' },
-  { id: 10, date: '2024-08-10', description: 'Payment from PQR Inc.', amount: '₦17,600', status: 'Completed', merchant: 'PQR Inc.', paymentChannel: 'Virtual Account' },
-  { id: 11, date: '2024-08-11', description: 'Payment from STU Ltd.', amount: '₦10,900', status: 'Pending', merchant: 'STU Limited', paymentChannel: 'USSD' },
-  { id: 12, date: '2024-08-12', description: 'Payment from VWX Ltd.', amount: '₦6,800', status: 'Failed', merchant: 'VWX Limited', paymentChannel: 'Bank Account' },
-];
+// const allTransactions = [
+//   { id: 1, date: '2024-08-01', description: 'Payment from John Doe', amount: '₦12,345', status: 'Completed', merchant: 'John Doe Store', paymentChannel: 'Card' },
+//   { id: 2, date: '2024-08-02', description: 'Payment from Jane Smith', amount: '₦8,900', status: 'Pending', merchant: 'Jane Smith Boutique', paymentChannel: 'Virtual Account' },
+//   { id: 3, date: '2024-08-03', description: 'Payment from Acme Corp.', amount: '₦25,000', status: 'Failed', merchant: 'Acme Corporation', paymentChannel: 'USSD' },
+//   { id: 4, date: '2024-08-04', description: 'Payment from XYZ Ltd.', amount: '₦15,000', status: 'Completed', merchant: 'XYZ Limited', paymentChannel: 'Bank Account' },
+//   { id: 5, date: '2024-08-05', description: 'Payment from ABC Inc.', amount: '₦9,500', status: 'Pending', merchant: 'ABC Inc.', paymentChannel: 'Card' },
+//   { id: 6, date: '2024-08-06', description: 'Payment from DEF LLC', amount: '₦7,200', status: 'Failed', merchant: 'DEF LLC', paymentChannel: 'Virtual Account' },
+//   { id: 7, date: '2024-08-07', description: 'Payment from GHI Corp.', amount: '₦11,800', status: 'Completed', merchant: 'GHI Corporation', paymentChannel: 'USSD' },
+//   { id: 8, date: '2024-08-08', description: 'Payment from JKL Ltd.', amount: '₦14,400', status: 'Pending', merchant: 'JKL Limited', paymentChannel: 'Bank Account' },
+//   { id: 9, date: '2024-08-09', description: 'Payment from MNO Ltd.', amount: '₦13,200', status: 'Failed', merchant: 'MNO Limited', paymentChannel: 'Card' },
+//   { id: 10, date: '2024-08-10', description: 'Payment from PQR Inc.', amount: '₦17,600', status: 'Completed', merchant: 'PQR Inc.', paymentChannel: 'Virtual Account' },
+//   { id: 11, date: '2024-08-11', description: 'Payment from STU Ltd.', amount: '₦10,900', status: 'Pending', merchant: 'STU Limited', paymentChannel: 'USSD' },
+//   { id: 12, date: '2024-08-12', description: 'Payment from VWX Ltd.', amount: '₦6,800', status: 'Failed', merchant: 'VWX Limited', paymentChannel: 'Bank Account' },
+// ];
 
 const Transactions = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [pageSize, setPageSize] = useState(5);
 
-  const indexOfLastTransaction = currentPage * pageSize;
-  const indexOfFirstTransaction = indexOfLastTransaction - pageSize;
-  const currentTransactions = allTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
-  const totalPages = Math.ceil(allTransactions.length / pageSize);
+  // const indexOfLastTransaction = currentPage * pageSize;
+  // const indexOfFirstTransaction = indexOfLastTransaction - pageSize;
+  // const currentTransactions = allTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+  // const totalPages = Math.ceil(allTransactions.length / pageSize);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  // const handlePageChange = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
 
-  const handlePageSizeChange = (event) => {
-    setPageSize(Number(event.target.value));
-    setCurrentPage(1);
-  };
+  // const handlePageSizeChange = (event) => {
+  //   setPageSize(Number(event.target.value));
+  //   setCurrentPage(1);
+  // };
 
   return (
     <div className="p-6 bg-white">

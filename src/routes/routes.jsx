@@ -9,7 +9,6 @@ import MerchantPopUpForm from '../pages/Merchants/MerchantPopUp';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
-import Transactions from '../pages/Transactions';
 import Customers from '../pages/Customers/Customers';
 import Transactions from '../pages/Transactions/Transactions';
 
@@ -21,9 +20,9 @@ const RoutesSystem = () => {
       {
         isLoggedIn === false
           ? <Routes>
-            <Route index element={<LoginPage />} />
-            <Route path='register' element={<RegisterPage />} />
-            <Route path='complete-registration' element={<RegisterMultiStepPage />} />
+              <Route index element={<LoginPage />} />
+              <Route path='register' element={<RegisterPage />} />
+              <Route path='complete-registration' element={<RegisterMultiStepPage />} />
           </Routes>
           : <MainLayout>
             <Routes>

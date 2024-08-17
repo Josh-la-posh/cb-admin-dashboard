@@ -4,8 +4,6 @@ import { PieChart, Pie, Cell, Tooltip as PieTooltip } from 'recharts';
 
 const ReportChart = ({ barData, pieData }) => {
     return (
-        <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1 bg-white shadow rounded-lg p-4">
         <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 bg-white rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-4">Monthly Revenue</h3>

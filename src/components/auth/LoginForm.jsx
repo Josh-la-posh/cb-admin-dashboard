@@ -16,7 +16,7 @@ const LoginForm = () => {
     dispatch(loginStart());
 
     try {
-      const response = await fetch('http://localhost:4000/api/Account', {
+      const response = await fetch(`https://merchant-api.codebytesltd.com/api/Account`, {
         method: 'POST',
         headers: {
           'Accept': '*/*',
@@ -67,7 +67,7 @@ const LoginForm = () => {
 
         // Fetch merchant compliance data
         const merchantCode = data.responseData.merchants[0].merchantCode; // Replace with the actual merchant code
-        const complianceResponse = await fetch(`http://localhost:4000/api/merchant-compliance/${merchantCode}`, {
+        const complianceResponse = await fetch(`https://merchant-api.codebytesltd.com/api/merchant-compliance/${merchantCode}`, {
           headers: {
             'Authorization': `Bearer ${data.responseData.accessToken}`,
             'Accept': 'application/json',
