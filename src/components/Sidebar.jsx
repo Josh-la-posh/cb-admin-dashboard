@@ -28,7 +28,7 @@ const Sidebar = () => {
           )}
         </div>
         <div>
-          <button onClick={() => setMerchantOpen(!isAggregatorOpen)} className="block w-full text-left py-2 px-4 hover:bg-blue-700 flex justify-between">
+          <button onClick={() => setMerchantOpen(!isMerchantOpen)} className="block w-full text-left py-2 px-4 hover:bg-blue-700 flex justify-between">
             Merchants
             {isMerchantOpen ? <FiChevronUp /> : <FiChevronDown />}
           </button>

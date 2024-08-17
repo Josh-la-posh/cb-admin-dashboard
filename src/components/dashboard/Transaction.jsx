@@ -4,6 +4,9 @@ const TransactionTable = () => {
     const transactions = [
         { id: 1, date: '2024-08-09', amount: '₦120.00', status: 'Success' },
         { id: 2, date: '2024-08-08', amount: '₦45.50', status: 'Failed' },
+        { id: 3, date: '2024-08-09', amount: '₦120.00', status: 'Success' },
+        { id: 4, date: '2024-08-08', amount: '₦45.50', status: 'Failed' },
+        { id: 5, date: '2024-08-09', amount: '₦120.00', status: 'Success' },
     ];
 
     return (

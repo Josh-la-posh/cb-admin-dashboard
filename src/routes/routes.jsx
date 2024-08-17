@@ -7,6 +7,8 @@ import Merchants from '../pages/Merchants/Merchants';
 import MerchantCredentials from '../pages/Merchants/MerchantCredentials';
 import MerchantPopUpForm from '../pages/Merchants/MerchantPopUp';
 import LoginPage from '../pages/auth/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage';
+import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
 import Transactions from '../pages/Transactions';
 
 const RoutesSystem = () => {
@@ -18,6 +20,8 @@ const RoutesSystem = () => {
         isLoggedIn === false
           ? <Routes>
             <Route index element={<LoginPage />} />
+            <Route path='register' element={<RegisterPage />} />
+            <Route path='complete-registration' element={<RegisterMultiStepPage />} />
           </Routes>
           : <MainLayout>
             <Routes>
@@ -31,6 +35,23 @@ const RoutesSystem = () => {
           </MainLayout>
       }
     </Router>
+
+    // <Router>
+
+    //   <Routes>
+    //     <Route index element={<LoginPage />} />
+    //   </Routes>
+    //   <MainLayout>
+    //     <Routes>
+    //       <Route path="/home" element={<Dashboard />} />
+    //       <Route path="/merchants/merchants" element={<Merchants />} />
+    //       <Route path="/merchant/credentials" element={<MerchantCredentials />} />
+    //       <Route path="/merchant/credentials/merchantPopUpForm" element={<MerchantPopUpForm />} />
+    //       {/* Add other routes */}
+    //       <Route path="/transaction" element={<Transactions />} />
+    //     </Routes>
+    //   </MainLayout>
+    // </Router>
   );
 };
 

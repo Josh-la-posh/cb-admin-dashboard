@@ -1,34 +1,97 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../../pages/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-
-
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
 
-    // Simulate an API call (replace with real API call)
-    setTimeout(() => {
-      if (email === 'test@example.com' && password === 'password123') {
-        dispatch(loginSuccess({ email }));
-        alert('Login successful');
-        // Redirect or show success message
+    try {
+      const response = await fetch('http://localhost:4000/api/Account', {
+        method: 'POST',
+        headers: {
+          'Accept': '*/*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        navigate('/home');
+      const data = await response.json();
+
+      // console.log("Data", data)
+      // console.log("Data-Code", data.responseData.merchants[0].merchantCode)
+
+      if (data.requestSuccessful) {
+        // Store the merchant data as a string in local storage
+        localStorage.setItem('merchantData', JSON.stringify(data.responseData.merchants[0]));
+        // Store the token in local storage
+        localStorage.setItem('accessToken', data.responseData.accessToken);
+
+        try {
+          const responseDemo = await fetch('https://merchant-api.pelpay.ng/api/Account', {
+            method: 'POST',
+            headers: {
+              'Accept': '*/*',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: "ofolarin@chamsswitch.com", password: "Daddydof@4143bdm" }),
+          });
+
+          const dataDemo = await responseDemo.json();
+
+          if (dataDemo.requestSuccessful) {
+            // Store the token in local storage
+            localStorage.setItem('accessTokenDemo', dataDemo.responseData.accessToken);
+          } else {
+            // Handle failure (e.g., display an error message)
+            // dispatch(loginFailure(data.message || 'Login failed'));
+          }
+        } catch (error) {
+          // Handle unexpected errors
+          // dispatch(loginFailure('An unexpected error occurred'));
+        }
+        // Store the token in local storage
+        // localStorage.setItem('accessToken', data.responseData.accessToken);
+
+        // // Dispatch success action
+        // dispatch(loginSuccess({ email }));
+
+        // Fetch merchant compliance data
+        const merchantCode = data.responseData.merchants[0].merchantCode; // Replace with the actual merchant code
+        const complianceResponse = await fetch(`http://localhost:4000/api/merchant-compliance/${merchantCode}`, {
+          headers: {
+            'Authorization': `Bearer ${data.responseData.accessToken}`,
+            'Accept': 'application/json',
+          },
+        });
+
+        const complianceData = await complianceResponse.json();
+
+        if (complianceData.success) {
+          // Dispatch success action
+          dispatch(loginSuccess({ email }));
+
+          // Redirect to home or dashboard
+          navigate('/home');
+        } else {
+          // Redirect to the step form page
+          navigate('/complete-registration');
+        }
       } else {
-        dispatch(loginFailure('Invalid email or password'));
+        dispatch(loginFailure(data.message || 'Login failed'));
       }
-    }, 1000);
+    } catch (error) {
+      dispatch(loginFailure('An unexpected error occurred'));
+    }
   };
 
   return (
@@ -73,7 +136,7 @@ const LoginForm = () => {
             Remember me
           </label>
           <a href="#" className="text-sm text-[#0000FF] hover:underline">Forgot password?</a>
-          </div> 
+        </div>
         <button
           type="submit"
           className="w-full bg-[#0000FF] text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
@@ -82,7 +145,7 @@ const LoginForm = () => {
           {loading ? 'Logging in...' : 'Log in'}
         </button>
         <div className="text-center mt-4">
-          <a href="#" className="text-sm text-[#0000FF] hover:underline">Sign Up</a>
+          <Link to="/register" className="text-sm text-[#0000FF] hover:underline">Sign Up</Link>
         </div>
       </form>
     </div>
