@@ -245,7 +245,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
               </div>
               <div className="col-span-1 text-right">
                 <button type="submit" className="bg-blue-800 text-white px-4 py-2 rounded">
-                  <a href='https://www.payment.codebytesltd.com/pay?adviceReference=e41e4387-5153-4fde-8e98-b694c9707552'>
+                  <a href='https://www.payment.codebytesltd.com'>
                     Submit
                   </a>
                 </button>

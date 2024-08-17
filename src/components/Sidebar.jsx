@@ -27,7 +27,11 @@ const Sidebar = () => {
           )}
         </div>
         <div>
+<<<<<<< HEAD
           <button onClick={() => setMerchantOpen(!isMerchantOpen)} className="block w-full text-left py-2 px-4 text-sm hover:bg-blue-700 flex justify-between">
+=======
+          <button onClick={() => setMerchantOpen(!isMerchantOpen)} className="block w-full text-left py-2 px-4 hover:bg-blue-700 flex justify-between">
+>>>>>>> origin/merchant-update
             Merchants
             {isMerchantOpen ? <FiChevronUp /> : <FiChevronDown />}
           </button>
