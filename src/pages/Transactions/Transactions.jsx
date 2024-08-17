@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TransactionTable from './components/TransactionTable';
 
 const allTransactions = [
   { id: 1, date: '2024-08-01', description: 'Payment from John Doe', amount: '₦12,345', status: 'Completed', merchant: 'John Doe Store', paymentChannel: 'Card' },
@@ -34,10 +35,12 @@ const Transactions = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Transactions</h1>
+    <div className="p-6 bg-white">
+      <h1 className="text-2xl font-bold">Transactions</h1>
 
-      <div className="mb-4 flex justify-between items-center">
+      <TransactionTable />
+
+      {/* <div className="mb-4 flex justify-between items-center">
         <div className="text-sm text-gray-500">
           <label htmlFor="pageSize" className="mr-2">Items per page:</label>
           <select
@@ -126,7 +129,7 @@ const Transactions = () => {
             Next
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

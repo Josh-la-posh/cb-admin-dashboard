@@ -7,7 +7,8 @@ import Merchants from '../pages/Merchants/Merchants';
 import MerchantCredentials from '../pages/Merchants/MerchantCredentials';
 import MerchantPopUpForm from '../pages/Merchants/MerchantPopUp';
 import LoginPage from '../pages/auth/LoginPage';
-import Transactions from '../pages/Transactions';
+import Customers from '../pages/Customers/Customers';
+import Transactions from '../pages/Transactions/Transactions';
 
 const RoutesSystem = () => {
 
@@ -22,6 +23,7 @@ const RoutesSystem = () => {
           : <MainLayout>
             <Routes>
               <Route path="/home" element={<Dashboard />} />
+              <Route path="/customers" element={<Customers />} />
               <Route path="/merchants/merchants" element={<Merchants />} />
               <Route path="/merchant/credentials" element={<MerchantCredentials />} />
               <Route path="/merchant/credentials/merchantPopUpForm" element={<MerchantPopUpForm />} />

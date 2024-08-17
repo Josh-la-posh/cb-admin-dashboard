@@ -24,7 +24,7 @@ const COLORS = pieChartData.map(item => item.color);
 const ReportChart = ({ barData = barChartData, pieData = pieChartData }) => {
     return (
         <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 bg-white shadow rounded-lg p-4">
+            <div className="flex-1 bg-white rounded-lg p-4">
                 <h3 className="text-lg font-semibold mb-4">Monthly Revenue</h3>
                 <div className="w-full">
                     <BarChart

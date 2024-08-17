@@ -25,7 +25,7 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-white shadow-md flex justify-between items-center p-4">
+    <header className="bg-white z-10 flex justify-between items-center p-4">
       <div className="text-lg font-semibold">Admin Dashboard</div>
       <div className="relative">
         <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="flex items-center">
