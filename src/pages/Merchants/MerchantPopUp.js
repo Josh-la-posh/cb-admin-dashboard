@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateForm } from '../../pages/Merchants/merchantSlice';
 
 const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
   const dispatch = useDispatch();
   const formState = useSelector((state) => state.merchant);
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    // Fetch access token when the component mounts
+    const fetchToken = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/account', {
+          method: 'POST',
+          headers: {
+            'accept': '*/*',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            clientId: 'Mer0000024',
+            clientSecret: 'jpSZ3fVymDSjUYidLUbOuZmPTRvf8XftDJMwtMU7ocziiC7xeO/hKEC9h+LRofNYZgmg/YuA1KKWj2yK1ylRvzAuFIOshbs+x82nlIRqO+s=',
+          }),
+        });
+        const data = await response.json();
+        if (data.requestSuccessful) {
+          setToken(data.responseData.access_token);
+        }
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    };
+
+    fetchToken();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,8 +48,49 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
     dispatch(updateForm(updatedFormState));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/api/advice', {
+        method: 'POST',
+        headers: {
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: formState.amount,
+          currency: formState.currency,
+          merchantRef: formState.merchantReference,
+          narration: formState.narration,
+          callBackUrl: formState.callbackUrl,
+          splitCode: formState.splitCode,
+          shouldTokenizeCard: formState.shouldTokenizeCard,
+          customer: {
+            customerId: formState.customer.id,
+            customerLastName: formState.customer.lastName,
+            customerFirstName: formState.customer.firstName,
+            customerEmail: formState.customer.email,
+            customerPhoneNumber: formState.customer.phoneNumber,
+            customerAddress: formState.customer.address,
+            customerCity: formState.customer.city,
+            customerStateCode: formState.customer.stateCode,
+            customerPostalCode: formState.customer.postalCode,
+            customerCountryCode: formState.customer.country,
+          },
+          integrationKey: formState.integrationKey,
+          mcc: formState.mccCategory,
+          merchantDescriptor: formState.merchantDescriptor,
+        }),
+      });
+      const data = await response.json();
+      if (data.requestSuccessful) {
+        // Open the payment URL in a new tab
+        window.open(data.responseData.paymentUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   if (!isModalOpen) return null;
@@ -245,9 +314,9 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
               </div>
               <div className="col-span-1 text-right">
                 <button type="submit" className="bg-blue-800 text-white px-4 py-2 rounded">
-                  <a href='https://www.payment.codebytesltd.com'>
+                  {/* <a href='https://www.payment.codebytesltd.com'> */}
                     Submit
-                  </a>
+                  {/* </a> */}
                 </button>
               </div>
 

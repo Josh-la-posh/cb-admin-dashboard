@@ -17,7 +17,7 @@ const RegisterMultiStepPage = () => {
     const [formData, setFormData] = useState({
         merchantCode: merchantData ? merchantData.merchantCode : '',
         businessName: merchantData ? merchantData.merchantName : '',
-        businessType: merchantData ? merchantData.businessType : 'Starter Business',
+        businessType: 'Starter Business',
         country: 'NG',
         businessCategory: 'Sole Proprietorship',
         industryCategory: 'Fintech'
@@ -55,6 +55,7 @@ const RegisterMultiStepPage = () => {
                 },
             };
 
+            console.log("Form-Data", formData)
             // Send the form data to the backend endpoint
             const response = await axios.post(`${baseUrl}/api/merchant/confirm`, formData, config);
             alert('Registration completed successfully');

@@ -1,43 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import TransactionTable from './components/TransactionTable';
 
-const allTransactions = [
-  { id: 1, date: '2024-08-01', description: 'Payment from John Doe', amount: '₦12,345', status: 'Completed', merchant: 'John Doe Store', paymentChannel: 'Card' },
-  { id: 2, date: '2024-08-02', description: 'Payment from Jane Smith', amount: '₦8,900', status: 'Pending', merchant: 'Jane Smith Boutique', paymentChannel: 'Virtual Account' },
-  { id: 3, date: '2024-08-03', description: 'Payment from Acme Corp.', amount: '₦25,000', status: 'Failed', merchant: 'Acme Corporation', paymentChannel: 'USSD' },
-  { id: 4, date: '2024-08-04', description: 'Payment from XYZ Ltd.', amount: '₦15,000', status: 'Completed', merchant: 'XYZ Limited', paymentChannel: 'Bank Account' },
-  { id: 5, date: '2024-08-05', description: 'Payment from ABC Inc.', amount: '₦9,500', status: 'Pending', merchant: 'ABC Inc.', paymentChannel: 'Card' },
-  { id: 6, date: '2024-08-06', description: 'Payment from DEF LLC', amount: '₦7,200', status: 'Failed', merchant: 'DEF LLC', paymentChannel: 'Virtual Account' },
-  { id: 7, date: '2024-08-07', description: 'Payment from GHI Corp.', amount: '₦11,800', status: 'Completed', merchant: 'GHI Corporation', paymentChannel: 'USSD' },
-  { id: 8, date: '2024-08-08', description: 'Payment from JKL Ltd.', amount: '₦14,400', status: 'Pending', merchant: 'JKL Limited', paymentChannel: 'Bank Account' },
-  { id: 9, date: '2024-08-09', description: 'Payment from MNO Ltd.', amount: '₦13,200', status: 'Failed', merchant: 'MNO Limited', paymentChannel: 'Card' },
-  { id: 10, date: '2024-08-10', description: 'Payment from PQR Inc.', amount: '₦17,600', status: 'Completed', merchant: 'PQR Inc.', paymentChannel: 'Virtual Account' },
-  { id: 11, date: '2024-08-11', description: 'Payment from STU Ltd.', amount: '₦10,900', status: 'Pending', merchant: 'STU Limited', paymentChannel: 'USSD' },
-  { id: 12, date: '2024-08-12', description: 'Payment from VWX Ltd.', amount: '₦6,800', status: 'Failed', merchant: 'VWX Limited', paymentChannel: 'Bank Account' },
-];
+// const allTransactions = [
+//   { id: 1, date: '2024-08-01', description: 'Payment from John Doe', amount: '₦12,345', status: 'Completed', merchant: 'John Doe Store', paymentChannel: 'Card' },
+//   { id: 2, date: '2024-08-02', description: 'Payment from Jane Smith', amount: '₦8,900', status: 'Pending', merchant: 'Jane Smith Boutique', paymentChannel: 'Virtual Account' },
+//   { id: 3, date: '2024-08-03', description: 'Payment from Acme Corp.', amount: '₦25,000', status: 'Failed', merchant: 'Acme Corporation', paymentChannel: 'USSD' },
+//   { id: 4, date: '2024-08-04', description: 'Payment from XYZ Ltd.', amount: '₦15,000', status: 'Completed', merchant: 'XYZ Limited', paymentChannel: 'Bank Account' },
+//   { id: 5, date: '2024-08-05', description: 'Payment from ABC Inc.', amount: '₦9,500', status: 'Pending', merchant: 'ABC Inc.', paymentChannel: 'Card' },
+//   { id: 6, date: '2024-08-06', description: 'Payment from DEF LLC', amount: '₦7,200', status: 'Failed', merchant: 'DEF LLC', paymentChannel: 'Virtual Account' },
+//   { id: 7, date: '2024-08-07', description: 'Payment from GHI Corp.', amount: '₦11,800', status: 'Completed', merchant: 'GHI Corporation', paymentChannel: 'USSD' },
+//   { id: 8, date: '2024-08-08', description: 'Payment from JKL Ltd.', amount: '₦14,400', status: 'Pending', merchant: 'JKL Limited', paymentChannel: 'Bank Account' },
+//   { id: 9, date: '2024-08-09', description: 'Payment from MNO Ltd.', amount: '₦13,200', status: 'Failed', merchant: 'MNO Limited', paymentChannel: 'Card' },
+//   { id: 10, date: '2024-08-10', description: 'Payment from PQR Inc.', amount: '₦17,600', status: 'Completed', merchant: 'PQR Inc.', paymentChannel: 'Virtual Account' },
+//   { id: 11, date: '2024-08-11', description: 'Payment from STU Ltd.', amount: '₦10,900', status: 'Pending', merchant: 'STU Limited', paymentChannel: 'USSD' },
+//   { id: 12, date: '2024-08-12', description: 'Payment from VWX Ltd.', amount: '₦6,800', status: 'Failed', merchant: 'VWX Limited', paymentChannel: 'Bank Account' },
+// ];
 
 const Transactions = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const indexOfLastTransaction = currentPage * pageSize;
-  const indexOfFirstTransaction = indexOfLastTransaction - pageSize;
-  const currentTransactions = allTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
-  const totalPages = Math.ceil(allTransactions.length / pageSize);
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch('https://merchant-api.codebytesltd.com/api/Transaction/Mer0000024', {
+          headers: {
+            'accept': 'application/json',
+          },
+        });
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+        if (!response.ok) {
+          throw new Error('Failed to fetch transactions');
+        }
 
-  const handlePageSizeChange = (event) => {
-    setPageSize(Number(event.target.value));
-    setCurrentPage(1);
-  };
+        const data = await response.json();
+        setTransactions(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [pageSize, setPageSize] = useState(5);
+
+  // const indexOfLastTransaction = currentPage * pageSize;
+  // const indexOfFirstTransaction = indexOfLastTransaction - pageSize;
+  // const currentTransactions = allTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+  // const totalPages = Math.ceil(allTransactions.length / pageSize);
+
+  // const handlePageChange = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
+
+  // const handlePageSizeChange = (event) => {
+  //   setPageSize(Number(event.target.value));
+  //   setCurrentPage(1);
+  // };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Transactions</h1>
+    <div className="p-6 bg-white">
+      <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800">Transactions</h1>
 
-      <div className="mb-4 flex justify-between items-center">
+      {/* <TransactionTable /> */}
+      <TransactionTable transactions={transactions} />
+
+      {/* <div className="mb-4 flex justify-between items-center">
         <div className="text-sm text-gray-500">
           <label htmlFor="pageSize" className="mr-2">Items per page:</label>
           <select
@@ -126,7 +162,7 @@ const Transactions = () => {
             Next
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

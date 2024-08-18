@@ -9,7 +9,9 @@ import MerchantPopUpForm from '../pages/Merchants/MerchantPopUp';
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
-import Transactions from '../pages/Transactions';
+import Customers from '../pages/Customers/Customers';
+import Transactions from '../pages/Transactions/Transactions';
+import Settings from '../pages/Settings/Settings';
 import ConfirmEmailPage from '../pages/auth/ConfirmEmailPage';
 
 const RoutesSystem = () => {
@@ -28,11 +30,13 @@ const RoutesSystem = () => {
           : <MainLayout>
             <Routes>
               <Route path="/home" element={<Dashboard />} />
+              <Route path="/customers" element={<Customers />} />
               <Route path="/merchants/merchants" element={<Merchants />} />
               <Route path="/merchant/credentials" element={<MerchantCredentials />} />
               <Route path="/merchant/credentials/merchantPopUpForm" element={<MerchantPopUpForm />} />
               {/* Add other routes */}
               <Route path="/transaction" element={<Transactions />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </MainLayout>
       }

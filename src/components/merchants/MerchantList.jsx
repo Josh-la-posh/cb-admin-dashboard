@@ -26,27 +26,29 @@ const MerchantList = () => {
         />
         <button className="bg-green-500 text-white px-4 py-2 rounded">Create New Merchant</button>
       </div>
-      <table className="min-w-full bg-white border rounded">
-        <thead>
-          <tr>
-            <th className="border p-4 text-left">Created Date</th>
-            <th className="border p-4 text-left">Merchant Name</th>
-            <th className="border p-4 text-left">Profile</th>
-            <th className="border p-4 text-left">Document</th>
-            <th className="border p-4 text-left">Credentials</th>
-            <th className="border p-4 text-left">Bank</th>
-            <th className="border p-4 text-left">Business Type</th>
-            <th className="border p-4 text-left">Charge Type</th>
-            <th className="border p-4 text-left">Status</th>
-            <th className="border p-4 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredMerchants.map(merchant => (
-            <MerchantItem key={merchant.id} merchant={merchant} />
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg border border-gray-200">
+          <thead className='bg-[#F0F2F5]'>
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Merchant Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Document</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credentials</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bank</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Type</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Charge Type</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody className='bg-white divide-y divide-gray-200'>
+            {filteredMerchants.map(merchant => (
+              <MerchantItem key={merchant.id} merchant={merchant} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
