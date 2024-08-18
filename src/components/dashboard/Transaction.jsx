@@ -10,26 +10,28 @@ const TransactionTable = () => {
     ];
 
     return (
-        <table className="min-w-full bg-white">
-            <thead>
-                <tr>
-                    <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Amount</th>
-                    <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Status</th>
-                </tr>
-            </thead>
-            <tbody className="bg-white">
-                {transactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                        <td className="px-6 py-4 border-b border-gray-300">{transaction.date}</td>
-                        <td className="px-6 py-4 border-b border-gray-300">{transaction.amount}</td>
-                        <td className={`px-6 py-4 border-b border-gray-300 ${transaction.status === 'Success' ? 'text-green-600' : 'text-red-600'}`}>
-                            {transaction.status}
-                        </td>
+        <div className="overflow-x-auto">
+            <table className="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Date</th>
+                        <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Amount</th>
+                        <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-600 uppercase tracking-wider">Status</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody className="bg-white">
+                    {transactions.map((transaction) => (
+                        <tr key={transaction.id}>
+                            <td className="px-6 py-4 border-b border-gray-300">{transaction.date}</td>
+                            <td className="px-6 py-4 border-b border-gray-300">{transaction.amount}</td>
+                            <td className={`px-6 py-4 border-b border-gray-300 ${transaction.status === 'Success' ? 'text-green-600' : 'text-red-600'}`}>
+                                {transaction.status}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

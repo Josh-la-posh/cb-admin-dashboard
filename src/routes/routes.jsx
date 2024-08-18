@@ -11,6 +11,7 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
 import Customers from '../pages/Customers/Customers';
 import Transactions from '../pages/Transactions/Transactions';
+import Settings from '../pages/Settings/Settings';
 
 const RoutesSystem = () => {
 
@@ -33,6 +34,7 @@ const RoutesSystem = () => {
               <Route path="/merchant/credentials/merchantPopUpForm" element={<MerchantPopUpForm />} />
               {/* Add other routes */}
               <Route path="/transaction" element={<Transactions />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </MainLayout>
       }

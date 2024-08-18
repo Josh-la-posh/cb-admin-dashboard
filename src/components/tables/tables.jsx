@@ -119,7 +119,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, display }) => {
         </table>
       </div>
 
-      <div className="flex justify-between items-center mt-4">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4 gap-4">
         <div className='text-sm text-gray-500'>
           <span className='mr-2'>Items per page:</span>
           <select
@@ -139,7 +139,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, display }) => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 border border-gray-300 text-gray-500 rounded-lg ${currentPage == 1 ? 'text-gray-300' : 'hover:border-blue-700 hover:text-black'}`}
+            className={`px-2 py-1 py-1 lg:px-4 lg:py-2 border border-gray-300 text-gray-500 rounded-lg ${currentPage == 1 ? 'text-gray-300' : 'hover:border-blue-700 hover:text-black'}`}
           >
             &lt;
           </button>
@@ -150,7 +150,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, display }) => {
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 ml-4 rounded-lg ${currentPage === index + 1 ? 'border border-blue-600 text-black' : 'bg-white text-gray-600'} hover:bg-blue-700 hover:text-white`}
+              className={`text-xs md:text-sm px-2 py-1 lg:px-4 lg:py-2 ml-4 rounded-lg ${currentPage === index + 1 ? 'border border-blue-600 text-black' : 'bg-white text-gray-600'} hover:bg-blue-700 hover:text-white`}
             >
               {index + 1}
             </button>
@@ -158,7 +158,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, display }) => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 ml-4 border border-gray-300 text-gray-500 rounded-lg ${currentPage == totalPages ? 'text-gray-300' : 'hover:border-blue-700 hover:text-black'}`}
+            className={`px-2 py-1 py-1 lg:px-4 lg:py-2 ml-4 border border-gray-300 text-gray-500 rounded-lg ${currentPage == totalPages ? 'text-gray-300' : 'hover:border-blue-700 hover:text-black'}`}
           >
             &gt;
           </button>

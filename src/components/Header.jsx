@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../pages/auth/authSlice';
 
 
-const Header = () => {
+const Header = ({openSidebar, setOpenSidebar}) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,9 +24,17 @@ const Header = () => {
 
   }
 
+  const handleSidebar = () => {
+    setOpenSidebar(true);
+  }
+
   return (
-    <header className="bg-white z-10 flex justify-between items-center p-4">
-      <div className="text-lg font-semibold">Admin Dashboard</div>
+    <header className="bg-white z-10 flex justify-between items-center p-4 relative">
+      {openSidebar == false && <button className="absolute left-2 block lg:hidden" onClick={handleSidebar}>
+        O
+      </button>}
+
+      <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Admin Dashboard</div>
       <div className="relative">
         <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="flex items-center">
           <img

@@ -7,7 +7,7 @@ function Customers() {
   return (
     <div className='min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-8'>
         <header className="mb-8">
-            <h1 className="text-[26px] font-[600] text-[#101928]">Customer</h1>
+            <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800">Customer</h1>
         </header>
 
         <CustomerCards />
