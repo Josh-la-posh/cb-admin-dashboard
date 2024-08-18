@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateForm } from '../../pages/Merchants/merchantSlice';
-import Modal from '../../components/Modal';
 
 const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
   const dispatch = useDispatch();
@@ -9,12 +8,20 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    dispatch(updateForm({ [name]: type === 'checkbox' ? checked : value }));
+
+    const nameParts = name.split('.');
+
+    const updatedFormState = nameParts.reduceRight((acc, part, index) => {
+      return index === nameParts.length - 1
+        ? { [part]: type === 'checkbox' ? checked : value }
+        : { [part]: acc };
+    }, {});
+
+    dispatch(updateForm(updatedFormState));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to submit the form data to the database
   };
 
   if (!isModalOpen) return null;
@@ -49,7 +56,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="amount"
                   value={formState.amount}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -58,10 +65,9 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="currency"
                   value={formState.currency}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 >
                   <option value="NGN">NGN</option>
-                  {/* Other options */}
                 </select>
               </div>
               <div className="col-span-1">
@@ -71,7 +77,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="merchantReference"
                   value={formState.merchantReference}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -81,7 +87,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="callbackUrl"
                   value={formState.callbackUrl}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -91,7 +97,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="splitCode"
                   value={formState.splitCode}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -101,7 +107,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.id"
                   value={formState.customer.id}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -111,7 +117,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.firstName"
                   value={formState.customer.firstName}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -121,7 +127,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.lastName"
                   value={formState.customer.lastName}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -131,7 +137,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.email"
                   value={formState.customer.email}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -141,7 +147,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.phoneNumber"
                   value={formState.customer.phoneNumber}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -151,7 +157,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.address"
                   value={formState.customer.address}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -161,7 +167,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.city"
                   value={formState.customer.city}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -171,7 +177,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.stateCode"
                   value={formState.customer.stateCode}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -181,7 +187,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.postalCode"
                   value={formState.customer.postalCode}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -190,10 +196,9 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="customer.country"
                   value={formState.customer.country}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 >
                   <option value="Nigeria">Nigeria</option>
-                  {/* Other options */}
                 </select>
               </div>
               <div className="col-span-1">
@@ -203,7 +208,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="integrationKey"
                   value={formState.integrationKey}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -213,7 +218,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="mccCategory"
                   value={formState.mccCategory}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
               <div className="col-span-1">
@@ -223,7 +228,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                   name="merchantDescriptor"
                   value={formState.merchantDescriptor}
                   onChange={handleChange}
-                  className="border border-gray-300 rounded p-2 w-full"
+                  className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>
             </div>
@@ -240,7 +245,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
               </div>
               <div className="col-span-1 text-right">
                 <button type="submit" className="bg-blue-800 text-white px-4 py-2 rounded">
-                  <a href='https://www.payment.codebytesltd.com/pay?adviceReference=e41e4387-5153-4fde-8e98-b694c9707552'>
+                  <a href='https://www.payment.codebytesltd.com'>
                     Submit
                   </a>
                 </button>
