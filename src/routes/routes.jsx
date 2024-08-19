@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import MainLayout from '../layout/MainLayout';
 import Merchants from '../pages/Merchants/Merchants';
@@ -12,21 +12,20 @@ import RegisterMultiStepPage from '../pages/auth/RegisterMultiStepPage';
 import Customers from '../pages/Customers/Customers';
 import Transactions from '../pages/Transactions/Transactions';
 import Settings from '../pages/Settings/Settings';
+import ComplianceLayout from '../pages/Compliance/Compliance';
+import ProfileForm from '../pages/Compliance/components/profileStep';
+import ContactForm from '../pages/Compliance/components/contactStep';
+import AccountForm from '../pages/Compliance/components/accountStep';
+import OwnerForm from '../pages/Compliance/components/ownerStep';
+import MerchantServiceAgreement from '../pages/Compliance/components/serviceAgreement';
 
 const RoutesSystem = () => {
 
   const { isLoggedIn } = useSelector((state) => state.auth);
-<<<<<<< HEAD
-    return (
-      <Router>
-        {
-          isLoggedIn === false 
-=======
   return (
     <Router>
       {
         isLoggedIn === false
->>>>>>> merchant-update
           ? <Routes>
               <Route index element={<LoginPage />} />
               <Route path='register' element={<RegisterPage />} />
@@ -42,6 +41,17 @@ const RoutesSystem = () => {
               {/* Add other routes */}
               <Route path="/transaction" element={<Transactions />} />
               <Route path="/settings" element={<Settings />} />
+
+              {/* Compliance Routes */}
+
+              <Route path="/compliance" element={<ComplianceLayout />} >
+                <Route path="contact" element={<ContactForm />} />
+                <Route path="profile" element={<ProfileForm />} />
+                <Route path="owner" element={<OwnerForm />} />
+                <Route path="account" element={<AccountForm />} />
+                <Route path="service-agreement" element={<MerchantServiceAgreement />} />
+                <Route index element={<Navigate to='profile'/>} />
+              </Route>
             </Routes>
           </MainLayout>
       }

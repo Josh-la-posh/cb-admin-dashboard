@@ -12,6 +12,7 @@ const Sidebar = () => {
       <div className="pr-4 pl-6 font-bold text-lg">CodeByte</div>
       <nav className="flex-1 my-5 overflow-y-scroll">
         <Link to="/home" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Dashboard</Link>
+        <Link to="/compliance" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Compliance</Link>
         <Link to="/customers" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Customers</Link>
         <Link to="/disputes" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Disputes</Link>
         <div>
