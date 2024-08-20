@@ -20,11 +20,16 @@ const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
+  const storedMerchantData = localStorage.getItem('merchantData');
+  const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+
+  console.log("Merchant", merchantData)
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('https://merchant-api.codebytesltd.com/api/Transaction/Mer0000024', {
+        const response = await fetch(`${baseUrl}/api/Transaction/${merchantData.merchantCode}`, {
           headers: {
             'accept': 'application/json',
           },

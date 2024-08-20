@@ -12,6 +12,15 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.auth);
 
+  const storedMerchantData = localStorage.getItem('merchantData');
+  const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+
+  const storedUserData = localStorage.getItem('userData');
+  const userData = storedUserData ? JSON.parse(storedUserData) : null;
+
+  console.log("Merchant", merchantData)
+  console.log("User", userData)
+
   const handleLogout = (e) => {
     e.preventDefault();
 
@@ -34,15 +43,15 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
         O
       </button>}
 
-      <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Admin Dashboard</div>
+      <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Merchant Dashboard</div>
       <div className="relative">
         <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="flex items-center">
-          <img
+          {/* <img
             src="profile-image-url"
             alt=""
             className="w-8 h-8 rounded-full"
-          />
-          <span className="ml-2">Demilade Folarin</span>
+          /> */}
+          <span className="ml-2">{userData?.firstName} {userData?.lastName}</span>
           <FiChevronDown className="ml-1" />
         </button>
         {isDropdownOpen && (

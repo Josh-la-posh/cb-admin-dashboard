@@ -1,10 +1,52 @@
 import React from 'react';
 import DataTable from '../../../components/tables/tables';
 
+// const columns = [
+//     {
+//         header: 'Date',
+//         accessor: 'date',
+//         render: (value) => (
+//             <span className='font-medimu text-gray-900'>
+//                 {value}
+//             </span>
+//         ),
+//     },
+//     {
+//         header: 'Merchant',
+//         accessor: 'merchant',
+//     },
+//     {
+//         header: 'Description',
+//         accessor: 'description',
+//     },
+//     {
+//         header: 'Amount',
+//         accessor: 'amount',
+//     },
+//     {
+//         header: 'Payment Channel',
+//         accessor: 'paymentChannel',
+//         render: (value) => (
+//             <span className={`text-${value === 'USSD' ? 'orange' : value === 'Card' ? 'green' : 'blue'}-600`}>
+//                 {value}
+//             </span>
+//         ),
+//     },
+//     {
+//         header: 'Status',
+//         accessor: 'status',
+//         render: (value) => (
+//             <span className={`text-${value === 'Completed' ? 'green' : value === 'Pending' ? 'orange' : 'red'}-600`}>
+//                 {value}
+//             </span>
+//         ),
+//     },
+// ];
+
 const columns = [
     {
         header: 'Date',
-        accessor: 'date',
+        accessor: 'paymentDate',
         render: (value) => (
             <span className='font-medimu text-gray-900'>
                 {value}
@@ -13,11 +55,11 @@ const columns = [
     },
     {
         header: 'Merchant',
-        accessor: 'merchant',
+        accessor: 'merchantCode',
     },
     {
         header: 'Description',
-        accessor: 'description',
+        accessor: 'narration',
     },
     {
         header: 'Amount',
@@ -34,9 +76,9 @@ const columns = [
     },
     {
         header: 'Status',
-        accessor: 'status',
+        accessor: 'transactionStatus',
         render: (value) => (
-            <span className={`text-${value === 'Completed' ? 'green' : value === 'Pending' ? 'orange' : 'red'}-600`}>
+            <span className={`text-${value === 'Successful' ? 'green' : value === 'Failed' ? 'red' : 'orange'}-600`}>
                 {value}
             </span>
         ),
@@ -59,7 +101,7 @@ const data = [
 const TransactionTable = ({ transactions }) => {
     return (
         <div className="container mx-auto p-4">
-            <DataTable columns={columns} data={data} rowsPerPageOptions={[5, 10, 20]} display='true' />
+            <DataTable columns={columns} data={transactions} rowsPerPageOptions={[5, 10, 20]} display='true' />
         </div>
     );
 };

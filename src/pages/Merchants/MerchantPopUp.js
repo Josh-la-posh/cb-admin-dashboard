@@ -2,29 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateForm } from '../../pages/Merchants/merchantSlice';
 
-const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
+const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
+  console.log("creddd", credentials)
   const dispatch = useDispatch();
   const formState = useSelector((state) => state.merchant);
   const [token, setToken] = useState('');
+  const [integrationKey, setIntegrationKey] = useState(credentials?.integrationKey);  
+  const baseUrl = process.env.REACT_APP_API_PAYMENT_BASE_URL
+  const clientId = credentials?.clientId
+  const clientSecret = credentials?.clientSecret
+  const integrationKeyData = credentials?.integrationKey
 
   useEffect(() => {
     // Fetch access token when the component mounts
     const fetchToken = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/account', {
+        const response = await fetch(`${baseUrl}/api/account`, {
           method: 'POST',
           headers: {
             'accept': '*/*',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            clientId: 'Mer0000024',
-            clientSecret: 'jpSZ3fVymDSjUYidLUbOuZmPTRvf8XftDJMwtMU7ocziiC7xeO/hKEC9h+LRofNYZgmg/YuA1KKWj2yK1ylRvzAuFIOshbs+x82nlIRqO+s=',
+            clientId: clientId,
+            clientSecret: clientSecret,
           }),
         });
         const data = await response.json();
         if (data.requestSuccessful) {
           setToken(data.responseData.access_token);
+          setIntegrationKey(integrationKeyData)
         }
       } catch (error) {
         console.error('Error fetching token:', error);
@@ -51,7 +58,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/advice', {
+      const response = await fetch(`${baseUrl}/api/advice`, {
         method: 'POST',
         headers: {
           'accept': '*/*',
@@ -78,7 +85,7 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
             customerPostalCode: formState.customer.postalCode,
             customerCountryCode: formState.customer.country,
           },
-          integrationKey: formState.integrationKey,
+          integrationKey: integrationKeyData,
           mcc: formState.mccCategory,
           merchantDescriptor: formState.merchantDescriptor,
         }),
@@ -275,8 +282,9 @@ const MerchantPopUpForm = ({isModalOpen, closeModal}) => {
                 <input
                   type="text"
                   name="integrationKey"
-                  value={formState.integrationKey}
-                  onChange={handleChange}
+                  value={integrationKeyData}
+                  // onChange={handleChange}
+                  readOnly
                   className="border border-gray-300 rounded p-1 w-full"
                 />
               </div>

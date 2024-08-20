@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 const RegisterMultiStepPage = () => {
     const dispatch = useDispatch();
     const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
-    const token = localStorage.getItem("accessTokenDemo");
+    const token = localStorage.getItem("accessToken");
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 

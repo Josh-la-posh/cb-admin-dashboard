@@ -16,7 +16,7 @@ const HeroSection = () => {
         {/* Text content with shadow */}
         <div className="relative z-10 text-center">
           <h1 className="text-5xl font-bold mb-4 shadow-md">
-            Payments Made Easy with <span className="text-8xl text-blue-600">MoneyXPay</span>
+            Payments Made Easy with <span className="text-8xl text-[#272662]">MoneyXPay</span>
           </h1>
           <p className="text-lg shadow-md mt-4">
             MoneyXPay helps businesses in Africa receive payments from their customers all over the world.

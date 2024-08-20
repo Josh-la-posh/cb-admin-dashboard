@@ -7,6 +7,8 @@ const ConfirmEmailForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [token, setToken] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
 
     const dispatch = useDispatch();
@@ -23,9 +25,41 @@ const ConfirmEmailForm = () => {
         }
     }, [location.search]);
 
+    const validatePassword = (password) => {
+        const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,23}$/;
+        return regex.test(password);
+    };
+
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+
+        if (!validatePassword(newPassword)) {
+            setPasswordError('Password must be 6-23 characters long, contain at least one uppercase letter, one number, and one special character.');
+        } else {
+            setPasswordError('');
+        }
+    };
+
+    const handleConfirmPasswordChange = (e) => {
+        const newConfirmPassword = e.target.value;
+        setConfirmPassword(newConfirmPassword);
+
+        if (newConfirmPassword !== password) {
+            setConfirmPasswordError('Passwords do not match.');
+        } else {
+            setConfirmPasswordError('');
+        }
+    };
+
     const handleConfirmEmail = async (e) => {
         e.preventDefault();
         dispatch(loginStart());
+
+        if (!validatePassword(password) || confirmPassword !== password) {
+            setPasswordError('Please fix the errors before submitting.');
+            return;
+        }
 
         try {
             const response = await fetch(`${baseUrl}/api/account/confirm-email`, {
@@ -67,10 +101,11 @@ const ConfirmEmailForm = () => {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
                         required
                     />
+                    {passwordError && <p className="text-red-500 text-sm mt-2">{passwordError}</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
@@ -80,15 +115,16 @@ const ConfirmEmailForm = () => {
                         type="password"
                         id="confirmPassword"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onChange={handleConfirmPasswordChange}
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
                         required
                     />
+                    {confirmPasswordError && <p className="text-red-500 text-sm mt-2">{confirmPasswordError}</p>}
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-[#0000FF] text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-                    disabled={loading}
+                    className="w-full bg-[#272662] text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+                    disabled={loading || passwordError || confirmPasswordError || !password || !confirmPassword}
                 >
                     {loading ? 'Confirming...' : 'Confirm Email'}
                 </button>

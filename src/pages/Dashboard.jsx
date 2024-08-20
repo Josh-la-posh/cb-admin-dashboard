@@ -13,6 +13,11 @@ const Dashboard = () => {
   const [transactionLumpsum, setTransactionLumpsum] = useState(null);
   const [interval, setInterval] = useState('Daily');
   const [loading, setLoading] = useState(true); // Add loading state
+  const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
+  const storedMerchantData = localStorage.getItem('merchantData');
+  const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+
+  console.log("Merchant", merchantData)
 
   // const tokenValue = "eyJhbGciOiJSUzI1NiIsImtpZCI6IkU4NzcxNTMxMzU1MTRGMjhCN0M5NDE1NjY1N0REOEFCRURDODI4M0VSUzI1NiIsInR5cCI6ImF0K2p3dCIsIng1dCI6IjZIY1ZNVFZSVHlpM3lVRldaWDNZcS0zSUtENCJ9.eyJuYmYiOjE3MjM3MjA2MDEsImV4cCI6MTcyMzcyNDIwMSwiaXNzIjoiaHR0cDovLzE3OC42Mi4xMTYuMjMzIiwiYXVkIjpbIm1lcmNoYW50YXBpIiwiaHR0cDovLzE3OC42Mi4xMTYuMjMzL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJtZXJjaGFudGFwaSIsInN1YiI6IjEyY2NlYmZhLTQ2MzQtNDA5Ni1hMjllLTUzZjc3MDU2ZWM4OCIsImF1dGhfdGltZSI6MTcyMzcyMDYwMSwiaWRwIjoibG9jYWwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJvZm9sYXJpbkBjaGFtc3N3aXRjaC5jb20iLCJuYW1lIjoiRm9sYXJpbiBPbHV3YWRlbWlsYWRlIiwiZ2l2ZW5fbmFtZSI6IkRlbWlsYWRlIiwiZmFtaWx5X25hbWUiOiJGb2xhcmluIiwicHJlZmVycmVkX3VzZXJuYW1lIjoib2ZvbGFyaW5AY2hhbXNzd2l0Y2guY29tIiwiZW1haWwiOiJvZm9sYXJpbkBjaGFtc3N3aXRjaC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwianRpIjoiNjRGNDJEM0Y4ODk5QTBBQ0Y0Q0JEODkzNDRGQzQwOTkiLCJpYXQiOjE3MjM3MjA2MDEsInNjb3BlIjpbIm1lcmNoYW50YXBpIl0sImFtciI6WyJwd2QiXX0.CeHVwQ0tH_DbQ2QQCitqqIoAZUKUgs2R2VUd6U_Gyim9OLu0e_AGmFV-VT6vs7zCk1-GXyP6wtL1SbXX-XuDgYyEUKkGyxEs_lMYJrDTmAOyw-JPgjkFq-qpfbO8FlAK300ILhWhMNRnTpxsLglFpc4TPz2sxUOLQeDf6OtqkQoo4jAp7GtYaC4ZYwlECJ-0tU_h4aHVAZ6-JUuDxsxjlDNCJTe9VjyyViKXXvX3oGZ-wetGkJX-TwrS2I-9qnxtvuC-sorvI8XivixrHyD6Godyd4YcRKKE4GrRDQ66ArwZLWaDPbkan9xnLSdDGOVgQIp-PMESFSMQx4yMrft2Og"; // Replace with your token
   // const token = localStorage.getItem("accessToken")
@@ -20,14 +25,14 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // Set loading to true when starting to fetch data
-      const token = localStorage.getItem("accessTokenDemo");
+      const token = localStorage.getItem("accessToken");
       // const token = tokenValue;
 
       // console.log("token", token)
 
       try {
         // Fetch wallet balance
-        const walletResponse = await fetch('https://merchant-api.pelpay.ng/api/Dashboard/tes0000449', {
+        const walletResponse = await fetch(`${baseUrl}/api/dashboard/${merchantData.merchantCode}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -35,10 +40,11 @@ const Dashboard = () => {
           },
         });
         const walletData = await walletResponse.json();
-        setWalletBalance(walletData.responseData[0]);
+        console.log("Wallet Data:", walletData);
+        setWalletBalance(walletData.data[0]);
 
         // Fetch transaction graph data
-        const graphResponse = await fetch(`https://merchant-api.pelpay.ng/api/Dashboard/tnx/graph/tes0000449?interval=${interval}`, {
+        const graphResponse = await fetch(`${baseUrl}/api/dashboard/tnx/graph/${merchantData.merchantCode}?interval=${interval}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -46,10 +52,11 @@ const Dashboard = () => {
           },
         });
         const graphData = await graphResponse.json();
-        setTransactionGraph(graphData.responseData);
+        console.log("Transaction Graph Data:", graphData);
+        setTransactionGraph(graphData.data);
 
         // Fetch transaction lumpsum data
-        const lumpsumResponse = await fetch(`https://merchant-api.pelpay.ng/api/Dashboard/tnx/lumpsum/tes0000449?interval=${interval}`, {
+        const lumpsumResponse = await fetch(`${baseUrl}/api/dashboard/tnx/lumpsum/${merchantData.merchantCode}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -57,7 +64,8 @@ const Dashboard = () => {
           },
         });
         const lumpsumData = await lumpsumResponse.json();
-        setTransactionLumpsum(lumpsumData.responseData);
+        console.log("Transaction Lumpsum Data:", lumpsumData);
+        setTransactionLumpsum(lumpsumData.data);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -77,23 +85,51 @@ const Dashboard = () => {
     return <Spinner />; // Show spinner while loading
   }
 
-  // Calculate total revenue from successful transactions
-  const totalRevenue = transactionLumpsum
-    .filter(transaction => transaction.transactionStatus === "Successful")
-    .reduce((sum, transaction) => sum + transaction.transactionVolume, 0);
-
   const COLORS = ["#4CAF50", "#F44336", "#FFC107", "#FF9800", "#3F51B5", "#9E9E9E"];
 
-  const barData = transactionGraph.map(item => ({
-    name: item.key,
-    value: item.value.reduce((total, current) => total + current.transactionVolume, 0),
-  }));
+  // // Calculate total revenue from successful transactions
+  // const totalRevenue = transactionLumpsum
+  //   .filter(transaction => transaction.transactionStatus === "Successful")
+  //   .reduce((sum, transaction) => sum + transaction.transactionVolume, 0);
 
-  const pieData = transactionLumpsum.map((item, index) => ({
-    name: item.transactionStatus,
-    value: item.transactionVolume,
-    color: COLORS[index % COLORS.length],
-  }));
+
+  // const barData = transactionGraph.map(item => ({
+  //   name: item.key,
+  //   value: item.value.reduce((total, current) => total + current.transactionVolume, 0),
+  // }));
+
+  // const pieData = transactionLumpsum.map((item, index) => ({
+  //   name: item.transactionStatus,
+  //   value: item.transactionVolume,
+  //   color: COLORS[index % COLORS.length],
+  // }));
+
+  // Ensure that the data exists before trying to reduce over it
+  const totalRevenue = transactionLumpsum && Array.isArray(transactionLumpsum)
+    ? transactionLumpsum
+      .filter(transaction => transaction.TransactionStatus === "Successful")
+      .reduce((sum, transaction) => sum + transaction.TransactionVolume, 0)
+    : 0;
+
+  // Safely map the data, ensuring that `transactionGraph` is defined and has a value array
+  const barData = transactionGraph && Array.isArray(transactionGraph)
+    ? transactionGraph.map(item => ({
+      name: item.key,
+      value: item.value && Array.isArray(item.value)
+        ? item.value.reduce((total, current) => total + current.TransactionVolume, 0)
+        : 0,
+    }))
+    : [];
+
+  // Safely map the `transactionLumpsum` data
+  const pieData = transactionLumpsum && Array.isArray(transactionLumpsum)
+    ? transactionLumpsum.map((item, index) => ({
+      name: item.TransactionStatus,
+      value: item.TransactionVolume,
+      color: COLORS[index % COLORS.length],
+    }))
+    : [];
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -113,9 +149,9 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-green-500" />
-        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.transactionCount, 0)} color="bg-blue-500" />
-        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Successful").transactionCount} color="bg-indigo-500" />
-        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Failed").transactionCount} color="bg-red-500" />
+        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.TransactionCount, 0)} color="bg-blue-500" />
+        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Successful").TransactionCount} color="bg-indigo-500" />
+        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Failed").TransactionCount} color="bg-red-500" />
       </div>
 
       <div className="bg-white shadow rounded-lg p-6 mb-8">

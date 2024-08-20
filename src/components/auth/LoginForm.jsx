@@ -34,6 +34,7 @@ const LoginForm = () => {
       if (data.requestSuccessful) {
         // Store the merchant data as a string in local storage
         localStorage.setItem('merchantData', JSON.stringify(data.responseData.merchants[0]));
+        localStorage.setItem('userData', JSON.stringify(data.responseData.user));
         // Store the token in local storage
         localStorage.setItem('accessToken', data.responseData.accessToken);
 
@@ -109,7 +110,7 @@ const LoginForm = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#272662]"
             required
           />
         </div>
@@ -122,7 +123,7 @@ const LoginForm = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#272662]"
             required
           />
         </div>
@@ -136,17 +137,17 @@ const LoginForm = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-sm text-[#0000FF] hover:underline">Forgot password?</a>
+          <a href="#" className="text-sm text-[#272662] hover:underline">Forgot password?</a>
         </div>
         <button
           type="submit"
-          className="w-full bg-[#0000FF] text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+          className="w-full bg-[#272662] text-white py-2 rounded-lg hover:bg-[#272662] transition duration-300"
           disabled={loading}
         >
           {loading ? 'Logging in...' : 'Log in'}
         </button>
         <div className="text-center mt-4">
-          <Link to="/register" className="text-sm text-[#0000FF] hover:underline">Sign Up</Link>
+          <Link to="/register" className="text-sm text-[#272662] hover:underline">Sign Up</Link>
         </div>
       </form>
     </div>
