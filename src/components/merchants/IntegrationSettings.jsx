@@ -20,7 +20,7 @@ const IntegrationSettings = ({ credentials, openModal, closeModal, isModalOpen }
             </button>
           </div>
           {credentials ? (
-            <button onClick={openModal} className='text-[#0000FF] ml-auto pr-[300px] text-[#0000FF]'>Text Transaction</button>
+            <button onClick={openModal} className='text-[#0000FF] ml-auto pr-[300px] text-[#0000FF]'>Test Transaction</button>
           )
             : (
               <></>

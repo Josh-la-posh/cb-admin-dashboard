@@ -83,7 +83,7 @@ const APIKeysTab = () => {
             <div className="space-y-8">
                 {/* Test Secret Key */}
                 <div>
-                    <label className="block text-[12px] font-medium text-gray-700">Test Secret Key</label>
+                    <label className="block text-[12px] font-medium text-gray-700">Test Integration Key</label>
                     <div className="mt-1 relative rounded-md shadow-sm">
                         <input
                             type={showSecret ? 'text' : 'password'}
@@ -137,7 +137,7 @@ const APIKeysTab = () => {
 
                 {/* Test Public Key */}
                 <div>
-                    <label className="block text-[12px] font-medium text-gray-700">Test Public Key</label>
+                    <label className="block text-[12px] font-medium text-gray-700">Test Client Id</label>
                     <input
                         type="text"
                         className="px-2 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"

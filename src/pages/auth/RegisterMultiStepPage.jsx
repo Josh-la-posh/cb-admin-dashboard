@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios for making HTTP requests
-import { loginFailure, loginSuccess } from './authSlice';
-import { useDispatch } from 'react-redux';
 
 const RegisterMultiStepPage = () => {
-    const dispatch = useDispatch();
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
     const token = localStorage.getItem("accessToken");
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
 
     console.log("Merchant", merchantData)
 
@@ -40,8 +37,7 @@ const RegisterMultiStepPage = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
+            ...prevState, [name]: value,
         }));
     };
 
@@ -55,18 +51,14 @@ const RegisterMultiStepPage = () => {
                 },
             };
 
-            console.log("Form-Data", formData)
             // Send the form data to the backend endpoint
             const response = await axios.post(`${baseUrl}/api/merchant/confirm`, formData, config);
             alert('Registration completed successfully');
-            // console.log('Response:', response.data);
-            // Dispatch success action
-            dispatch(loginSuccess({ email: merchantData.contactEmail }));
-            navigate('/home'); // Redirect to dashboard after finishing
+            console.log('Response:', response.data);
+            navigate('/'); // Redirect to dashboard after finishing
         } catch (error) {
             console.error('Error submitting form data:', error);
             alert('There was an error during registration. Please try again.');
-            dispatch(loginFailure('An unexpected error occurred'));
         }
     };
 
@@ -79,7 +71,7 @@ const RegisterMultiStepPage = () => {
                 <div className="relative mb-12">
                     <div className="flex items-center justify-between">
                         {['Business Info', 'Location & Category', 'Industry'].map((label, index) => (
-                            <div key={index} className="relative flex-1 text-center">
+                            <div key={index} className="relative flex-1 text-">
                                 <div
                                     className={`flex items-center justify-center w-12 h-12 rounded-full font-semibold border-4 ${step > index ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-300 text-gray-600'
                                         }`}

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setAccountComplete } from '../complianceSlice';
+const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
 
 const AccountForm = () => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const AccountForm = () => {
 
         try {
             // Post the updated data using fetch
-            const response = await fetch('http://localhost:4000/api/merchant-document', {
+            const response = await fetch(`${baseUrl}/api/merchant-document`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +100,7 @@ const AccountForm = () => {
                     required
                 />
             </div>
-            <button type="submit" className="mt-4 bg-green-500 text-white py-2 px-4 rounded">
+            <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">
                 Save and Continue
             </button>
         </form>

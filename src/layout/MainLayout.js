@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const MainLayout = ({ children }) => {
-
-
-  const [openSidebar, setOpenSidebar] = useState(true);
+const MainLayout = () => {
+  const [openSidebar, setOpenSidebar] = useState(false);
 
   const handleSidebar = () => {
     setOpenSidebar(false);
-  }
+  };
 
   return (
     <div className="w-full h-svh max-h-svh bg-gray-100 relative">
-      {openSidebar == true && <div className='fixed top-0 left-0 w-64 z-20 block lg:hidden'>
-        <Sidebar />
-
-        {openSidebar === true && <button className="absolute top-4 right-0 text-white w-[25px] h-[25px] rounded-full border border-white" onClick={handleSidebar}>
-          X
-        </button>}
-      </div>}
+      {openSidebar && (
+        <div className='fixed top-0 left-0 w-64 z-20 block lg:hidden'>
+          <Sidebar />
+          <button
+            className="absolute top-4 right-5 text-white"
+            onClick={handleSidebar}
+          >
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+        </div>
+      )}
       <div className='fixed top-0 left-0 w-64 z-20 hidden lg:block'>
         <Sidebar />
       </div>
@@ -28,7 +33,8 @@ const MainLayout = ({ children }) => {
           <Header setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
         </div>
         <main className="flex-1 overflow-y-auto p-5">
-          {children}
+          {/* Correctly render the Outlet component */}
+          <Outlet />
         </main>
       </div>
     </div>

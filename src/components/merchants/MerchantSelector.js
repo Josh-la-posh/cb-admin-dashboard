@@ -1,6 +1,7 @@
 import React from 'react';
 
 const MerchantSelector = ({ merchant }) => {
+  console.log("MM", merchant)
   return (
     <div className="">
       <p className="block text-sm pl-2 font-medium text-gray-700 mb-1">

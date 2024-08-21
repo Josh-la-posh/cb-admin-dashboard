@@ -68,7 +68,7 @@ const MerchantServiceAgreement = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
+            <div className='text-[12px]'>
                 <h2>Merchant Service Agreement</h2>
                 <p>Kindly read through and accept the merchant service agreement.</p>
                 <div className="alert alert-warning">
@@ -108,7 +108,7 @@ const MerchantServiceAgreement = () => {
                     </label>
                 </div>
 
-                <button type="submit" className='mt-4 bg-green-500 text-white py-2 px-4 rounded'>
+                <button type="submit" className='mt-4 bg-priColor text-white py-2 px-4 rounded'>
                     Save
                 </button>
             </div>

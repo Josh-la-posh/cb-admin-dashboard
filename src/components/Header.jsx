@@ -1,9 +1,11 @@
 // src/components/Header.js
 import React, { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../pages/auth/authSlice';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
 
 
@@ -11,16 +13,9 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state) => state.auth);
-
-  const storedMerchantData = localStorage.getItem('merchantData');
-  const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
   const storedUserData = localStorage.getItem('userData');
   const userData = storedUserData ? JSON.parse(storedUserData) : null;
-
-  console.log("Merchant", merchantData)
-  console.log("User", userData)
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -29,7 +24,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
       toast.success("Logout successful"); // Success toast
       localStorage.clear();
       dispatch(logout());
-      navigate('/');
+      navigate('/login');
 
     }, 1000)
 
@@ -42,7 +37,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
   return (
     <header className="bg-white z-10 flex justify-between items-center p-4 relative">
       {openSidebar == false && <button className="absolute left-2 block lg:hidden" onClick={handleSidebar}>
-        O
+        <FontAwesomeIcon icon={faBars} />
       </button>}
 
       <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Merchant Dashboard</div>
@@ -59,7 +54,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
             <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
-            <button onClick={handleLogout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">Logout</button>
+            <button className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"><Link to="/login">Logout</Link></button>
           </div>
         )}
       </div>

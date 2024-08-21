@@ -10,7 +10,8 @@ const ProfileForm = () => {
     const navigate = useNavigate();
     const { merchantData, isProfileComplete } = useOutletContext();
     const token = localStorage.getItem("accessToken");
-
+    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
+    
     const [formData, setFormData] = useState({
         tradingName: '',
         description: '',
@@ -59,7 +60,7 @@ const ProfileForm = () => {
 
         try {
             // Post the updated data using fetch
-            const response = await fetch('http://localhost:4000/api/merchant-document', {
+            const response = await fetch(`${baseUrl}/api/merchant-document`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,8 +82,8 @@ const ProfileForm = () => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Trading Name</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Trading Name</label>
                 <input
                     type="text"
                     name="tradingName"
@@ -92,8 +93,8 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Description</label>
                 <textarea
                     name="description"
                     value={formData.description}
@@ -102,8 +103,8 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Staff Size</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Staff Size</label>
                 <select
                     name="staffSize"
                     value={formData.staffSize}
@@ -114,8 +115,8 @@ const ProfileForm = () => {
                     <option>6-10</option>
                 </select>
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Annual Projected Sales Volume</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Annual Projected Sales Volume</label>
                 <input
                     type="text"
                     name="salesVolume"
@@ -125,8 +126,8 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Industry</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Industry</label>
                 <input
                     type="text"
                     name="industry"
@@ -136,8 +137,8 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Category</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Category</label>
                 <input
                     type="text"
                     name="category"
@@ -147,8 +148,8 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Business Type</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Business Type</label>
                 <input
                     type="text"
                     name="businessType"
@@ -158,7 +159,7 @@ const ProfileForm = () => {
                     required
                 />
             </div>
-            <button type="submit" className="mt-4 bg-green-500 text-white py-2 px-4 rounded">
+            <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">
                 Save and Continue
             </button>
         </form>

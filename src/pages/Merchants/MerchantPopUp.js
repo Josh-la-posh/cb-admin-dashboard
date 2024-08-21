@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateForm } from '../../pages/Merchants/merchantSlice';
+import { resetForm, updateForm } from '../../pages/Merchants/merchantSlice';
 
 const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
   console.log("creddd", credentials)
@@ -94,6 +94,10 @@ const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
       if (data.requestSuccessful) {
         // Open the payment URL in a new tab
         window.open(data.responseData.paymentUrl, '_blank');
+
+        dispatch(resetForm());
+        // Close the modal
+        closeModal();
       }
     } catch (error) {
       console.error('Error submitting form:', error);

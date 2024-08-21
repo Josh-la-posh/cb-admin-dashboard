@@ -3,6 +3,7 @@ import MerchantSelector from '../../components/merchants/MerchantSelector';
 import IntegrationSettings from '../../components/merchants/IntegrationSettings';
 import Pagination from '../../components/merchants/Pagination';
 import MerchantPopUpForm from './MerchantPopUp';
+import { Link } from 'react-router-dom';
 
 const MerchantCredentials = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -74,7 +75,7 @@ const MerchantCredentials = () => {
   return (
     <div className="p-8 bg-white min-h-screen relative overflow-auto">
       <h1 className="text-2xl font-semibold mb-4">Merchant Credentials ({merchantData?.merchantName})</h1>
-      <a href="#" className="text-blue-800 mb-2 text-[14px] inline-block">Back To Merchant</a>
+      <Link to="/merchants" className="text-blue-800 mb-2 text-[14px] inline-block">Back To Merchant</Link>
 
       <div className="">
         <MerchantSelector merchant={merchantData} />

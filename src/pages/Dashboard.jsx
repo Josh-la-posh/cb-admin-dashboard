@@ -6,6 +6,9 @@ import ActivityFeed from '../components/dashboard/ActivityFeed';
 import VolumeValueCards from '../components/dashboard/VolumeValueCards';
 import ReportChart from '../components/dashboard/ReportChart';
 import Spinner from '../components/Spinner'; // Import the Spinner component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan, faCartShopping, faCheck, faDollarSign, faUsers } from '@fortawesome/free-solid-svg-icons';
+
 
 const Dashboard = () => {
   const [walletBalance, setWalletBalance] = useState(null);
@@ -16,6 +19,8 @@ const Dashboard = () => {
   const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+  const storedUserData = localStorage.getItem('userData');
+  const userData = storedUserData ? JSON.parse(storedUserData) : null;
 
   console.log("Merchant", merchantData)
 
@@ -132,13 +137,16 @@ const Dashboard = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-semibold text-gray-800">Merchant Dashboard</h1>
+        <div className='flex justify-between align-center'>
+          <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800">Welcome back, {userData.firstName} {userData.lastName}</h1>
+          <p className='text-[18px] font-semibold text-red-500'>Test Environment</p>
+        </div>
         <p className="text-gray-600">Overview of your payment gateway performance</p>
-        <div className="mt-4">
-          <label htmlFor="interval" className="mr-2">Select Interval:</label>
-          <select id="interval" value={interval} onChange={handleIntervalChange} className="p-2 border rounded">
+        <div className="mt-8">
+          <label htmlFor="interval" className="mr-2 text-sm">Select Interval:</label>
+          <select id="interval" value={interval} onChange={handleIntervalChange} className="p-2 border rounded bg-white">
             <option value="Daily">Daily</option>
             <option value="Weekly">Weekly</option>
             <option value="Monthly">Monthly</option>
@@ -147,27 +155,26 @@ const Dashboard = () => {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-green-500" />
-        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.TransactionCount, 0)} color="bg-blue-500" />
-        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Successful").TransactionCount} color="bg-indigo-500" />
-        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Failed").TransactionCount} color="bg-red-500" />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-[#EEE8FA]" icon={<FontAwesomeIcon icon={faDollarSign} style={{ color: '#7447C6' }} />} />
+        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.TransactionCount, 0)} color="bg-[#FFF8E1]" icon={<FontAwesomeIcon icon={faCartShopping} style={{ color: '#FFC107' }} />} />
+        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Successful").TransactionCount} color="bg-[#E7F6EC]" icon={<FontAwesomeIcon icon={faCheck} style={{ color: '#40B869' }} />} />
+        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Failed").TransactionCount} color="bg-red-300" icon={<FontAwesomeIcon icon={faBan} style={{ color: 'red' }} />} />
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Update Report</h2>
-        <ReportChart barData={barData} pieData={pieData} />
+      <div className="bg-white rounded-lg mb-8 p-[16px] rounded-[8px] border border-[#E4E7EC]">
+        <ReportChart barData={barData} pieData={pieData} date={interval} />
       </div>
 
-      <VolumeValueCards />
+      {/* <VolumeValueCards />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <RevenueChart />
         <ActivityFeed />
-      </div>
+      </div> */}
 
       <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Transactions</h2>
+        <h3 className="mb-8 text-[20px] text-[#101928] font-[500] text-gray-800">Recent Transactions</h3>
         <TransactionTable />
       </div>
     </div>

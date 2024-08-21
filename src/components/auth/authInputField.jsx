@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 function AuthInputField({ label, type, validName, valueName, id, onChange, setOnFocus, nameFocus, errNote }) {
     return (
         <div className="mb-4 w-full">
-            <label className="block text-black text-[13px] mb-2 flex items-center" htmlFor={id}>
+            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:md-4 flex items-center" htmlFor={id}>
                 {label}
                 <span className={validName ? 'valid' : 'hide'}>
                     <FontAwesomeIcon icon={faCheck} />

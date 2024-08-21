@@ -4,6 +4,9 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './components/navigationSidebar';
 import axios from 'axios';
 
+
+// Not Working...
+
 const Compliance = () => {
     const [merchantData, setMerchantData] = useState(null);
     const [isProfileComplete, setIsProfileComplete] = useState(false);
@@ -43,7 +46,7 @@ const Compliance = () => {
         };
 
         fetchMerchantData();
-    }, []);
+    }, [token]);
 
     // Check the completion status based on the merchant data
     const checkCompletionStatus = (data) => {
@@ -70,7 +73,7 @@ const Compliance = () => {
                     </div>
                 </div>
                 <div className="ml-4 flex-grow">
-                    <div className="min-w-[300px] w-[500px]">
+                    <div className="min-w-[300px] max-w-[400px]">
                         {/* Pass the merchantData as props to the Outlet */}
                         {/* <Outlet context={merchantData} /> */}
                         <Outlet context={{ merchantData, isProfileComplete, isAccountComplete, isContactComplete, isOwnerComplete, isServiceComplete }} />
