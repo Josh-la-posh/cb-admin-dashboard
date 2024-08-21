@@ -1,9 +1,15 @@
 import React from 'react'
 import MerchantList from '../../components/merchants/MerchantList'
+import MerchantCards from './components/MerchantCards'
 
 function Merchants() {
   return (
-    <MerchantList />
+    <div className="">
+      <MerchantCards />
+      <div className="bg-white">
+        <MerchantList />
+      </div>
+    </div>
   )
 }
 

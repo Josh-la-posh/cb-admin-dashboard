@@ -24,7 +24,7 @@ const MerchantList = () => {
           className="border p-2 rounded w-1/2"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button className="bg-green-500 text-white px-4 py-2 rounded">Create New Merchant</button>
+        <button className="bg-priColor text-sm text-white px-4 py-2 rounded">Create New Merchant</button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg border border-gray-200">

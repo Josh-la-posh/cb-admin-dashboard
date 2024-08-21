@@ -3,6 +3,8 @@ import Card from '../components/dashboard/Card';
 import TransactionTable from '../components/dashboard/Transaction';
 import ReportChart from '../components/dashboard/ReportChart';
 import Spinner from '../components/Spinner'; // Import the Spinner component
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBan, faCartShopping, faCheck, faDollarSign, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 const DASHBOARD_URL = '/dashboard';
 
@@ -112,10 +114,10 @@ const Dashboard = () => {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-        <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-green-500" />
-        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.transactionCount, 0)} color="bg-blue-500" />
-        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Successful").transactionCount} color="bg-indigo-500" />
-        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Failed").transactionCount} color="bg-red-500" />
+        <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-[#EEE8FA]" icon={<FontAwesomeIcon icon={faDollarSign} style={{color: '#7447C6'}} />} />
+        <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.transactionCount, 0)} color="bg-[#FFF8E1]"  icon={<FontAwesomeIcon icon={faCartShopping} style={{color: '#FFC107'}} />} />
+        <Card title="Successful Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Successful").transactionCount} color="bg-[#E7F6EC]"  icon={<FontAwesomeIcon icon={faCheck} style={{color: '#40B869'}} />} />
+        <Card title="Failed Payments" value={transactionLumpsum.find(item => item.transactionStatus === "Failed").transactionCount} color="bg-red-300"  icon={<FontAwesomeIcon icon={faBan} style={{color: 'red'}} />} />
       </div>
 
       <div className="bg-white rounded-lg mb-8 p-[16px] rounded-[8px] border border-[#E4E7EC]">
