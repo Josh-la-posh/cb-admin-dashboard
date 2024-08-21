@@ -8,8 +8,8 @@ const RegisterPage = () => {
             <div className="w-1/2 hidden lg:block overflow-hidden">
                 <HeroSection />
             </div>
-            <div className="w-[full] h-[95%] lg:w-1/2 bg-gray-100 p-[20px]">
-                <div className='w-full h-full block lg:flex items-center justify-center'>
+            <div className="w-[full] h-[95%] lg:w-1/2 p-[20px]">
+                <div className='w-full h-[100%] block lg:flex items-center justify-center overflow-y-auto'>
                     <RegisterForm />
                 </div>
             </div>

@@ -4,6 +4,8 @@ import TransactionTable from '../components/dashboard/Transaction';
 import ReportChart from '../components/dashboard/ReportChart';
 import Spinner from '../components/Spinner'; // Import the Spinner component
 
+const DASHBOARD_URL = '/dashboard';
+
 const Dashboard = () => {
   const [walletBalance, setWalletBalance] = useState(null);
   const [transactionGraph, setTransactionGraph] = useState(null);
@@ -18,6 +20,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       setLoading(true); // Set loading to true when starting to fetch data
       const token = localStorage.getItem("accessTokenDemo");
+
       // const token = tokenValue;
 
       // console.log("token", token)

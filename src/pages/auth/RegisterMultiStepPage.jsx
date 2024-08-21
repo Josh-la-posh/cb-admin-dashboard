@@ -36,9 +36,7 @@ const RegisterMultiStepPage = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+            ...prevState,            [name]: value,       }));
     };
 
     const handleSubmit = async (e) => {
@@ -55,7 +53,7 @@ const RegisterMultiStepPage = () => {
             const response = await axios.post('http://localhost:4000/api/merchant/confirm', formData, config);
             alert('Registration completed successfully');
             console.log('Response:', response.data);
-            navigate('/home'); // Redirect to dashboard after finishing
+            navigate('/'); // Redirect to dashboard after finishing
         } catch (error) {
             console.error('Error submitting form data:', error);
             alert('There was an error during registration. Please try again.');
@@ -71,7 +69,7 @@ const RegisterMultiStepPage = () => {
                 <div className="relative mb-12">
                     <div className="flex items-center justify-between">
                         {['Business Info', 'Location & Category', 'Industry'].map((label, index) => (
-                            <div key={index} className="relative flex-1 text-center">
+                            <div key={index} className="relative flex-1 text-">
                                 <div
                                     className={`flex items-center justify-center w-12 h-12 rounded-full font-semibold border-4 ${step > index ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-300 text-gray-600'
                                         }`}

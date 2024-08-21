@@ -1,19 +1,118 @@
 import React, { useState, useRef, useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../../pages/auth/authSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { loginStart, loginSuccess, loginFailure, logout } from '../../pages/auth/authSlice';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import axios from '../../api/axios';
+
+const LOGIN_URL = '/Account';
+const MERCHANT_URL = '/merchant-compliance';
+const COMPLIANCE_REG = '/complete-registration';
 
 const LoginForm = () => {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+
+
+
+  const userRef = useRef();
+  const errRef = useRef();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+
+
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    dispatch(logout());
+  }, [])
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, [])
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [email, password])
 
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(loginStart());
+
+    // try {
+    //   const response = await axios.post(LOGIN_URL,
+    //     JSON.stringify({email, password}),
+    //     {
+    //       headers: {
+    //         'Accept': '*/*',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       withCredentials: true
+    //     })
+
+    //     const data = response.data.responseData;
+    //     const accessToken = data.accessToken;
+
+    //     console.log('finally', JSON.stringify(data));
+        
+    //     // saving access token
+    //     localStorage.setItem('accessToken', accessToken);
+
+    //     //saving merchants data
+    //     localStorage.setItem('merchantData', JSON.stringify(data.merchants[0]));
+
+    //     setAuth({email, password, accessToken});
+
+        
+
+    //     // fetching compliance data to route user to log in screen or create password screen
+
+    //     const merchantCode = data.merchants[0].merchantCode;
+
+    //     const complianceRequest = await axios.get(`${MERCHANT_URL}/${merchantCode}`,
+    //       {
+    //         headers: {
+    //           'Authorization': `Bearer ${accessToken}`,
+    //           'Accept': 'application/json',
+    //         }
+    //       }
+    //     )
+    //     const complianceData = complianceRequest.data;
+
+    //     if (complianceData.success === true) {
+    //       dispatch(loginSuccess(email));
+
+    //       setEmail('');
+    //       setPassword('');
+    //       navigate(from, {replace: true});
+    //     } else {
+    //       navigate(COMPLIANCE_REG);
+    //     }
+    // } catch (err) {
+    //   console.log('finally', JSON.stringify(err));
+    //   if (!err.response) {
+    //     dispatch(loginFailure('An unexpected error occurred. Try again'));
+    //   } else {
+    //     // const errResponse = err.response.data;
+    //     // console.log(JSON.stringify(errResponse));
+
+    //     if (err.response.data.responseCode === '400') {
+    //       dispatch(loginFailure(err.response.data.message));
+    //     } else {
+    //       dispatch(loginFailure('Login Failed'));
+    //     }
+    //   }
+
+    //   errRef.current.focus();
+    // }
 
     try {
       const response = await fetch(`https://merchant-api.codebytesltd.com/api/Account`, {
@@ -33,8 +132,12 @@ const LoginForm = () => {
       if (data.requestSuccessful) {
         // Store the merchant data as a string in local storage
         localStorage.setItem('merchantData', JSON.stringify(data.responseData.merchants[0]));
+
+        const accessToken = data.responseData.accessToken;
         // Store the token in local storage
-        localStorage.setItem('accessToken', data.responseData.accessToken);
+        localStorage.setItem('accessToken', accessToken);
+
+        setAuth({email, password, accessToken});
 
         try {
           const responseDemo = await fetch('https://merchant-api.pelpay.ng/api/Account', {
@@ -81,7 +184,7 @@ const LoginForm = () => {
           dispatch(loginSuccess({ email }));
 
           // Redirect to home or dashboard
-          navigate('/home');
+          navigate(from, {replace: true});
         } else {
           // Redirect to the step form page
           navigate('/complete-registration');
@@ -95,17 +198,20 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="w-[80%] h-[100%] sm:w-[50%] md:w-[60%] lg:w-[70%] bg-white p-8 rounded-lg shadow-lg mx-auto lg:max-w-2xl overflow-y-auto">
+    <section className="w-[280px] sm:w-[50%] md:w-[60%] lg:w-[70%] bg-white p-8 rounded-lg shadow-lg mx-auto lg:max-w-2xl overflow-y-auto">
+      <p ref={errRef} className={error ? "errmsg" :
+        "offscreen"} aria-live='asserive'>{error}</p>
+
       <h2 className="text-2xl font-bold mb-4">Login</h2>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
       <form onSubmit={handleLogin}>
         <div className="mb-4">
-          <label className="block text-black text-[13px] mb-2 flex items-center" htmlFor="email">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="email">
             Email
           </label>
           <input
             type="email"
             id="email"
+            ref={userRef}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -113,7 +219,7 @@ const LoginForm = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black text-[13px] mb-2 flex items-center" htmlFor="password">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-2 flex items-center" htmlFor="password">
             Password
           </label>
           <input
@@ -126,7 +232,7 @@ const LoginForm = () => {
           />
         </div>
         <div className="flex items-center justify-between mb-4">
-          <label className="block text-black text-sm mb-2 flex items-center">
+          <label className="block text-black text-[12px] lg:text-sm mb-1 lg:mb-2 flex items-center">
             <input
               type="checkbox"
               checked={rememberMe}
@@ -135,20 +241,20 @@ const LoginForm = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-[11px] text-[#0000FF] hover:underline">Forgot password?</a>
+          <a href="#" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</a>
         </div>
         <button
           type="submit"
-          className="w-full bg-priColor text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+          className="w-full bg-priColor text-sm text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           disabled={loading}
         >
           {loading ? 'Logging in...' : 'Log in'}
         </button>
           <div className="text-center mt-4">
-              <Link to="/register" className="text-sm text-blue-500 hover:underline">Don't have an account? <span className='text-[#0000FF]'>Sign Up</span></Link>
+              <Link to="/register" className="text-[11px] lg:text-sm text-priColor">Don't have an account? <span className='text-blue-800'>Sign Up</span></Link>
           </div>
       </form>
-    </div>
+    </section>
   );
 };
 

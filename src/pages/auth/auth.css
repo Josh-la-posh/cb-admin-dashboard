@@ -30,3 +30,8 @@
 .offscreen {
     display: none;
 }
+
+.errmsg {
+    color: red;
+    font-size: 13px;
+}

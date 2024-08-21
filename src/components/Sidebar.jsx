@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { faUserGroup, faHome, faHouse, faGear, faChartLine, faFlag, faEnvelope, faCreditCard, faUser, faCircleCheck, faHandshake, faArrowRightFromBracket, faUnlockKeyhole, faScaleUnbalancedFlip } from '@fortawesome/free-solid-svg-icons';
+// import { faFlag, faEnvelope, faCreditCard, faUser, faCircleCheck, faHandshake  } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Sidebar = () => {
   const [isAggregatorOpen, setAggregatorOpen] = useState(false);
@@ -8,16 +11,39 @@ const Sidebar = () => {
   const [isSettlementOpen, setSettlementOpen] = useState(false);
 
   return (
-    <div className="relative h-[100vh] flex flex-col bg-blue-900 text-white py-4">
+    <div className="relative h-[100vh] flex flex-col bg-priColor text-white py-4">
       <div className="pr-4 pl-6 font-bold text-lg">CodeByte</div>
       <nav className="flex-1 my-5 overflow-y-scroll">
-        <Link to="/home" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Dashboard</Link>
-        <Link to="/compliance" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Compliance</Link>
-        <Link to="/customers" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Customers</Link>
-        <Link to="/disputes" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Disputes</Link>
+        <Link to="/" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faChartLine} size='xs' />
+            Dashboard
+          </div>
+        </Link>
+        <Link to="/compliance" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faCircleCheck} size='xs' />
+            Compliance
+          </div>
+        </Link>
+        <Link to="/customers" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+              <FontAwesomeIcon icon={faUserGroup} size='xs' />
+              Customer
+            </div>
+          </Link>
+        <Link to="/disputes" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faFlag} size='xs'/>
+            Disputes
+          </div>
+        </Link>
         <div>
           <button onClick={() => setAggregatorOpen(!isAggregatorOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
-            Aggregator
+            <div className='flex items-center gap-2'>
+              <FontAwesomeIcon icon={faScaleUnbalancedFlip} size='xs'/>
+              Aggregator
+            </div>
             {isAggregatorOpen ? <FiChevronUp /> : <FiChevronDown />}
           </button>
           {isAggregatorOpen && (
@@ -27,9 +53,18 @@ const Sidebar = () => {
             </div>
           )}
         </div>
-        <div>
+        <Link to="/merchants" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faHome} size='xs'/>
+            Merchant
+          </div>
+        </Link>
+        {/* <div>
           <button onClick={() => setMerchantOpen(!isMerchantOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
-            Merchants
+          <div className='flex items-center gap-2'>
+              <FontAwesomeIcon icon={faHome} size='xs'/>
+              Merchant
+            </div>
             {isMerchantOpen ? <FiChevronUp /> : <FiChevronDown />}
           </button>
           {isMerchantOpen && (
@@ -38,10 +73,13 @@ const Sidebar = () => {
               <Link to="/merchants/register" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Register Merchant</Link>
             </div>
           )}
-        </div>
+        </div> */}
         <div>
           <button onClick={() => setSettlementOpen(!isSettlementOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
-            Settlement
+            <div className='flex items-center gap-2'>
+              <FontAwesomeIcon icon={faHandshake} size='xs'/>
+              Settlement
+            </div>
             {isSettlementOpen ? <FiChevronUp /> : <FiChevronDown />}
           </button>
           {isSettlementOpen && (
@@ -52,14 +90,44 @@ const Sidebar = () => {
             </div>
           )}
         </div>
-        <Link to="/role" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Role</Link>
-        <Link to="/invoices" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Invoices</Link>
-        <Link to="/transaction" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Transaction</Link>
-        <Link to="/users" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Users</Link>
+        {/* <Link to="/role" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faUnlockKeyhole} size='xs'/>
+            Role
+          </div>
+        </Link> */}
+        <Link to="/invoices" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faEnvelope} size='xs'/>
+            Invoices
+          </div>
+        </Link>
+        <Link to="/transaction" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faCreditCard} size='xs'/>
+            Transaction
+          </div>
+        </Link>
+        <Link to="/users" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faUser} size='xs'/>
+            User
+          </div>
+        </Link>
       </nav>
       <nav className="flex-shrink-0">
-        <Link to="/settings" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Settings</Link>
-        <Link to="/logout" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Logout</Link>
+        <Link to="/settings" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faGear} size='xs'/>
+            Settings
+          </div>
+        </Link>
+        <Link to="/logout" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">
+          <div className='flex items-center gap-2'>
+            <FontAwesomeIcon icon={faArrowRightFromBracket} size='xs'/>
+            Logout
+          </div>
+        </Link>
       </nav>
     </div>
   );

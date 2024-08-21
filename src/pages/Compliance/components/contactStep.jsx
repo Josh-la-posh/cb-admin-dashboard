@@ -57,7 +57,7 @@ const ContactForm = () => {
           required
         />
       </div>
-      <button type="submit" className="mt-4 bg-green-500 text-white py-2 px-4 rounded">
+      <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">
         Save and Continue
       </button>
     </form>

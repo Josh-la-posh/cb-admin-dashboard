@@ -14,7 +14,7 @@ const Compliance = () => {
                 </div>
             </div>
             <div className="ml-4 flex-grow">
-                <div className="min-w-[300px] w-[500px]">
+                <div className="min-w-[300px] max-w-[400px]">
                     <Outlet />
                 </div>
             </div>

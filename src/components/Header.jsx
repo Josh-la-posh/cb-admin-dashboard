@@ -4,6 +4,8 @@ import { FiChevronDown } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../pages/auth/authSlice';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const Header = ({openSidebar, setOpenSidebar}) => {
@@ -17,7 +19,7 @@ const Header = ({openSidebar, setOpenSidebar}) => {
     setTimeout(() => {
       dispatch(logout());
       alert('Logout successful');
-      navigate('/');
+      navigate('/login');
 
     }, 1000)
 
@@ -30,7 +32,7 @@ const Header = ({openSidebar, setOpenSidebar}) => {
   return (
     <header className="bg-white z-10 flex justify-between items-center p-4 relative">
       {openSidebar == false && <button className="absolute left-2 block lg:hidden" onClick={handleSidebar}>
-        O
+        <FontAwesomeIcon icon={faBars} />
       </button>}
 
       <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Admin Dashboard</div>

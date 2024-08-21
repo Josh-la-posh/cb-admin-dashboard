@@ -39,18 +39,18 @@ const OwnerForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className='mb-4'>
-                <label>Name*</label>
+            <div className='mb-4 text-[12px]'>
+                <label>Name<span className='text-[red]'>*</span></label>
                 <div className="flex gap-3">
                     <input type="text" className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="firstName" value={formData.firstName} onChange={handleInputChange} required />
                     <input type="text" className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="lastName" value={formData.lastName} onChange={handleInputChange} required />
                 </div>
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Date of Birth*</label>
                 <input type="date" className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} required />
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Nationality*</label>
                 <br />
                 <select className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="nationality" value={formData.nationality} onChange={handleInputChange}>
@@ -58,7 +58,7 @@ const OwnerForm = () => {
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Identification Document*</label>
                 <br />
                 <select className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="idDocument" value={formData.idDocument} onChange={handleInputChange}>
@@ -66,16 +66,16 @@ const OwnerForm = () => {
                     <option value="passport">Passport</option>
                 </select>
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Voter's ID Number*</label>
                 <br />
                 <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="text" name="idNumber" value={formData.idNumber} onChange={handleInputChange} required />
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Upload a copy of your Voter's card</label>
                 <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="file" name="fileUpload" onChange={handleFileUpload} />
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Home Address</label>
                 <br />
                 <div className="flex items-center gap-2 my-2">
@@ -83,13 +83,13 @@ const OwnerForm = () => {
                     <label className='text-sm'>Same as business address</label>
                 </div>
             </div>
-            <div className='mb-4'>
+            <div className='mb-4 text-[12px]'>
                 <label>Proof of address*</label>
                 <br />
                 <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="file" name="proofOfAddress" onChange={handleFileUpload} required />
             </div>
-            <button type="submit" className='mt-4 bg-green-500 text-white py-2 px-4 rounded'>
-                Save
+            <button type="submit" className='mt-4 bg-priColor text-white py-2 px-4 rounded'>
+                Save and Continue
             </button>
         </form>
     );
