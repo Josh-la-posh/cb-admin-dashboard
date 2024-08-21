@@ -33,6 +33,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     dispatch(logout());
+    setAuth({});
   }, [])
 
   useEffect(() => {
