@@ -1,30 +1,82 @@
 // src/components/ProfileForm.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setProfileComplete } from '../complianceSlice';
+import axios from '../../../api/axios';
 
 const ProfileForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { merchantData, isProfileComplete } = useOutletContext();
+    const token = localStorage.getItem("accessToken");
+
     const [formData, setFormData] = useState({
         tradingName: '',
         description: '',
-        staffSize: '1-5',
+        staffSize: '',
         salesVolume: '',
-        industry: 'Digital services',
-        category: 'Web development and programming',
-        businessType: 'Starter Business',
+        industry: '',
+        category: '',
+        businessType: '',
     });
+
+    useEffect(() => {
+        if (merchantData) {
+            setFormData({
+                tradingName: merchantData.tradingName || '',
+                description: merchantData.description || '',
+                staffSize: merchantData.staffSize || '1-5',
+                salesVolume: merchantData.annualProjectedSalesVolume || '',
+                industry: merchantData.industry || '',
+                category: merchantData.category || '',
+                businessType: merchantData.businessType || '',
+            });
+
+            dispatch(setProfileComplete());
+        }
+    }, [merchantData, dispatch, navigate]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(setProfileComplete());
-        navigate('/compliance/contact');
+        // dispatch(setProfileComplete());
+        // navigate('/compliance/contact');
+
+        const updatedData = {
+            ...merchantData, // Keep the rest of the fields unchanged
+            tradingName: formData.tradingName,
+            description: formData.description,
+            staffSize: formData.staffSize,
+            annualProjectedSalesVolume: formData.salesVolume,
+            industry: formData.industry,
+            category: formData.category,
+            businessType: formData.businessType,
+        };
+
+        try {
+            // Post the updated data using fetch
+            const response = await fetch('http://localhost:4000/api/merchant-document', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update profile data');
+            }
+
+            dispatch(setProfileComplete());
+            navigate('/compliance/contact');
+        } catch (error) {
+            console.error("Error updating profile data", error);
+        }
     };
 
     return (

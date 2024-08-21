@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import logo from "../../src/assets/logo.jpg"
+import { useDispatch } from 'react-redux';
+import { logout } from '../pages/auth/authSlice';
+import { toast } from 'react-toastify';
 
 const Sidebar = () => {
   const [isAggregatorOpen, setAggregatorOpen] = useState(false);
   const [isMerchantOpen, setMerchantOpen] = useState(false);
   const [isSettlementOpen, setSettlementOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    setTimeout(() => {
+      toast.success("Logout successful"); // Success toast
+      localStorage.clear();
+      dispatch(logout());
+      navigate('/');
+
+    }, 1000)
+
+  }
 
   return (
     <div className="relative h-[100vh] flex flex-col bg-[#272662] text-white pb-4">
@@ -19,7 +37,7 @@ const Sidebar = () => {
         <Link to="/compliance" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Compliance</Link>
         <Link to="/customers" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Customers</Link>
         <Link to="/disputes" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Disputes</Link>
-        <div>
+        {/* <div>
           <button onClick={() => setAggregatorOpen(!isAggregatorOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
             Aggregator
             {isAggregatorOpen ? <FiChevronUp /> : <FiChevronDown />}
@@ -30,8 +48,8 @@ const Sidebar = () => {
               <Link to="/aggregator/document" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Aggregator Document</Link>
             </div>
           )}
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <button onClick={() => setMerchantOpen(!isMerchantOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
             Merchants
             {isMerchantOpen ? <FiChevronUp /> : <FiChevronDown />}
@@ -42,8 +60,9 @@ const Sidebar = () => {
               <Link to="/merchants/register" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Register Merchant</Link>
             </div>
           )}
-        </div>
-        <div>
+        </div> */}
+        <Link to="/merchants/merchants" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Merchant</Link>
+        {/* <div>
           <button onClick={() => setSettlementOpen(!isSettlementOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">
             Settlement
             {isSettlementOpen ? <FiChevronUp /> : <FiChevronDown />}
@@ -51,19 +70,18 @@ const Sidebar = () => {
           {isSettlementOpen && (
             <div className="ml-4">
               <Link to="/settlement/all" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">All Settlement</Link>
-              {/* <Link to="/settlement/configuration" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Configuration</Link> */}
               <Link to="/settlement/bank-account" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Bank Account</Link>
             </div>
           )}
-        </div>
-        <Link to="/role" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Role</Link>
+        </div> */}
+        {/* <Link to="/role" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Role</Link> */}
         <Link to="/invoices" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Invoices</Link>
         <Link to="/transaction" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Transaction</Link>
         {/* <Link to="/users" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Users</Link> */}
       </nav>
       <nav className="flex-shrink-0">
         <Link to="/settings" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Settings</Link>
-        <Link to="/logout" className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Logout</Link>
+        <Link onClick={handleLogout} className="block py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700">Logout</Link>
       </nav>
     </div>
   );

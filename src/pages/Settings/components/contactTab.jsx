@@ -1,11 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const ContactTab = () => {
+    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
+    const token = localStorage.getItem("accessToken");
+    const storedMerchantData = localStorage.getItem('merchantData');
+    const merchant = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+
     const [contactData, setContactData] = useState({
-        disputeEmails: ['joshuamayowa23@yahoo.com'],
-        supportEmail: 'joshuamayowa23@yahoo.com',
-        generalEmail: 'joshuamayowa23@yahoo.com',
+        disputeEmail: [],
+        supportEmail: '',
+        contactEmail: '',
     });
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!merchant) {
+            toast.error('Merchant data not available');
+            return;
+        }
+
+        const fetchUserData = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`${baseUrl}/api/merchant/${merchant.merchantCode}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        // Replace with a dynamic token or handle authorization differently
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+
+                if (data.requestSuccessful) {
+                    const contactData = data.responseData;
+                    console.log("Contact-data", contactData)
+                    setContactData({
+                        disputeEmail: contactData.disputeEmail || [],
+                        supportEmail: contactData.supportEmail || '',
+                        contactEmail: contactData.contactEmail || '',
+                    });
+                } else {
+                    toast.error('Failed to fetch contact data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                toast.error('Error fetching contact data');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleInputChange = (e, field) => {
         const { value } = e.target;
@@ -18,29 +66,59 @@ const ContactTab = () => {
     const handleDisputeEmailAdd = () => {
         setContactData(prevData => ({
             ...prevData,
-            disputeEmails: [...prevData.disputeEmails, '']
+            disputeEmail: [...prevData.disputeEmail, '']
         }));
     };
 
     const handleDisputeEmailChange = (index, value) => {
         setContactData(prevData => {
-            const newEmails = [...prevData.disputeEmails];
+            const newEmails = [...prevData.disputeEmail];
             newEmails[index] = value;
-            return { ...prevData, disputeEmails: newEmails };
+            return { ...prevData, disputeEmail: newEmails };
         });
     };
 
     const handleDisputeEmailRemove = (index) => {
         setContactData(prevData => {
-            const newEmails = prevData.disputeEmails.filter((_, i) => i !== index);
-            return { ...prevData, disputeEmails: newEmails };
+            const newEmails = prevData.disputeEmail.filter((_, i) => i !== index);
+            return { ...prevData, disputeEmail: newEmails };
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission here (e.g., API call)
-        console.log('Contact data submitted:', contactData);
+        setLoading(true); // Set loading state to true during submission
+        
+        const updatedData = {
+            disputeEmail: contactData.disputeEmail,
+            supportEmail: contactData.supportEmail,
+            contactEmail: contactData.contactEmail,
+        };
+
+        console.log("daata", updatedData)
+        try {
+            const response = await fetch(`${baseUrl}/api/merchant/update/${merchant.merchantCode}`, {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    // Replace with a dynamic token or handle authorization differently
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (response.ok) {
+                toast.success('User details updated successfully');
+            } else {
+                toast.error('Error updating user details');
+            }
+        } catch (error) {
+            toast.error('Error during form submission');
+            console.error('Error during form submission:', error);
+        } finally {
+            setLoading(false); // Reset loading state after submission
+        }
     };
 
     return (
@@ -57,7 +135,7 @@ const ContactTab = () => {
                         <label className="block text-[12px] font-medium text-gray-700 mb-2">
                             Dispute emails
                         </label>
-                        {contactData.disputeEmails.map((email, index) => (
+                        {contactData.disputeEmail.map((email, index) => (
                             <div key={index} className="flex mb-2">
                                 <input
                                     type="email"
@@ -102,14 +180,14 @@ const ContactTab = () => {
                     </div>
 
                     <div className="mb-6">
-                        <label htmlFor="generalEmail" className="block text-[12px] font-medium text-gray-700 mb-1">
-                            General email
+                        <label htmlFor="contactEmail" className="block text-[12px] font-medium text-gray-700 mb-1">
+                            Contact email
                         </label>
                         <input
                             type="email"
-                            id="generalEmail"
-                            value={contactData.generalEmail}
-                            onChange={(e) => handleInputChange(e, 'generalEmail')}
+                            id="contactEmail"
+                            value={contactData.contactEmail}
+                            onChange={(e) => handleInputChange(e, 'contactEmail')}
                             className="border rounded text-sm px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
@@ -117,9 +195,10 @@ const ContactTab = () => {
                     <div className="mt-8 flex justify-end">
                         <button
                             type="submit"
-                            className="border border-blue-500 text-black text-sm px-4 py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-0"
+                            className={`border border-blue-500 text-black text-sm px-4 py-2 rounded hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-0 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            disabled={loading}
                         >
-                            Save changes
+                            {loading ? 'Saving...' : 'Save changes'}
                         </button>
                     </div>
                 </form>

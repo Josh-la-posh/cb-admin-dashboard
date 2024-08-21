@@ -1,26 +1,69 @@
 // src/components/ContactForm.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setContactComplete } from '../complianceSlice';
 
 const ContactForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { merchantData, isContactComplete } = useOutletContext();
+    const token = localStorage.getItem("accessToken");
+
     const [formData, setFormData] = useState({
-        email: '',
-        phone: '',
-        address: '',
+        businessEmail: '',
+        phoneNumber: '',
+        officeAddress: '',
     });
+
+    useEffect(() => {
+        // Populate form fields if merchantData exists
+        if (merchantData) {
+            setFormData({
+                businessEmail: merchantData.businessEmail || '',
+                phoneNumber: merchantData.phoneNumber || '',
+                officeAddress: merchantData.officeAddress || ''
+            });
+            dispatch(setContactComplete());
+        }
+    }, [merchantData, dispatch, navigate]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(setContactComplete());
-        navigate('/compliance/owner');
+        // dispatch(setContactComplete());
+        // navigate('/compliance/owner');
+
+        const updatedData = {
+            ...merchantData, // Keep the rest of the fields unchanged
+            businessEmail: formData.businessEmail,
+            phoneNumber: formData.phoneNumber,
+            officeAddress: formData.officeAddress
+        };
+
+        try {
+            // Post the updated data using fetch
+            const response = await fetch('http://localhost:4000/api/merchant-document', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update profile data');
+            }
+
+            dispatch(setContactComplete());
+            navigate('/compliance/owner');
+        } catch (error) {
+            console.error("Error updating profile data", error);
+        }
     };
 
     return (
@@ -29,8 +72,8 @@ const ContactForm = () => {
                 <label className="block text-sm font-medium text-gray-700">Business Email</label>
                 <input
                     type="email"
-                    name="email"
-                    value={formData.email}
+                    name="businessEmail"
+                    value={formData.businessEmail}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
@@ -40,8 +83,8 @@ const ContactForm = () => {
                 <label className="block text-sm font-medium text-gray-700">Phone Number</label>
                 <input
                     type="tel"
-                    name="phone"
-                    value={formData.phone}
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
@@ -50,8 +93,8 @@ const ContactForm = () => {
             <div>
                 <label className="block text-sm font-medium text-gray-700">Office Address</label>
                 <textarea
-                    name="address"
-                    value={formData.address}
+                    name="officeAddress"
+                    value={formData.officeAddress}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
                     required

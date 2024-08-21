@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 
 const ProfileTab = () => {
     const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
+    const token = localStorage.getItem("accessToken");
     const storedUserData = localStorage.getItem('userData');
     const user = storedUserData ? JSON.parse(storedUserData) : null;
     const [userData, setUserData] = useState({})
@@ -24,7 +25,7 @@ const ProfileTab = () => {
                     method: 'GET',
                     headers: {
                         'accept': 'application/json',
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwic2NvcGUiOiJtZXJjaGFudF9hcGkiLCJpYXQiOjE3MjQxMjMxMDcsImV4cCI6MTcyNDEyNjcwN30.438sIsNZBCWfKdlB9O_VdS8yz4AdFhH85kmV5_UbKJs'
+                        'Authorization': `Bearer ${token}`
                     }
                 });
                 const data = await response.json();

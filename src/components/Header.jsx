@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logout } from '../pages/auth/authSlice';
+import { toast } from 'react-toastify';
 
 
 const Header = ({ openSidebar, setOpenSidebar }) => {
@@ -25,8 +26,9 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
     e.preventDefault();
 
     setTimeout(() => {
+      toast.success("Logout successful"); // Success toast
+      localStorage.clear();
       dispatch(logout());
-      alert('Logout successful');
       navigate('/');
 
     }, 1000)
@@ -56,7 +58,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
         </button>
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
-            <a href="/profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+            <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
             <button onClick={handleLogout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">Logout</button>
           </div>
         )}
