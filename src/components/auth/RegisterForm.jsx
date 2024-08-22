@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../pages/auth/auth.css';
+import React, { useState, useRef, useEffect } from 'react';
+import '../../pages/auth/auth.css';
 import { Link } from 'react-router-dom';
 import AuthInputField from './authInputField';
 import axios from '../../api/axios';
@@ -133,6 +135,19 @@ const RegisterForm = () => {
             return;
         }
 
+
+        const v1 = BUSINESS_REGEX.test(formData.businessName);
+        const v2 = EMAIL_REGEX.test(formData.contactEmail);
+        const v3 = PHONE_REGEX.test(formData.contactPhoneNumber);
+        const v4 = NAME_REGEX.test(formData.contactFirstName);
+        const v5 = NAME_REGEX.test(formData.contactLastName);
+
+
+        if (!v1 || !v2 || !v3 || !v4 || !v5) {
+            setErrMsg('Invalid Entry');
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -166,7 +181,10 @@ const RegisterForm = () => {
                 setErrMsg('No Server Response');
             } else {
                 setErrMsg('An error occured. Try again later');
+                setErrMsg('An error occured. Try again later');
             }
+
+            errRef.current.focus();
 
             errRef.current.focus();
         } finally {

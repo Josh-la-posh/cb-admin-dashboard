@@ -34,6 +34,10 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
     setOpenSidebar(true);
   }
 
+  const handleSidebar = () => {
+    setOpenSidebar(true);
+  }
+
   return (
     <header className="bg-white z-10 flex justify-between items-center p-4 relative">
       {openSidebar == false && <button className="absolute left-2 block lg:hidden" onClick={handleSidebar}>

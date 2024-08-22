@@ -55,6 +55,8 @@ const Sidebar = () => {
             <div className="ml-4">
               <Link to="/aggregator/bank" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Aggregator Bank</Link>
               <Link to="/aggregator/document" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Aggregator Document</Link>
+              <Link to="/aggregator/bank" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Aggregator Bank</Link>
+              <Link to="/aggregator/document" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Aggregator Document</Link>
             </div>
           )}
         </div> */}
@@ -76,8 +78,11 @@ const Sidebar = () => {
             <div className="ml-4">
               <Link to="/merchants/merchants" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Merchants</Link>
               <Link to="/merchants/register" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Register Merchant</Link>
+              <Link to="/merchants/merchants" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Merchants</Link>
+              <Link to="/merchants/register" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Register Merchant</Link>
             </div>
           )}
+        </div> */}
         </div> */}
         <div>
           <button onClick={() => setSettlementOpen(!isSettlementOpen)} className="block w-full text-left py-2 pr-4 pl-6 text-sm lg:text-[16px] hover:bg-blue-700 flex justify-between">

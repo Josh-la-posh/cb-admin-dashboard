@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
+import React, { useState, useRef, useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure, logout } from '../../pages/auth/authSlice';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -22,14 +24,42 @@ const LoginForm = () => {
   const userRef = useRef();
   const errRef = useRef();
 
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+
+
+
+  const userRef = useRef();
+  const errRef = useRef();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
 
+  const [errMsg, setErrMsg] = useState('');
+
+
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
+
+
+  useEffect(() => {
+    dispatch(logout());
+    setAuth({});
+  }, [])
+
+  useEffect(() => {
+    userRef.current.focus();
+  }, [])
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [email, password])
 
 
   useEffect(() => {
@@ -174,6 +204,7 @@ const LoginForm = () => {
         // Fetch merchant compliance data
         const merchantCode = data.responseData.merchants[0].merchantCode; // Replace with the actual merchant code
         const complianceResponse = await fetch(`https://merchant-api.codebytesltd.com/api/merchant-compliance/${merchantCode}`, {
+        const complianceResponse = await fetch(`https://merchant-api.codebytesltd.com/api/merchant-compliance/${merchantCode}`, {
           headers: {
             'Authorization': `Bearer ${data.responseData.accessToken}`,
             'Accept': 'application/json',
@@ -208,8 +239,14 @@ const LoginForm = () => {
         "offscreen"} aria-live='asserive'>{error}</p>
 
       <h2 className="text-2xl font-bold mb-4">Login</h2>
+    <section className="w-[280px] sm:w-[50%] md:w-[60%] lg:w-[70%] bg-white p-8 rounded-lg shadow-lg mx-auto lg:max-w-2xl overflow-y-auto">
+      <p ref={errRef} className={error ? "errmsg" :
+        "offscreen"} aria-live='asserive'>{error}</p>
+
+      <h2 className="text-2xl font-bold mb-4">Login</h2>
       <form onSubmit={handleLogin}>
         <div className="mb-4">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="email">
           <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="email">
             Email
           </label>
@@ -217,13 +254,16 @@ const LoginForm = () => {
             type="email"
             id="email"
             ref={userRef}
+            ref={userRef}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             required
           />
         </div>
         <div className="mb-4">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-2 flex items-center" htmlFor="password">
           <label className="block text-black text-[11px] lg:text-[13px] mb-2 flex items-center" htmlFor="password">
             Password
           </label>
@@ -233,10 +273,12 @@ const LoginForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full px-3 py-1 text-sm border border-gray rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
             required
           />
         </div>
         <div className="flex items-center justify-between mb-4">
+          <label className="block text-black text-[12px] lg:text-sm mb-1 lg:mb-2 flex items-center">
           <label className="block text-black text-[12px] lg:text-sm mb-1 lg:mb-2 flex items-center">
             <input
               type="checkbox"
@@ -247,9 +289,11 @@ const LoginForm = () => {
             Remember me
           </label>
           <a href="#" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</a>
+          <a href="#" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</a>
         </div>
         <button
           type="submit"
+          className="w-full bg-priColor text-sm text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           className="w-full bg-priColor text-sm text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           disabled={loading}
         >
@@ -259,6 +303,7 @@ const LoginForm = () => {
           <Link to="/register" className="text-[11px] lg:text-sm text-priColor">Don't have an account? <span className='text-blue-800'>Sign Up</span></Link>
         </div>
       </form>
+    </section>
     </section>
   );
 };

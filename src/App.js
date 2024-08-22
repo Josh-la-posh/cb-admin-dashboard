@@ -13,6 +13,13 @@ function App() {
           </Routes>
         </AuthProvider>
       </Router>
+      <Router>
+        <AuthProvider>
+          <Routes>
+            <Route path="/*" element={<RoutesSystem />} />
+          </Routes>
+        </AuthProvider>
+      </Router>
     </div>
   );
 }

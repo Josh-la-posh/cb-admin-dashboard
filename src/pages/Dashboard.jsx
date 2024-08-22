@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../components/dashboard/Card';
 import TransactionTable from '../components/dashboard/Transaction';
-import RevenueChart from '../components/dashboard/RevenueChart';
-import ActivityFeed from '../components/dashboard/ActivityFeed';
-import VolumeValueCards from '../components/dashboard/VolumeValueCards';
 import ReportChart from '../components/dashboard/ReportChart';
 import Spinner from '../components/Spinner'; // Import the Spinner component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -138,12 +135,16 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-8">
+    <div className="min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-8">
       <header className="mb-8">
         <div className='flex justify-between align-center'>
           <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800">Welcome back, {userData.firstName} {userData.lastName}</h1>
           <p className='text-[18px] font-semibold text-red-500'>Test Environment</p>
         </div>
         <p className="text-gray-600">Overview of your payment gateway performance</p>
+        <div className="mt-8">
+          <label htmlFor="interval" className="mr-2 text-sm">Select Interval:</label>
+          <select id="interval" value={interval} onChange={handleIntervalChange} className="p-2 border rounded bg-white">
         <div className="mt-8">
           <label htmlFor="interval" className="mr-2 text-sm">Select Interval:</label>
           <select id="interval" value={interval} onChange={handleIntervalChange} className="p-2 border rounded bg-white">
@@ -171,6 +172,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <RevenueChart />
         <ActivityFeed />
+      </div> */}
       </div> */}
 
       <div className="bg-white shadow rounded-lg p-6">

@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+const MainLayout = () => {
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  const handleSidebar = () => {
+    setOpenSidebar(false);
+  };
+
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -32,7 +44,14 @@ const MainLayout = () => {
         <div className='border-b border-gray-200'>
           <Header setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
         </div>
+      </div>
+      <div className="flex flex-col overflow-hidden lg:ml-64">
+        <div className='border-b border-gray-200'>
+          <Header setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
+        </div>
         <main className="flex-1 overflow-y-auto p-5">
+          {/* Correctly render the Outlet component */}
+          <Outlet />
           {/* Correctly render the Outlet component */}
           <Outlet />
         </main>

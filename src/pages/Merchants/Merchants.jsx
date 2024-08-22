@@ -1,6 +1,7 @@
 import React from 'react'
 import MerchantList from '../../components/merchants/MerchantList'
 import MerchantCards from './components/MerchantCards'
+import MerchantCards from './components/MerchantCards'
 
 function Merchants() {
   return (
