@@ -129,7 +129,7 @@ const ContactTab = () => {
                     <div className="mb-6">
                         <p className="text-sm text-gray-600 mb-4">
                             As soon as a dispute (chargeback or fraud claim) is raised for a transaction
-                            or more support is required from your team, Paystack will notify you via
+                            or more support is required from your team, MoneyXpay will notify you via
                             email in the email addresses that you specify below.
                         </p>
                         <label className="block text-[12px] font-medium text-gray-700 mb-2">

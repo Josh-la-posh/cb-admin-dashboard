@@ -1,27 +1,29 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import DataTable from '../../../components/tables/tables';
 import { AxiosPrivate } from '../../../api/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
 
-const SETTLEMENT_URL = '/api/settlement';
+const INVOICE_URL = '/api/invoices';
+
 
 const columns = [
     {
         header: 'Account Name',
-        accessor: 'accountName',
+        accessor: 'merchant',
+        render: (value) => (
+            <span className='font-medimu text-gray-900'>
+                {value}
+            </span>
+        ),
     },
     {
-        header: 'Settlement ID',
-        accessor: 'settlementID',
+        header: 'Invoice ID',
+        accessor: 'merchant',
     },
     {
         header: 'Amount',
         accessor: 'amount',
-    },
-    {
-        header: 'Payment Method',
-        accessor: 'paymentMethod',
     },
     {
         header: 'Date',
@@ -31,7 +33,7 @@ const columns = [
         header: 'Status',
         accessor: 'status',
         render: (value) => (
-            <span className={`${value === 'Open' ? 'text-green-600' : value === 'Pending' ? 'text-orange-400' : 'text-red-600'}`}>
+            <span className={`text-${value === 'Completed' ? 'green' : value === 'Failed' ? 'red' : 'orange'}-600`}>
                 {value}
             </span>
         ),
@@ -39,10 +41,21 @@ const columns = [
 ];
 
 const data = [
-    { accountName: 'John Doe Store', accountNumber: '1232415267', batchCode: '249', currency: 'NGN', reference: '121212122', status: 'Open' },
+    { date: '2024-08-01', merchant: 'John Doe Store', description: 'Payment from John Doe', amount: '₦12,345', paymentChannel: 'Card', status: 'Completed' },
+    { date: '2024-08-02', merchant: 'Jane Smith Boutique', description: 'Payment from Jane Smith', amount: '₦8,900', paymentChannel: 'Virtual Account', status: 'Pending' },
+    { date: '2024-08-03', merchant: 'Acme Corporation', description: 'Payment from Acme Corp.', amount: '₦25,000', paymentChannel: 'USSD', status: 'Failed' },
+    { date: '2024-08-04', merchant: 'XYZ Limited', description: 'Payment from XYZ Ltd.', amount: '₦15,000', paymentChannel: 'Bank Account', status: 'Completed' },
+    { date: '2024-08-05', merchant: 'ABC Inc.', description: 'Payment from ABC Inc.', amount: '₦9,500', paymentChannel: 'Card', status: 'Pending' },
+    { date: '2024-08-01', merchant: 'John Doe Store', description: 'Payment from John Doe', amount: '₦12,345', paymentChannel: 'Card', status: 'Completed' },
+    { date: '2024-08-02', merchant: 'Jane Smith Boutique', description: 'Payment from Jane Smith', amount: '₦8,900', paymentChannel: 'Virtual Account', status: 'Pending' },
+    { date: '2024-08-03', merchant: 'Acme Corporation', description: 'Payment from Acme Corp.', amount: '₦25,000', paymentChannel: 'USSD', status: 'Failed' },
+    { date: '2024-08-04', merchant: 'XYZ Limited', description: 'Payment from XYZ Ltd.', amount: '₦15,000', paymentChannel: 'Bank Account', status: 'Completed' },
+    { date: '2024-08-05', merchant: 'ABCD Inc.', description: 'Payment from ABC Inc.', amount: '₦9,500', paymentChannel: 'Card', status: 'Pending' },
 ];
 
-const AllSettlementTable = () => {
+
+
+const InvoicesTable = () => {
     const axiosPrivate = AxiosPrivate();
     // const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -73,12 +86,12 @@ const AllSettlementTable = () => {
     //     fetchData();
     // }, []);
 
-    const handleFilterChange = (e) => {
-        setFilterStatus(e.target.value);
-    };
-
     const handleSearch = (e) => {
         setSearch(e.target.value);
+    };
+
+    const handleFilterChange = (e) => {
+        setFilterStatus(e.target.value);
     };
     
 
@@ -114,9 +127,9 @@ const AllSettlementTable = () => {
                     className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-priColor text-xs lg:text-[13px]"
                 >
                     <option value="">All</option>
-                    <option value="open">Open</option>
+                    <option value="completed">Completed</option>
                     <option value="pending">Pending</option>
-                    <option value="closed">Closed</option>
+                    <option value="failed">Failed</option>
                 </select>
                 <div className="relative">
                     <input
@@ -124,7 +137,7 @@ const AllSettlementTable = () => {
                         value={search}
                         onChange={handleSearch}
                         className="p-2 pl-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-priColor"
-                        placeholder="Search ..."
+                        placeholder="Search transactions..."
                     />
                     <FontAwesomeIcon
                         icon={faMagnifyingGlass}
@@ -165,4 +178,4 @@ const AllSettlementTable = () => {
     );
 };
 
-export default AllSettlementTable;
+export default InvoicesTable;

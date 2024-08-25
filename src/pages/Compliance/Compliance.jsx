@@ -1,67 +1,47 @@
 // src/Compliance.js
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './components/navigationSidebar';
-import axios from 'axios';
+import { AxiosPrivate } from '../../api/axios';
+import { setBusinessComplete, setBankComplete, setserviceAgreementComplete, setComplianceData, setContactComplete, setProfileComplete } from '../../redux/complianceSlice';
 
-
-// Not Working...
+const COMPLIANCE_DOC_URL = '/api/merchant-document';
 
 const Compliance = () => {
-    const [merchantData, setMerchantData] = useState(null);
-    const [isProfileComplete, setIsProfileComplete] = useState(false);
-    const [isAccountComplete, setIsAccountComplete] = useState(false);
-    const [isContactComplete, setIsContactComplete] = useState(false);
-    const [isOwnerComplete, setIsOwnerComplete] = useState(false);
-    const [isServiceComplete, setIsServiceComplete] = useState(false);
-    const token = localStorage.getItem("accessToken");
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
+    const axiosPrivate = AxiosPrivate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const complianceData = useSelector((state) => state.compliance);
+    const data = complianceData.complianceData;
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantDetails = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
-    console.log("Merchant", merchantData)
-
     useEffect(() => {
         // Fetch the merchant data when the component loads
+
         const fetchMerchantData = async () => {
             try {
-                const response = await fetch(`${baseUrl}/api/merchant-document/${merchantDetails.aggregatorId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        Accept: 'application/json',
-                    },
-                });
+                const response = await axiosPrivate.get(`${COMPLIANCE_DOC_URL}/${merchantDetails.aggregatorId}`);
+                console.log(JSON.stringify(response.data));
 
-                if (response.ok) {
-                    const data = await response.json();
-                    const fetchedData = data.responseData[0];
-                    setMerchantData(fetchedData);
-                    checkCompletionStatus(fetchedData);
+                if (response.status === 200) {
+                    const fetchedData = response.data.responseData[0];
+                    dispatch(setComplianceData(fetchedData));
                 } else {
-                    console.error("Error fetching merchant data", response.statusText);
+                    console.log("Error fetching merchant data", response.statusText);
                 }
-            } catch (error) {
-                console.error("Error fetching merchant data", error);
+            } catch (err) {
+                console.log(JSON.stringify(err))
+                if (err.status === 400) {
+                    navigate('/login');
+                }
+                console.log("Error fetching merchant data", err);
             }
         };
 
         fetchMerchantData();
-    }, [token]);
-
-    // Check the completion status based on the merchant data
-    const checkCompletionStatus = (data) => {
-        const profileComplete = data.tradingName && data.description && data.staffSize && data.annualProjectedSalesVolume && data.industry && data.category && data.businessType;
-        const accountComplete = data.bankName && data.accountName && data.accountNumber;
-        const contactComplete = data.businessEmail && data.phoneNumber && data.officeAddress;
-        const ownerComplete = data.firstName;
-        const serviceComplete = data.slaBoolean;
-
-        setIsProfileComplete(profileComplete);
-        setIsAccountComplete(accountComplete);
-        setIsContactComplete(contactComplete);
-        setIsOwnerComplete(ownerComplete);
-        setIsServiceComplete(serviceComplete);
-    };
+    }, []);
 
     return (
         <div className="bg-white p-6">
@@ -73,10 +53,8 @@ const Compliance = () => {
                     </div>
                 </div>
                 <div className="ml-4 flex-grow">
-                    <div className="min-w-[300px] max-w-[400px]">
-                        {/* Pass the merchantData as props to the Outlet */}
-                        {/* <Outlet context={merchantData} /> */}
-                        <Outlet context={{ merchantData, isProfileComplete, isAccountComplete, isContactComplete, isOwnerComplete, isServiceComplete }} />
+                    <div className="min-w-[300px] max-w-[350px]">
+                        <Outlet />
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Sidebar = () => {
     const compliance = useSelector((state) => state.compliance);
@@ -9,8 +10,8 @@ const Sidebar = () => {
     const steps = [
         { name: 'Profile', path: '/compliance/profile', complete: compliance.profileComplete },
         { name: 'Contact', path: '/compliance/contact', complete: compliance.contactComplete },
-        { name: 'Owner', path: '/compliance/owner', complete: compliance.ownerComplete },
-        { name: 'Account', path: '/compliance/account', complete: compliance.accountComplete },
+        { name: 'Business', path: '/compliance/business', complete: compliance.bussinessComplete },
+        { name: 'Bank', path: '/compliance/bank', complete: compliance.bankComplete },
         { name: 'Service Agreement', path: '/compliance/service-agreement', complete: compliance.serviceAgreementComplete },
     ];
 

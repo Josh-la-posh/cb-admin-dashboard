@@ -31,7 +31,7 @@ const data = [
 
 const BankAccountTable = () => {
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto">
             <DataTable columns={columns} data={data} rowsPerPageOptions={[5, 10, 20]} display='true' placeholder='Search...' />
         </div>
     );

@@ -4,7 +4,7 @@ import LoginForm from '../../components/auth/LoginForm';
 
 const LoginPage = () => {
   return (
-    <div className="block bg-priColor lg:bg-priColor lg:flex h-screen items-center">
+    <div className="block bg-priColor lg:bg-[transparent] lg:flex h-screen items-center">
       <div className="w-1/2 hidden lg:block overflow-hidden">
         <HeroSection />
       </div>

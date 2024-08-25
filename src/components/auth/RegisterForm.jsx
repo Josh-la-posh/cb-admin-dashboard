@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../../pages/auth/auth.css';
-import React, { useState, useRef, useEffect } from 'react';
-import '../../pages/auth/auth.css';
 import { Link } from 'react-router-dom';
 import AuthInputField from './authInputField';
 import axios from '../../api/axios';
@@ -135,19 +133,6 @@ const RegisterForm = () => {
             return;
         }
 
-
-        const v1 = BUSINESS_REGEX.test(formData.businessName);
-        const v2 = EMAIL_REGEX.test(formData.contactEmail);
-        const v3 = PHONE_REGEX.test(formData.contactPhoneNumber);
-        const v4 = NAME_REGEX.test(formData.contactFirstName);
-        const v5 = NAME_REGEX.test(formData.contactLastName);
-
-
-        if (!v1 || !v2 || !v3 || !v4 || !v5) {
-            setErrMsg('Invalid Entry');
-            return;
-        }
-
         setLoading(true);
 
         try {
@@ -181,7 +166,6 @@ const RegisterForm = () => {
                 setErrMsg('No Server Response');
             } else {
                 setErrMsg('An error occured. Try again later');
-                setErrMsg('An error occured. Try again later');
             }
 
             errRef.current.focus();
@@ -190,32 +174,6 @@ const RegisterForm = () => {
         } finally {
             setLoading(false);
         }
-
-
-
-
-
-        //     try {
-        //         const response = await fetch(`${process.env.REACT_APP_API_MERCHANT_BASE_URL}/onboard`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify(formData),
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (data.success) {
-        //             alert('Registration successful');
-        //         } else {
-        //             setError(data.message || 'Registration failed');
-        //         }
-        //     } catch (error) {
-        //         setError('An unexpected error occurred');
-        //     } finally {
-        //         setLoading(false);
-        //     }
     };
 
     return (
@@ -230,7 +188,7 @@ const RegisterForm = () => {
                         <p className='mb-12 text-sm text-center'>Click the link sent to your mail to confirm your account.</p>
 
                         <div className="text-center mt-4">
-                            <Link to="/login" className="text-[11px] lg:text-sm text-blue-500 hover:underline">Otherwise, proceed to <span className='text-[#0000FF]'>Log in</span></Link>
+                            <Link to="/login" className="text-[11px] lg:text-sm text-black hover:underline">Otherwise, proceed to <span className='text-[#0000FF]'>Log in</span></Link>
                         </div>
 
 

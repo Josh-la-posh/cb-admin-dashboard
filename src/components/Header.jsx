@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../pages/auth/authSlice';
+import { logout } from '../redux/authSlice';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
@@ -34,13 +34,9 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
     setOpenSidebar(true);
   }
 
-  const handleSidebar = () => {
-    setOpenSidebar(true);
-  }
-
   return (
     <header className="bg-white z-10 flex justify-between items-center p-4 relative">
-      {openSidebar == false && <button className="absolute left-2 block lg:hidden" onClick={handleSidebar}>
+      {openSidebar == false && <button className="absolute left-2 block sm:hidden" onClick={handleSidebar}>
         <FontAwesomeIcon icon={faBars} />
       </button>}
 
@@ -58,7 +54,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
             <Link to="/settings" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</Link>
-            <button className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"><Link to="/login">Logout</Link></button>
+            <button onClick={handleLogout} className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"><Link to="/login">Logout</Link></button>
           </div>
         )}
       </div>

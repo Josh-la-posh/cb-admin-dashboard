@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { setserviceAgreementComplete } from '../complianceSlice';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setserviceAgreementComplete, setComplianceData } from '../../../redux/complianceSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { AxiosPrivate } from '../../../api/axios';
+
+const COMPLIANCE_DOC_URL = '/api/merchant-document';
 
 const MerchantServiceAgreement = () => {
+    const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [slaBoolean, setSlaBoolean] = useState(false);
-    const { merchantData, isServiceComplete } = useOutletContext();
-    const token = localStorage.getItem("accessToken");
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
 
-    useEffect(() => {
-        // Populate slaBoolean with the merchantData value if available
-        if (merchantData && merchantData.slaBoolean !== undefined) {
-            setSlaBoolean(merchantData.slaBoolean);
-            dispatch(setserviceAgreementComplete());
-        }
-    }, [merchantData, dispatch, navigate]);
+    const complianceData = useSelector((state) => state.compliance.complianceData);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        dispatch(setComplianceData({[name]: value}));
+    };
 
     const handleCheckboxChange = (e) => {
         setSlaBoolean(e.target.checked); // Set slaBoolean to true or false based on checkbox
@@ -32,38 +32,21 @@ const MerchantServiceAgreement = () => {
             return;
         }
 
-        const updatedData = {
-            ...merchantData, // Keep the rest of the fields unchanged
-            slaBoolean
-        };
-
         try {
-            const response = await fetch(
-                `${baseUrl}/api/merchant-document`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(updatedData),
-                }
+            // Post the updated data using fetch
+            const response = await axiosPrivate.post(COMPLIANCE_DOC_URL,
+                JSON.stringify({...complianceData})
             );
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Service agreement updated successfully:", result);
-                dispatch(setserviceAgreementComplete());
-                toast.success("Service agreement updated successfully"); // Success toast
-                navigate('/home');
-            } else {
-                console.error("Error updating the service agreement:", response.statusText);
-                toast.error("Error updating the service agreement");
+            if (response.status !== 200) {
+                throw new Error('Failed to update profile data');
             }
+            dispatch(setserviceAgreementComplete());
+            toast.success("Service agreement updated successfully"); // Success toast
+            navigate('/home');
         } catch (error) {
-            console.error("Error:", error);
-            toast.error("Error during form submission");
+            toast.error("Error updating the service agreement");
         }
+        console.log('working')
     };
 
     return (
@@ -76,7 +59,7 @@ const MerchantServiceAgreement = () => {
                 </div>
                 <div>
                     <h3>Services Agreement</h3>
-                    <p>The Paystack's Merchant Services Agreement is an agreement between you and Paystack. It details Paystack's obligations...</p>
+                    <p>The MoneyXpay's Merchant Services Agreement is an agreement between you and MoneyXpay. It details MoneyXpay's obligations...</p>
                 </div>
                 <div>
                     <h3>Accept Agreement</h3>
