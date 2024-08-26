@@ -3,25 +3,32 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     complianceData: {
-        // id: "",
-        // merchantId: "",
-        // aggregatorId: "",
-        // merchantCode:"",
-        // tradingName:"",
-        // businessEmail:"",
-        // phoneNumber:"",
-        // firstName:"",
-        // lastName:"",
-        // createdBy:"",
-        // createdDate:"",
-        // updatedDate:"",
-        // v: 0,
-        // annualProjectedSalesVolume:"",
-        // businessType:"",
-        // category:"",
-        // description:"",
-        // industry:"",
-        // staffSize:""
+        merchantId: "",
+        aggregatorId: "",
+        merchantCode: "",
+        tradingName: "",
+        description: "",
+        staffSize: "",
+        annualProjectedSalesVolume: "",
+        industry: "",
+        category: "",
+        businessType: "",
+        businessEmail: "",
+        phoneNumber: "",
+        officeAddress: "",
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        nationality: "",
+        idDocument: "",
+        idNumber: "",
+        sameAsBusinessAddress: true,
+        documentName: "",
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        sla: "",
+        slaBoolean: true,
     },
     profileComplete: false,
     contactComplete: false,
@@ -91,7 +98,7 @@ export const complianceSlice = createSlice({
                 idNumber,
                 sameAsBusinessAddress,
                 documentName,
-            } = state.businessComplete;
+            } = state.complianceData;
             if (
                 firstName.trim() !== '' &&
                 lastName.trim() !== '' &&
@@ -112,7 +119,7 @@ export const complianceSlice = createSlice({
                 bankName,
                 accountName,
                 accountNumber,
-            } = state.bankComplete;
+            } = state.complianceData;
             if (
                 bankName.trim() !== '' &&
                 accountName.trim() !== '' &&
@@ -124,7 +131,7 @@ export const complianceSlice = createSlice({
             }
         },
         setserviceAgreementComplete: (state) => {
-            const {slaBoolean} = state.serviceAgreementComplete;
+            const {slaBoolean} = state.complianceData;
             if (slaBoolean === true) {
                 state.serviceAgreementComplete = true;
             } else {

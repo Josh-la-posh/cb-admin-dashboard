@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const TeamTab = () => {
+    const [teamMembers, setTeamMembers] = useState([]);
+
+    useEffect(() => {
+        // Retrieve data from local storage
+        const user = JSON.parse(localStorage.getItem('userData'));
+        const merchant = JSON.parse(localStorage.getItem('merchantData'));
+
+        // Check if both user and merchant exist
+        if (user && merchant) {
+            // Map data to teamMembers
+            const members = [{
+                name: `${user.firstName} ${user.lastName}`,
+                email: user.email,
+                role: merchant.businessType, // Example, replace with actual role if available
+                twoFAStatus: user.isEmailConfirmed ? 'Enabled' : 'Disabled',
+                lastLogin: user.createdDate, // Replace with actual last login if available
+                actions: 'No actions available' // Adjust if needed
+            }];
+
+            setTeamMembers(members);
+        }
+    }, []);
+    
     return (
         <div className="p-6 bg-white">
             <h2 className="text-md font-medium mb-6">Team</h2>
@@ -29,14 +52,22 @@ const TeamTab = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 text-sm text-gray-700">
-                        <tr>
-                            <td className="px-6 py-4 whitespace-nowrap">Joshua Fajobi</td>
-                            <td className="px-6 py-4 whitespace-nowrap">joshuamayowa23@yahoo.com</td>
-                            <td className="px-6 py-4 whitespace-nowrap">Business Owner</td>
-                            <td className="px-6 py-4 whitespace-nowrap">Disabled</td>
-                            <td className="px-6 py-4 whitespace-nowrap">Aug 17, 2024, 3:21 PM</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">No actions available</td>
-                        </tr>
+                        {teamMembers.length > 0 ? (
+                            teamMembers.map((member, index) => (
+                                <tr key={index}>
+                                    <td className="px-6 py-4 whitespace-nowrap">{member.name}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{member.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{member.role}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{member.twoFAStatus}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{member.lastLogin}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{member.actions}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">No team members found</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

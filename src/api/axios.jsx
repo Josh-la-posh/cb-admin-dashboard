@@ -26,6 +26,7 @@ export const AxiosPrivate = () => {
          },
         withCredentials: true,
     });
+
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
           (config) => {
@@ -41,15 +42,14 @@ export const AxiosPrivate = () => {
           (response) => response,
           async (error) => {
             const prevRequest = error?.config;
-            if (error?.response?.status === 403 && !prevRequest?.sent) {
+            if (error?.response?.status === 401) {
                 prevRequest.sent = true;
                 const newAccessToken = await refresh();
                 prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
                 return axiosPrivate(prevRequest);
-            } else if (error.response?.status === 401) {
-              setAuth({}); // Clear auth state (log out the user)
-              navigate('/login'); // Redirect to login page
+            } else {
+              setAuth({});
+              navigate('/login');
             }
             return Promise.reject(error);
           }

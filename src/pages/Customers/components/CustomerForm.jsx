@@ -9,8 +9,8 @@ import Spinner from '../../../components/Spinner';
 
 
 const CUSTOMER_URL = '/api/customers';
-const ADD_CUSTOMER_URL ='/add';
-const UPDATE_CUSTOMER_URL ='/edit';
+const ADD_CUSTOMER_URL ='add';
+const UPDATE_CUSTOMER_URL ='edit';
 
 function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
   const axiosPrivate = AxiosPrivate();
@@ -19,32 +19,42 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    country: '',
-    postalCode: '',
-    status: true,
+    merchantCode: '',
+    customerId: '',
+    customerLastName: '',
+    customerFirstName: '',
+    customerEmail: '',
+    customerPhoneNumber: '',
+    customerAddress: '',
+    customerCity: '',
+    customerStateCode: '',
+    customerPostalCode: '',
+    customerCountryCode: '',
+    status: false,
   });
 
   useEffect(() => {
     if (selectedCustomerData) {
       setFormData({
-        firstName: selectedCustomerData.customerFirstName || '',
-        lastName: selectedCustomerData.customerLastName || '',
-        email: selectedCustomerData.customerEmail || '',
-        phone: selectedCustomerData.customerPhoneNumber || '',
-        address: selectedCustomerData.customerAddress || '',
-        city: selectedCustomerData.customerCity || '',
-        country: selectedCustomerData.customerCountryCode || '',
-        postalCode: selectedCustomerData.customerPostalCode || '',
-        status: selectedCustomerData.customerStatus || true,
+        merchantCode: selectedCustomerData.merchantCode || '',
+        customerId: selectedCustomerData.customerId || '',
+        customerLastName: selectedCustomerData.customerLastName || '',
+        customerFirstName: selectedCustomerData.customerFirstName || '',
+        customerEmail: selectedCustomerData.customerEmail || '',
+        customerPhoneNumber: selectedCustomerData.customerPhoneNumber || '',
+        customerAddress: selectedCustomerData.customerAddress || '',
+        customerCity: selectedCustomerData.customerCity || '',
+        customerStateCode: selectedCustomerData.customerStateCode || '',
+        customerPostalCode: selectedCustomerData.customerPostalCode || '',
+        customerCountryCode: selectedCustomerData.customerCountryCode || '',
+        status: selectedCustomerData.status || true,
       });
     }
   }, [selectedCustomerData]);
+
+  useEffect(() => {
+
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,14 +78,18 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
     try {
       if (selectedCustomerData) {
         // Update existing customer
-        const updateRequest = await axiosPrivate.put(`${CUSTOMER_URL}/${UPDATE_CUSTOMER_URL}/${selectedCustomerData._id}`, JSON.stringify(formData));
+        const updateRequest = await axiosPrivate.put(`${CUSTOMER_URL}/${UPDATE_CUSTOMER_URL}/${selectedCustomerData.customerId}`, JSON.stringify(formData));
+        console.log(updateRequest)
         if (updateRequest.status === 200) {
           const response = await axiosPrivate.get(`${CUSTOMER_URL}/${merchantData.merchantCode}`);
           const result = response.data.responseData;
+          console.log('fins',result)
           dispatch(customerData(result));
           setLoading(false);
           toast.success('Customer updated successfully');
           handleOpenModal();
+        } else {
+          console.log('Problem dey occur')
         }
       } else {
         // Add new customer
@@ -110,75 +124,75 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="firstName">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerFirstName">
             First Name
           </label>
           <input
             type="text"
-            id="firstName"
-            name="firstName"
+            id="customerFirstName"
+            name="customerFirstName"
             placeholder="Enter first name"
-            value={formData.firstName}
+            value={formData.customerFirstName}
             onChange={handleChange}
             className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="lastName">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerLastName">
             Last Name
           </label>
           <input
             type="text"
-            id="lastName"
-            name="lastName"
+            id="customerLastName"
+            name="customerLastName"
             placeholder="Enter last name"
-            value={formData.lastName}
+            value={formData.customerLastName}
             onChange={handleChange}
             className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="email">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerEmail">
             Email
           </label>
           <input
             type="email"
-            id="email"
-            name="email"
+            id="customerEmail"
+            name="customerEmail"
             placeholder="Enter email address"
-            value={formData.email}
+            value={formData.customerEmail}
             onChange={handleChange}
             className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="phone">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerPhoneNumber">
             Phone Number
           </label>
           <input
             type="tel"
-            id="phone"
-            name="phone"
+            id="customerPhoneNumber"
+            name="customerPhoneNumber"
             placeholder="Enter phone number"
-            value={formData.phone}
+            value={formData.customerPhoneNumber}
             onChange={handleChange}
             className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="address">
+          <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerAddress">
             Address
           </label>
           <input
             type="text"
-            id="address"
-            name="address"
+            id="customerAddress"
+            name="customerAddress"
             placeholder="Enter Address"
-            value={formData.address}
+            value={formData.customerAddress}
             onChange={handleChange}
             className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
@@ -187,30 +201,30 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
         <div className="mb-4 flex gap-4">
 
           <div className="">
-            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="city">
+            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerCity">
               City
             </label>
             <input
               type="text"
-              id="city"
-              name="city"
+              id="customerCity"
+              name="customerCity"
               placeholder="Enter City"
-              value={formData.city}
+              value={formData.customerCity}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
             disabled={title === 'View' ? true : false}
             />
           </div>
           <div className="">
-            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="country">
+            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerCountryCode">
               Country
             </label>
             <input
               type="text"
-              id="country"
-              name="country"
+              id="customerCountryCode"
+              name="customerCountryCode"
               placeholder="Enter Country"
-              value={formData.country}
+              value={formData.customerCountryCode}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
               disabled={title === 'View' ? true : false}
@@ -219,15 +233,15 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
         </div>
         <div className="mb-4 flex gap-4 items-end">
           <div className="flex-1">
-            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="code">
+            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerPostalCode">
               Postal Code
             </label>
             <input
               type={title === 'View' ? 'text' : 'number'}
-              id="code"
-              name="code"
+              id="customerPostalCode"
+              name="customerPostalCode"
               placeholder="Enter Postal Code"
-              value={formData.postalCode}
+              value={formData.customerPostalCode}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
               disabled={title === 'View' ? true : false}

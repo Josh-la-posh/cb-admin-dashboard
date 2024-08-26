@@ -7,7 +7,7 @@ import DashboardCards from './components/DashboardCards';
 import DashboardTable from './components/DashboardTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { transactionData } from '../../redux/transactionSlice';
-import { faFolderOpen, faHourglass } from '@fortawesome/free-solid-svg-icons';
+import { faHourglass } from '@fortawesome/free-solid-svg-icons';
 
 const DASHBOARD_URL = '/api/dashboard';
 const TRANSACTION_URL = '/api/transaction';
@@ -29,37 +29,30 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-
-      console.log(interval)
-      setLoading(true); // Set loading to true when starting to fetch data
+      setLoading(true);
       const token = localStorage.getItem("accessToken");
-      // const token = tokenValue;
 
       try {
         // fetch wallet balance
-        const walletResponse = await axiosPrivate.get(`${DASHBOARD_URL}/${merchantData.merchantCode}`)
+        const walletResponse = await axiosPrivate.get(`${DASHBOARD_URL}/${merchantData.merchantCode}`);
         const walletBalance = walletResponse.data.data[0];
         setWalletBalance(walletBalance);
 
 
         // fetch transaction graph data
-        const graphData = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/graph/${merchantData.merchantCode}?interval=${interval}`)
+        const graphData = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/graph/${merchantData.merchantCode}?interval=${interval}`);
         const data = graphData.data.data;
         setTransactionGraph(data);
-        console.log(data)
 
         // fetch transaction lumpsum
-        const transactionLumpsum = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/lumpsum/${merchantData.merchantCode}`)
+        const transactionLumpsum = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/lumpsum/${merchantData.merchantCode}?interval=${interval}`);
         const lumpsum = transactionLumpsum.data.data;
         setTransactionLumpsum(lumpsum);
-        console.log(transactionLumpsum)
 
         // fetch transaction data
-
-        const response = await axiosPrivate.get(`${TRANSACTION_URL}/${merchantData.merchantCode}`)
-  
+        const response = await axiosPrivate.get(`${TRANSACTION_URL}/${merchantData.merchantCode}`);
         const transactionResponse = await response.data.responseData;
-        dispatch(transactionData(response.data.responseData));
+        dispatch(transactionData(transactionResponse));
 
       } catch (err) {
         setError('Failed to load dashboard data. Please try again later.');
@@ -69,7 +62,11 @@ const Dashboard = () => {
       }
     };
 
-    fetchData();
+    if (transactionLumpsum === null || transactionGraph !== null || walletBalance !== null || transactions.length === 0) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
   }, [interval]);
 
   const handleIntervalChange = (event) => {
@@ -81,23 +78,6 @@ const Dashboard = () => {
   }
 
   const COLORS = ["#4CAF50", "#F44336", "#FFC107", "#FF9800", "#3F51B5", "#9E9E9E"];
-
-  // // Calculate total revenue from successful transactions
-  // const totalRevenue = transactionLumpsum
-  //   .filter(transaction => transaction.transactionStatus === "Successful")
-  //   .reduce((sum, transaction) => sum + transaction.transactionVolume, 0);
-
-
-  // const barData = transactionGraph.map(item => ({
-  //   name: item.key,
-  //   value: item.value.reduce((total, current) => total + current.transactionVolume, 0),
-  // }));
-
-  // const pieData = transactionLumpsum.map((item, index) => ({
-  //   name: item.transactionStatus,
-  //   value: item.transactionVolume,
-  //   color: COLORS[index % COLORS.length],
-  // }));
 
   // Ensure that the data exists before trying to reduce over it
   const totalRevenue = transactionLumpsum && Array.isArray(transactionLumpsum)
@@ -131,7 +111,7 @@ const Dashboard = () => {
       <header className="mb-8">
         <div className='flex justify-between align-center'>
           <h1 className="text-[18px] text-[#101928] font-semibold text-gray-800">Welcome back, {userData.firstName}</h1>
-          <p className='text-[14px] font-semibold text-red-500'>Test Environment</p>
+          <p className={`text-[14px] font-semibold ${merchantData.status === 'Sandbox' ? 'text-red-500' : 'text-green-500'}`}>{merchantData.status === 'Sandbox' ? 'Test Environment' : 'Live Environment'}</p>
         </div>
         <p className="text-gray-600 text-sm">Overview of your payment gateway performance</p>
         <div className="mt-8">

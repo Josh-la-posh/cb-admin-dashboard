@@ -15,7 +15,16 @@ const columns = [
     {
         header: 'Phone Number',
         accessor: 'customerPhoneNumber',
-    }
+    },
+    {
+        header: 'Status',
+        accessor: 'status',
+        render: (value) => (
+            <span className={`${value === true ? 'text-green-600' :  'text-red-600'}`}>
+                {value}
+            </span>
+        ),
+    },
 ];
 
 const CustomerTable = ({customerData, handleOpenModal}) => {
@@ -29,7 +38,6 @@ const CustomerTable = ({customerData, handleOpenModal}) => {
     }));
 
     const getVal = (id, name) => {
-        // console.log(filteredData[id]);
         handleOpenModal(filteredData[id], name);
     }
     
@@ -85,9 +93,9 @@ const CustomerTable = ({customerData, handleOpenModal}) => {
                         className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-priColor"
                     >
                         <option value="">All</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                        <option value="Suspended">Suspended</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="suspended">Suspended</option>
                     </select>
                 </div>
             </div>

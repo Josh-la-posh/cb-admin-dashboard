@@ -26,6 +26,7 @@ const BankForm = () => {
             const response = await axiosPrivate.post(COMPLIANCE_DOC_URL,
                 JSON.stringify({...complianceData})
             );
+            console.log('newe',response)
             if (response.status !== 200) {
                 throw new Error('Failed to update profile data');
             }
@@ -46,7 +47,6 @@ const BankForm = () => {
                     value={complianceData.bankName}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
             <div className='mb-4 text-[12px]'>
@@ -57,7 +57,6 @@ const BankForm = () => {
                     value={complianceData.accountNumber}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
             <div className='mb-4 text-[12px]'>
@@ -67,7 +66,6 @@ const BankForm = () => {
                     value={complianceData.accountName}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
             <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">

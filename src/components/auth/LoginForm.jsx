@@ -62,7 +62,7 @@ const LoginForm = () => {
 
         const data = response.data.responseData;
         const accessToken = data.accessToken;
-
+        const refreshToken = data.refreshToken;
         // // saving access token
         localStorage.setItem('accessToken', accessToken);
 
@@ -72,7 +72,7 @@ const LoginForm = () => {
         // saving user data
         localStorage.setItem('userData', JSON.stringify(data.user));
 
-        setAuth({email, password, accessToken});
+        setAuth({email, password, accessToken, refreshToken});
         toast.success("Login successful");
 
         // fetching compliance data to route user to log in screen or create password screen

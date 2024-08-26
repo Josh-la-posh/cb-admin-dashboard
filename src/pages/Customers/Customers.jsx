@@ -32,6 +32,7 @@ function Customers() {
     setModalMode(name);
     setSelectedCustomerData(val);
     setIsModalOpen(true);
+    console.log(val)
   };
 
   const handleCloseModal = () => {
@@ -45,7 +46,8 @@ function Customers() {
                 try {
                     const response = await axiosPrivate.get(`${CUSTOMER_URL}/${merchantData.merchantCode}`)
                     const result = response.data;
-    
+                    console.log('Let fetch it ' + JSON.stringify(result.message))
+                    
                     if (result.message && result.message === "No customers found for this merchant code") {
                         customerData({
                             customerFirstName: 'No customers found',
@@ -54,7 +56,7 @@ function Customers() {
                                customerPhoneNumber: ''
                         });
                     } else {
-                        dispatch(customerData(result));
+                        dispatch(customerData(result.responseData));
                     }
                 } catch (error) {
                     if (!error.response) {
