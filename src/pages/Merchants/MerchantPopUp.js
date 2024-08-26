@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetForm, updateForm } from '../../pages/Merchants/merchantSlice';
 
 const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
-  console.log("creddd", credentials)
   const dispatch = useDispatch();
   const formState = useSelector((state) => state.merchant);
   const [token, setToken] = useState('');

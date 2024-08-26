@@ -1,67 +1,36 @@
 // src/components/ContactForm.js
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { setContactComplete } from '../complianceSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setComplianceData, setContactComplete } from '../../../redux/complianceSlice';
+import { AxiosPrivate } from '../../../api/axios';
+
+const COMPLIANCE_DOC_URL = '/api/merchant-document';
 
 const ContactForm = () => {
+    const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { merchantData, isContactComplete } = useOutletContext();
-    const token = localStorage.getItem("accessToken");
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
-    
-    const [formData, setFormData] = useState({
-        businessEmail: '',
-        phoneNumber: '',
-        officeAddress: '',
-    });
 
-    useEffect(() => {
-        // Populate form fields if merchantData exists
-        if (merchantData) {
-            setFormData({
-                businessEmail: merchantData.businessEmail || '',
-                phoneNumber: merchantData.phoneNumber || '',
-                officeAddress: merchantData.officeAddress || ''
-            });
-            dispatch(setContactComplete());
-        }
-    }, [merchantData, dispatch, navigate]);
+    const complianceData = useSelector((state) => state.compliance.complianceData);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        dispatch(setComplianceData({ [name]: value }));
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // dispatch(setContactComplete());
-        // navigate('/compliance/owner');
-
-        const updatedData = {
-            ...merchantData, // Keep the rest of the fields unchanged
-            businessEmail: formData.businessEmail,
-            phoneNumber: formData.phoneNumber,
-            officeAddress: formData.officeAddress
-        };
 
         try {
             // Post the updated data using fetch
-            const response = await fetch(`${baseUrl}/api/merchant-document`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(updatedData),
-            });
-
-            if (!response.ok) {
+            const response = await axiosPrivate.post(COMPLIANCE_DOC_URL,
+                JSON.stringify({ ...complianceData })
+            );
+            if (response.status !== 200) {
                 throw new Error('Failed to update profile data');
             }
-
             dispatch(setContactComplete());
-            navigate('/compliance/owner');
+            navigate('/compliance/business');
         } catch (error) {
             console.error("Error updating profile data", error);
         }
@@ -69,36 +38,33 @@ const ContactForm = () => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Business Email</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Business Email</label>
                 <input
                     type="email"
                     name="businessEmail"
-                    value={formData.businessEmail}
+                    value={complianceData.businessEmail}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Phone Number</label>
                 <input
                     type="tel"
                     name="phoneNumber"
-                    value={formData.phoneNumber}
+                    value={complianceData.phoneNumber}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
-            <div>
-                <label className="block text-sm font-medium text-gray-700">Office Address</label>
+            <div className='mb-4 text-[12px]'>
+                <label className="block text-gray-700">Office Address</label>
                 <textarea
                     name="officeAddress"
-                    value={formData.officeAddress}
+                    value={complianceData.officeAddress}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                    required
                 />
             </div>
             <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from '../../../components/tables/tables';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 const columns = [
     {
-        header: 'First Name',
-        accessor: 'customerFirstName',
-    },
-    {
-        header: 'Last Name',
-        accessor: 'customerLastName',
+        header: 'Full Name',
+        accessor: 'fullName',
     },
     {
         header: 'Email Address',
@@ -20,64 +18,102 @@ const columns = [
     }
 ];
 
-const CustomerTable = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
-    const storedMerchantData = localStorage.getItem('merchantData');
-    const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+const CustomerTable = ({ customerData, handleOpenModal }) => {
+    const [search, setSearch] = useState('');
+    const [filterStatus, setFilterStatus] = useState('');
+    const [selectedIndex, setSelectedIndex] = useState(null);
 
-    // console.log("Merchant", merchantData);
+    const processedData = customerData.map(row => ({
+        ...row,
+        fullName: `${row.customerFirstName} ${row.customerLastName}`, // Combine first and last name
+    }));
 
-    const token = localStorage.getItem("accessToken");
+    const getVal = (id, name) => {
+        // console.log(filteredData[id]);
+        handleOpenModal(filteredData[id], name);
+    }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${baseUrl}/api/customers/${merchantData.merchantCode}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
 
-                // if (!response.ok) {
-                //     throw new Error(`HTTP error! status: ${response.status}`);
-                // }
+    const handleSelectedRow = (index) => {
+        setSelectedIndex(selectedIndex === index ? null : index);
+    };
 
-                const result = await response.json();
-                // console.log("res", result)
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    };
 
-                // Check for no customers message
-                if (result.message && result.message === "No customers found for this merchant code") {
-                    setData([{ customerFirstName: 'No customers found', customerLastName: '', customerEmail: '', customerPhoneNumber: '' }]);
-                } else {
-                    setData(result);  // Assume result is an array of customers
-                }
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const handleFilterChange = (e) => {
+        setFilterStatus(e.target.value);
+    };
 
-        fetchData();
-    }, []);
+    const filteredData = processedData.filter((row) => {
+        // Convert all relevant values to strings and apply the filter
+        const rowValues = Object.values(row).map(val => (val || '').toString().toLowerCase());
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+        const matchesSearch = search
+            ? rowValues.some(val => val.includes(search.toLowerCase()))
+            : true;
+
+        const matchesStatus = filterStatus
+            ? row.status === filterStatus
+            : true;
+
+        return matchesSearch && matchesStatus;
+    });
 
     return (
         <div className="container mx-auto">
-            {/* {data.length === 0 ? (
-                <div>No customers found.</div>  // Show message when no customers are found
-            ) : (
-                <DataTable columns={columns} data={data} rowsPerPageOptions={[5, 10, 20]} />
-            )} */}
-            <div className="container mx-auto">
-                <DataTable columns={columns} data={data} rowsPerPageOptions={[5, 10, 20]} />
+            <div className="my-3 py-3 flex flex-row-reverse items-center justify-between border-y border-[#F0F2F5] text-xs lg:text-sm">
+                <div className="relative">
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={handleSearch}
+                        className="p-2 pl-8 border border-gray-300 rounded-lg focus:outline-none"
+                        placeholder="Search customers..."
+                    />
+                    <FontAwesomeIcon
+                        icon={faMagnifyingGlass}
+                        className="absolute left-2 top-2/4 transform -translate-y-2/4 text-gray-400"
+                    />
+                </div>
+
+                <div className="">
+                    <select
+                        value={filterStatus}
+                        onChange={handleFilterChange}
+                        className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-priColor"
+                    >
+                        <option value="">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Suspended">Suspended</option>
+                    </select>
+                </div>
             </div>
+
+            <DataTable
+                columns={columns}
+                data={filteredData}
+                rowsPerPageOptions={[5, 10, 20, 50]}
+                onIndexChange={handleSelectedRow}
+                selectedIndex={selectedIndex}
+                displayActionButton={true}
+                actionButton={
+                    <>
+                        {
+                            <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 shadow-lg z-10 rounded-[8px] text-xs">
+                                <button onClick={() => getVal(selectedIndex, 'view')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    View Details
+                                </button>
+                                <button onClick={() => getVal(selectedIndex, 'edit')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    Edit
+                                </button>
+                            </div>
+                        }
+                    </>
+                }
+            />
         </div>
     );
 };

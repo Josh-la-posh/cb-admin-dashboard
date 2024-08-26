@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 
 const APIKeysTab = () => {
     const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
+    const storedMerchantData = localStorage.getItem('merchantData');
+    const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
     const token = localStorage.getItem("accessToken");
     const [credentials, setCredentials] = useState({
         clientId: '',
@@ -17,7 +19,7 @@ const APIKeysTab = () => {
     useEffect(() => {
         const fetchCredentials = async () => {
             try {
-                const response = await fetch(`${baseUrl}/api/merchant/credentials/Tes0000024`, {
+                const response = await fetch(`${baseUrl}/api/merchant/credentials/${merchantData.merchantCode}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -181,8 +183,16 @@ const APIKeysTab = () => {
                 </div>
             </div>
 
-            <div className="mt-6 text-[12px] text-center text-sm">
-                Need help with your integration? <a href="#" className="text-blue-600 hover:text-blue-800">Check out our API documentation</a>
+            <div className="flex items-center justify-center mt-6 text-[12px] text-center text-sm gap-2">
+                Need help with your integration?
+                <a
+                    href="https://docs-payment-api.codebytesltd.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
+                >
+                    Check out our API documentation
+                </a>
             </div>
         </div>
     );

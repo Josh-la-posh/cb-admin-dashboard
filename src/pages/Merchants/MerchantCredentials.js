@@ -81,8 +81,8 @@ const MerchantCredentials = () => {
         <MerchantSelector merchant={merchantData} />
         <div className="mt-6 gap-4">
           <div className='font-[400] text-[15px] pl-3 pb-3 flex'>
-            <p>Client ID</p>
-            <p className='w-[300px]'>Client Secret</p>
+            <p className='w-[300px]'>Client ID</p>
+            <p>Client Secret</p>
           </div>
           {credentials ? (
             <div className='font-[400] text-[14px] pl-3 py-5 mt-4 flex border-y'>

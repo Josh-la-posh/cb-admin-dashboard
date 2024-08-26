@@ -1,52 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DataTable from '../../../components/tables/tables';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
 
-// const columns = [
-//     {
-//         header: 'Date',
-//         accessor: 'date',
-//         render: (value) => (
-//             <span className='font-medimu text-gray-900'>
-//                 {value}
-//             </span>
-//         ),
-//     },
-//     {
-//         header: 'Merchant',
-//         accessor: 'merchant',
-//     },
-//     {
-//         header: 'Description',
-//         accessor: 'description',
-//     },
-//     {
-//         header: 'Amount',
-//         accessor: 'amount',
-//     },
-//     {
-//         header: 'Payment Channel',
-//         accessor: 'paymentChannel',
-//         render: (value) => (
-//             <span className={`text-${value === 'USSD' ? 'orange' : value === 'Card' ? 'green' : 'blue'}-600`}>
-//                 {value}
-//             </span>
-//         ),
-//     },
-//     {
-//         header: 'Status',
-//         accessor: 'status',
-//         render: (value) => (
-//             <span className={`text-${value === 'Completed' ? 'green' : value === 'Pending' ? 'orange' : 'red'}-600`}>
-//                 {value}
-//             </span>
-//         ),
-//     },
-// ];
+// const formatDate = (dateString) => {
+//     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+//     return new Date(dateString).toLocaleDateString(undefined, options);
+// };
+
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString(undefined, options);
+};
+
+// const formatDateTime = (dateString) => {
+//     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+//     const date = new Date(dateString);
+//     return date.toLocaleString(undefined, options);
+// };
+
 
 const columns = [
     {
-        header: 'Date',
-        accessor: 'paymentDate',
+        header: 'Customer Name',
+        accessor: 'customerName',
         render: (value) => (
             <span className='font-medimu text-gray-900'>
                 {value}
@@ -54,12 +32,17 @@ const columns = [
         ),
     },
     {
-        header: 'Merchant',
-        accessor: 'merchantCode',
+        header: 'Transaction ID',
+        accessor: 'paymentReference',
     },
     {
-        header: 'Description',
-        accessor: 'narration',
+        header: 'Date Added',
+        accessor: 'paymentDate',
+        render: (value) => (
+            <span className='text-gray-700'>
+                {formatDate(value)}
+            </span>
+        ),
     },
     {
         header: 'Amount',
@@ -68,40 +51,110 @@ const columns = [
     {
         header: 'Payment Channel',
         accessor: 'paymentChannel',
-        render: (value) => (
-            <span className={`text-${value === 'USSD' ? 'orange' : value === 'Card' ? 'green' : 'blue'}-600`}>
-                {value}
-            </span>
-        ),
+    },
+    {
+        header: 'Message',
+        accessor: 'message',
     },
     {
         header: 'Status',
         accessor: 'transactionStatus',
         render: (value) => (
-            <span className={`text-${value === 'Successful' ? 'green' : value === 'Failed' ? 'red' : 'orange'}-600`}>
+            <span className={`${value === 'Successful' ? 'text-green-600' : value === 'Failed' ? 'text-red-600' : 'text-orange-400'}`}>
                 {value}
             </span>
         ),
     },
 ];
 
-const data = [
-    { date: '2024-08-01', merchant: 'John Doe Store', description: 'Payment from John Doe', amount: '₦12,345', paymentChannel: 'Card', status: 'Completed' },
-    { date: '2024-08-02', merchant: 'Jane Smith Boutique', description: 'Payment from Jane Smith', amount: '₦8,900', paymentChannel: 'Virtual Account', status: 'Pending' },
-    { date: '2024-08-03', merchant: 'Acme Corporation', description: 'Payment from Acme Corp.', amount: '₦25,000', paymentChannel: 'USSD', status: 'Failed' },
-    { date: '2024-08-04', merchant: 'XYZ Limited', description: 'Payment from XYZ Ltd.', amount: '₦15,000', paymentChannel: 'Bank Account', status: 'Completed' },
-    { date: '2024-08-05', merchant: 'ABC Inc.', description: 'Payment from ABC Inc.', amount: '₦9,500', paymentChannel: 'Card', status: 'Pending' },
-    { date: '2024-08-01', merchant: 'John Doe Store', description: 'Payment from John Doe', amount: '₦12,345', paymentChannel: 'Card', status: 'Completed' },
-    { date: '2024-08-02', merchant: 'Jane Smith Boutique', description: 'Payment from Jane Smith', amount: '₦8,900', paymentChannel: 'Virtual Account', status: 'Pending' },
-    { date: '2024-08-03', merchant: 'Acme Corporation', description: 'Payment from Acme Corp.', amount: '₦25,000', paymentChannel: 'USSD', status: 'Failed' },
-    { date: '2024-08-04', merchant: 'XYZ Limited', description: 'Payment from XYZ Ltd.', amount: '₦15,000', paymentChannel: 'Bank Account', status: 'Completed' },
-    { date: '2024-08-05', merchant: 'ABC Inc.', description: 'Payment from ABC Inc.', amount: '₦9,500', paymentChannel: 'Card', status: 'Pending' },
-];
+const TransactionTable = ({ transactions, handleOpenModal }) => {
 
-const TransactionTable = ({ transactions }) => {
+    const [search, setSearch] = useState('');
+    const [filterStatus, setFilterStatus] = useState('');
+    const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const handleFilterChange = (e) => {
+        setFilterStatus(e.target.value);
+    };
+
+    const getDataToParent = (id) => {
+        handleOpenModal(filteredData[id])
+    }
+
+
+    const handleSelectedRow = (index) => {
+        setSelectedIndex(selectedIndex === index ? null : index);
+    };
+
+    const filteredData = transactions.filter((row) => {
+        // Convert all relevant values to strings and apply the filter
+        const rowValues = Object.values(row).map(val => (val || '').toString().toLowerCase());
+
+        const matchesSearch = search
+            ? rowValues.some(val => val.includes(search.toLowerCase()))
+            : true;
+
+        const matchesStatus = filterStatus
+            ? row.status === filterStatus
+            : true;
+
+        return matchesSearch && matchesStatus;
+    });
+
     return (
-        <div className="container mx-auto p-4">
-            <DataTable columns={columns} data={transactions} rowsPerPageOptions={[5, 10, 20]} display='true' />
+        <div className="">
+            <div className="my-3 py-3 flex flex-row-reverse items-center justify-between border-y border-[#F0F2F5] text-xs lg:text-sm">
+                <div className="relative">
+                    <input
+                        type="text"
+                        value={search}
+                        onChange={handleSearch}
+                        className="p-2 pl-8 border border-gray-300 rounded-lg focus:outline-none"
+                        placeholder="Search transactions..."
+                    />
+                    <FontAwesomeIcon
+                        icon={faMagnifyingGlass}
+                        className="absolute left-2 top-2/4 transform -translate-y-2/4 text-gray-400"
+                    />
+                </div>
+                <button className='flex items-center justify-center gap-[10px] border border-[#DDD5DD] rounded-[8px] px-[12px] py-[8px] text-sm font-600 text-[#344054]'>
+                    <FontAwesomeIcon icon={faArrowDownWideShort} style={{ color: 'black' }} />
+                    <span>Filter</span>
+                </button>
+            </div>
+
+            <DataTable
+                columns={columns}
+                data={filteredData}
+                rowsPerPageOptions={[5, 10, 20, 50]}
+                onIndexChange={handleSelectedRow}
+                selectedIndex={selectedIndex}
+                displayActionButton={true}
+                actionButton={
+                    <>
+                        {
+                            <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 shadow-lg z-10 rounded-[8px] text-xs">
+                                <button onClick={() => getDataToParent(selectedIndex)} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    View Details
+                                </button>
+                                {/* <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Edit
+                            </button>
+                            <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Change Status
+                            </button>
+                            <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Delete
+                            </button> */}
+                            </div>
+                        }
+                    </>
+                }
+            />
         </div>
     );
 };

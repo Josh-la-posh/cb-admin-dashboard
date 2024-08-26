@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../../pages/auth/authSlice';
+import { loginStart, loginSuccess, loginFailure } from '../../redux/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 
 const ResetPasswordForm = () => {
@@ -82,7 +82,7 @@ const ResetPasswordForm = () => {
                     dispatch(loginSuccess({ email }));
 
                     // Redirect to home or dashboard
-                    navigate('/home');
+                    navigate('/');
                 } else {
                     // Redirect to the step form page
                     navigate('/complete-registration');

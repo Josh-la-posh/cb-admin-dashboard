@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios for making HTTP requests
+import { toast } from 'react-toastify';
 
 const RegisterMultiStepPage = () => {
     const token = localStorage.getItem("accessToken");
@@ -50,36 +51,35 @@ const RegisterMultiStepPage = () => {
                     Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                 },
             };
-
             // Send the form data to the backend endpoint
             const response = await axios.post(`${baseUrl}/api/merchant/confirm`, formData, config);
-            alert('Registration completed successfully');
+            toast.success("Registration completed successfully");
             console.log('Response:', response.data);
             navigate('/'); // Redirect to dashboard after finishing
         } catch (error) {
             console.error('Error submitting form data:', error);
-            alert('There was an error during registration. Please try again.');
+            toast.error('There was an error during registration. Please try again');
         }
     };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-white">
-            <div className="w-full max-w-lg bg-white shadow-2xl rounded-xl p-8">
-                <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Register Your Business</h2>
+            <div className="w-[70%] lg:w-full max-w-lg bg-white shadow-2xl rounded-xl p-8">
+                <h2 className="text-xl lg:text-3xl font-bold text-gray-800 text-center mb-8">Register Your Business</h2>
 
                 {/* Progress Bar */}
                 <div className="relative mb-12">
                     <div className="flex items-center justify-between">
                         {['Business Info', 'Location & Category', 'Industry'].map((label, index) => (
-                            <div key={index} className="relative flex-1 text-">
+                            <div key={index} className="relative flex-grow flex flex-col items-center">
                                 <div
-                                    className={`flex items-center justify-center w-12 h-12 rounded-full font-semibold border-4 ${step > index ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-300 text-gray-600'
+                                    className={`flex items-center justify-center w-12 h-12 rounded-full font-semibold border-4 z-10 ${step > index ? 'bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-300 text-gray-600'
                                         }`}
                                 >
                                     {step > index ? '✔' : index + 1}
                                 </div>
                                 <div
-                                    className={`mt-2 text-sm font-medium ${step > index ? 'text-blue-600' : 'text-gray-600'
+                                    className={`mt-2 text-[11px] lg:text-sm font-medium ${step > index ? 'text-blue-600' : 'text-gray-600'
                                         }`}
                                 >
                                     {label}
@@ -99,13 +99,11 @@ const RegisterMultiStepPage = () => {
                         ))}
                     </div>
                     <div
-                        className={`absolute inset-0 flex items-center justify-center ${step === 1 ? 'opacity-0' : 'opacity-100'
-                            }`}
+                        className={`absolute top-[30%] h-[2px] ml-12 ${step === 1 ? 'w-[45%]' : 'w-[80%]'} bg-gray-300`}
                     >
                         <div
-                            className={`absolute inset-0 flex items-center ${step > 1 ? 'bg-blue-600' : 'bg-gray-300'
-                                }`}
-                            style={{ height: '2px', width: `${(step / 3) * 100}%`, transition: 'width 0.3s ease' }}
+                            className={`absolute ${step === 1 ? 'bg-gray-300' : 'bg-blue-600'} ${step === 3 ? 'w-[100%]' : 'w-[50%]'}`}
+                            style={{ height: '2px', transition: 'width 0.3s ease' }}
                         />
                     </div>
                 </div>

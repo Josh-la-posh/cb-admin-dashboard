@@ -169,35 +169,11 @@ const RegisterForm = () => {
             }
 
             errRef.current.focus();
+
+            errRef.current.focus();
         } finally {
             setLoading(false);
         }
-
-
-
-
-
-        //     try {
-        //         const response = await fetch(`${process.env.REACT_APP_API_MERCHANT_BASE_URL}/onboard`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify(formData),
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (data.success) {
-        //             alert('Registration successful');
-        //         } else {
-        //             setError(data.message || 'Registration failed');
-        //         }
-        //     } catch (error) {
-        //         setError('An unexpected error occurred');
-        //     } finally {
-        //         setLoading(false);
-        //     }
     };
 
     return (
@@ -212,7 +188,7 @@ const RegisterForm = () => {
                         <p className='mb-12 text-sm text-center'>Click the link sent to your mail to confirm your account.</p>
 
                         <div className="text-center mt-4">
-                            <Link to="/login" className="text-[11px] lg:text-sm text-blue-500 hover:underline">Otherwise, proceed to <span className='text-[#0000FF]'>Log in</span></Link>
+                            <Link to="/login" className="text-[11px] lg:text-sm text-black hover:underline">Otherwise, proceed to <span className='text-[#0000FF]'>Log in</span></Link>
                         </div>
 
 

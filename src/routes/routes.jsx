@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import Dashboard from '../pages/Dashboard';
+import Dashboard from '../pages/Dashboard/Dashboard';
 import MainLayout from '../layout/MainLayout';
 import Merchants from '../pages/Merchants/Merchants';
 import MerchantCredentials from '../pages/Merchants/MerchantCredentials';
@@ -15,18 +14,18 @@ import Settings from '../pages/Settings/Settings';
 import ComplianceLayout from '../pages/Compliance/Compliance';
 import ProfileForm from '../pages/Compliance/components/profileStep';
 import ContactForm from '../pages/Compliance/components/contactStep';
-import AccountForm from '../pages/Compliance/components/accountStep';
-import OwnerForm from '../pages/Compliance/components/ownerStep';
 import MerchantServiceAgreement from '../pages/Compliance/components/serviceAgreement';
 import RequireAuth from '../components/auth/RequireAuth';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import BankAccount from '../pages/Settlement/BankAccount';
 import Configuration from '../pages/Settlement/Configuration';
 import AllSettlement from '../pages/Settlement/AllSettlement';
+import Disputes from '../pages/Disputes/Disputes';
+import Invoices from '../pages/Invoices/Invoices';
+import BankForm from '../pages/Compliance/components/bankStep';
+import BusinessForm from '../pages/Compliance/components/businessStep';
 
 const RoutesSystem = () => {
-
-  const { isLoggedIn } = useSelector((state) => state.auth);
   return (
     <Routes>
 
@@ -56,6 +55,8 @@ const RoutesSystem = () => {
 
           {/* Add other routes */}
           <Route path="transaction" element={<Transactions />} />
+          <Route path="disputes" element={<Disputes />} />
+          <Route path="invoices" element={<Invoices />} />
           <Route path="settings" element={<Settings />} />
 
           {/* Compliance Routes */}
@@ -63,8 +64,8 @@ const RoutesSystem = () => {
           <Route path="compliance" element={<ComplianceLayout />} >
             <Route path="contact" element={<ContactForm />} />
             <Route path="profile" element={<ProfileForm />} />
-            <Route path="owner" element={<OwnerForm />} />
-            <Route path="account" element={<AccountForm />} />
+            <Route path="bank" element={<BankForm />} />
+            <Route path="business" element={<BusinessForm />} />
             <Route path="service-agreement" element={<MerchantServiceAgreement />} />
             <Route index element={<Navigate to='profile' />} />
           </Route>

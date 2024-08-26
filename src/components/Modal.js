@@ -1,27 +1,19 @@
-// src/components/Modal.js
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
 
+const CustomModal = ({ handleOpenModal, children }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 max-h-screen overflow-auto">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-auto relative">
+    <div className="fixed inset-0 h-full w-[100%] bg-black bg-opacity-50 z-50 max-h-screen overflow-auto">
+      <div className="bg-white max-h-[95%] top-5 bottom-10 rounded-lg shadow-lg p-8 w-full max-w-md mx-auto relative overflow-y-auto">
         <button
-          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-          onClick={onClose}
+          className="absolute right-6 text-gray-400 hover:text-gray-600"
+          onClick={handleOpenModal}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <FontAwesomeIcon icon={faClose} />
         </button>
-        <div className="max-h-screen overflow-y-auto">
+        <div className="">
           {children}
         </div>
       </div>
@@ -29,4 +21,4 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default CustomModal;

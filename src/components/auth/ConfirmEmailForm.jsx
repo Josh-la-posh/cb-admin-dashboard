@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginStart, loginSuccess, loginFailure } from '../../pages/auth/authSlice';
+import { loginStart, loginSuccess, loginFailure } from '../../redux/authSlice';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const ConfirmEmailForm = () => {
