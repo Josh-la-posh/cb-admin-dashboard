@@ -40,7 +40,7 @@ const columns = [
 ];
 
 
-const DisputeTable = ({transactions}) => {
+const DisputeTable = ({transactions, handleOpenModal}) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -57,6 +57,10 @@ const DisputeTable = ({transactions}) => {
     const handleSelectedRow = (index) => {
         setSelectedIndex(selectedIndex === index ? null : index);
     };
+
+    const getDataToParent = (id) => {
+        handleOpenModal(filteredData[id])
+    }
 
     const disputeData = transactions.filter((data) => data.transactionStatus !== 'Successful');
 
@@ -114,7 +118,7 @@ const DisputeTable = ({transactions}) => {
                     <>
                     {
                         <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 shadow-lg z-10 rounded-[8px] text-xs">
-                            <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                            <button onClick={() => getDataToParent(selectedIndex)} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 View Details
                             </button>
                             {/* <button className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">

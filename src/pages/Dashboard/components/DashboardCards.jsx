@@ -5,7 +5,7 @@ import { faBan, faCartShopping, faCheck, faDollarSign } from '@fortawesome/free-
 
 function DashboardCards({ totalRevenue, transactionLumpsum, }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <Card title="Total Revenue" value={`₦${totalRevenue}`} color="bg-[#EEE8FA]" icon={<FontAwesomeIcon icon={faDollarSign} style={{ color: '#7447C6' }} />} />
       <Card title="Total Transactions" value={transactionLumpsum.reduce((total, current) => total + current.TransactionCount, 0)} color="bg-[#FFF8E1]" icon={<FontAwesomeIcon icon={faCartShopping} style={{ color: '#FFC107' }} />} />
       <Card title="Successful Payments" value={transactionLumpsum.find(item => item.TransactionStatus === "Successful").TransactionCount} color="bg-[#E7F6EC]" icon={<FontAwesomeIcon icon={faCheck} style={{ color: '#40B869' }} />} />

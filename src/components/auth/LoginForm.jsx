@@ -14,7 +14,6 @@ const LoginForm = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
   const userRef = useRef();
   const errRef = useRef();
 
@@ -81,7 +80,6 @@ const LoginForm = () => {
         const merchantCode = data.merchants[0].merchantCode;
         console.log(merchantCode);
 
-
         const complianceResponse = await fetch(`${process.env.REACT_APP_API_MERCHANT_BASE_URL}${MERCHANT_URL}/${merchantCode}`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
@@ -97,18 +95,16 @@ const LoginForm = () => {
 
           setEmail('');
           setPassword('');
+          const from = location.state?.from?.pathname || '/';
           navigate(from, {replace: true});
         } else {
           navigate(COMPLIANCE_REG);
-
-          console.log('yexs')
         }
     } catch (err) {
       console.log('finally', JSON.stringify(err.response));
       if (!err.response) {
         dispatch(loginFailure('An unexpected error occurred. Try again'));
       } else {
-
         if (err.response.data.responseCode === '400') {
           toast.error(err.response.data.message || 'Login failed');
           dispatch(loginFailure(err.response.data.message));

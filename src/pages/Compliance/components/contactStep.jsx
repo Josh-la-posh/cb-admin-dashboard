@@ -29,10 +29,8 @@ const ContactForm = () => {
             if (response.status !== 200) {
                 throw new Error('Failed to update profile data');
             }
-            if (complianceData.businessEmail && complianceData.phoneNumber && complianceData.officeAddress) {
-                dispatch(setContactComplete());
-            }
-            navigate('/compliance/bank');
+            dispatch(setContactComplete());
+            navigate('/compliance/business');
         } catch (error) {
             console.error("Error updating profile data", error);
         }

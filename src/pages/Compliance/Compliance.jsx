@@ -18,16 +18,17 @@ const Compliance = () => {
     const merchantDetails = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
     useEffect(() => {
-        // Fetch the merchant data when the component loads
-
         const fetchMerchantData = async () => {
             try {
                 const response = await axiosPrivate.get(`${COMPLIANCE_DOC_URL}/${merchantDetails.aggregatorId}`);
-                console.log(JSON.stringify(response.data));
-
                 if (response.status === 200) {
                     const fetchedData = response.data.responseData[0];
                     dispatch(setComplianceData(fetchedData));
+                    dispatch(setProfileComplete());
+                    dispatch(setContactComplete());
+                    dispatch(setBusinessComplete());
+                    dispatch(setBankComplete());
+                    dispatch(setserviceAgreementComplete());
                 } else {
                     console.log("Error fetching merchant data", response.statusText);
                 }

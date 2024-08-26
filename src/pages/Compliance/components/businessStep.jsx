@@ -38,9 +38,7 @@ const BusinessForm = () => {
             if (response.status !== 200) {
                 throw new Error('Failed to update profile data');
             }
-            if (complianceData.tradingName !== '' && complianceData.description !== '' && complianceData.staffSize !== '' && complianceData.annualProjectedSalesVolume !== '' && complianceData.industry !== '' && complianceData.category !== '' && complianceData.businessType !== '') {
-                dispatch(setBusinessComplete());
-            }
+            dispatch(setBusinessComplete());
             navigate('/compliance/bank');
         } catch (error) {
             console.error("Error updating profile data", error);
@@ -52,13 +50,13 @@ const BusinessForm = () => {
             <div className='mb-4 text-[12px]'>
                 <label>Name<span className='text-[red]'>*</span></label>
                 <div className="flex gap-3">
-                    <input type="text" placeholder='First Name' className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="firstName" value={complianceData.firstName} onChange={handleChange} required />
-                    <input type="text" placeholder='Last Name' className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="lastName" value={complianceData.lastName} onChange={handleChange} required />
+                    <input type="text" placeholder='First Name' className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="firstName" value={complianceData.firstName} onChange={handleChange} />
+                    <input type="text" placeholder='Last Name' className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="lastName" value={complianceData.lastName} onChange={handleChange} />
                 </div>
             </div>
             <div className='mb-4 text-[12px]'>
                 <label>Date of Birth*</label>
-                <input type="date" className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="dateOfBirth" value={complianceData.dateOfBirth} onChange={handleChange} required />
+                <input type="date" className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="dateOfBirth" value={complianceData.dateOfBirth} onChange={handleChange} />
             </div>
             <div className='mb-4 text-[12px]'>
                 <label>Nationality*</label>
@@ -73,16 +71,16 @@ const BusinessForm = () => {
                 <br />
                 <select className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' name="idDocument" value={complianceData.idDocument} onChange={handleChange}>
                     <option value="Voter's Card">Voter's Card</option>
-                    <option value="passport">Passport</option>
+                    <option value="Passport">Passport</option>
                 </select>
             </div>
             <div className='mb-4 text-[12px]'>
-                <label>Voter's ID Number*</label>
+                <label>{complianceData.idDocument} ID Number*</label>
                 <br />
-                <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="text" name="idNumber" value={complianceData.idNumber} onChange={handleChange} required />
+                <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="text" name="idNumber" value={complianceData.idNumber} onChange={handleChange} />
             </div>
             <div className='mb-4 text-[12px]'>
-                <label>Upload a copy of your Voter's card</label>
+                <label>Upload a copy of your {complianceData.idDocument || 'ID'}</label>
                 <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="file" name="fileUpload" onChange={handleFileUpload} />
             </div>
             <div className='mb-4 text-[12px]'>
@@ -96,7 +94,7 @@ const BusinessForm = () => {
             <div className='mb-4 text-[12px]'>
                 <label>Proof of address*</label>
                 <br />
-                <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="file" name="proofOfAddress" onChange={handleFileUpload} required />
+                <input className='mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md' type="file" name="proofOfAddress" onChange={handleFileUpload} />
             </div>
             <button type="submit" className='mt-4 bg-priColor text-white py-2 px-4 rounded'>
                 Save and Continue

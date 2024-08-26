@@ -82,7 +82,7 @@ const ResetPasswordForm = () => {
                     dispatch(loginSuccess({ email }));
 
                     // Redirect to home or dashboard
-                    navigate('/home');
+                    navigate('/');
                 } else {
                     // Redirect to the step form page
                     navigate('/complete-registration');

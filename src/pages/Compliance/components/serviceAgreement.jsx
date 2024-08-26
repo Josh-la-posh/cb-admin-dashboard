@@ -42,11 +42,10 @@ const MerchantServiceAgreement = () => {
             }
             dispatch(setserviceAgreementComplete());
             toast.success("Service agreement updated successfully"); // Success toast
-            navigate('/home');
+            navigate('/');
         } catch (error) {
             toast.error("Error updating the service agreement");
         }
-        console.log('working')
     };
 
     return (

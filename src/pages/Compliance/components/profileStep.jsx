@@ -46,7 +46,7 @@ const ProfileForm = () => {
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className='mb-4 text-[12px]'>
-                <label className="block text-gray-700">Trading Name</label>
+                <label className="block text-gray-700">Company Name</label>
                 <input
                     type="text"
                     name="tradingName"

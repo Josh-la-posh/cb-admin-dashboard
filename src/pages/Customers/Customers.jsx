@@ -7,7 +7,7 @@ import { faAdd, faCloudArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { AxiosPrivate } from '../../api/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { customerData } from '../../redux/customerSlice';
-import AddCustomer from './components/AddCustomer';
+import CustomerForm from './components/CustomerForm';
 
 const CUSTOMER_URL = '/api/customers';
 
@@ -17,14 +17,27 @@ function Customers() {
     const customer = useSelector((state) => state.customer);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState(null);
+    const [selectedCustomerData, setSelectedCustomerData] = useState({});
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
-    const handleOpenModal = () => {
-        setIsOpen(!isOpen);
-        console.log(isOpen)
-    };
+  const handleAddOpenModal = () => {
+    setModalMode('add');
+    setIsModalOpen(true);
+  };
+
+  const handleEditOpenModal = (val, name) => {
+    setModalMode(name);
+    setSelectedCustomerData(val);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCustomerData(null);
+  };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,11 +88,17 @@ function Customers() {
                         <FontAwesomeIcon icon={faCloudArrowDown} style={{color: 'black'}}/>
                         <span>Export</span>
                     </button>
-                    <button onClick={handleOpenModal} className='flex flex-1 sm:flex-[unset] items-center justify-center rounded-[8px] gap-[10px] px-[12px] py-[8px] text-white text-[12px] sm:text-sm font-[600] bg-priColor'>
+                    <button onClick={handleAddOpenModal} className='flex flex-1 sm:flex-[unset] items-center justify-center rounded-[8px] gap-[10px] px-[12px] py-[8px] text-white text-[12px] sm:text-sm font-[600] bg-priColor'>
                         <FontAwesomeIcon icon={faAdd}/>
                         <span>Add</span>
                     </button>
-                    {isOpen && <AddCustomer handleOpenModal={handleOpenModal}/>}
+                    {isModalOpen && 
+                        (<CustomerForm
+                            handleOpenModal={handleCloseModal}
+                            selectedCustomerData={modalMode === 'add' ? null : selectedCustomerData}
+                            title={modalMode === 'add' ? 'Add' : modalMode === 'edit' ? 'Edit' : 'View'}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -94,7 +113,7 @@ function Customers() {
                 </div>
             </div> */}
 
-            <CustomerTable customerData={customer.customers} />
+            <CustomerTable handleOpenModal={handleEditOpenModal} customerData={customer.customers} />
 
 
         </div>

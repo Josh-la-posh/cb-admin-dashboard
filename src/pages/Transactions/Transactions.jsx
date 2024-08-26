@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { transactionData } from '../../redux/transactionSlice';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TransactionForm from './TransactionForm';
 
 const TRANSACTION_URL = '/api/transaction';
 
@@ -14,6 +15,8 @@ const Transactions = () => {
   const axiosPrivate = AxiosPrivate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTransactionData, setSelectedTransactionData] = useState({});
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
@@ -44,6 +47,17 @@ const Transactions = () => {
     fetchTransactions();
   }, []);
 
+  const handleOpenModal = (val) => {
+    setSelectedTransactionData(val);
+    setIsModalOpen(true);
+    console.log(val);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedTransactionData(null);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -59,8 +73,15 @@ const Transactions = () => {
         </button>
     </div>
 
+    {isModalOpen && 
+      (<TransactionForm
+          handleCloseModal={handleCloseModal}
+          data={selectedTransactionData}
+      />
+    )}
+
       {/* <TransactionTable /> */}
-      <TransactionTable transactions={transactions} />
+      <TransactionTable transactions={transactions} handleOpenModal={handleOpenModal}/>
 
       
     </div>

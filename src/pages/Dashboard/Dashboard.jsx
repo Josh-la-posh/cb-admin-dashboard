@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import useAuth from '../../hooks/useAuth';
-import Card from '../../components/dashboard/Card';
-import TransactionTable from '../../components/dashboard/Transaction';
 import ReportChart from '../../components/dashboard/ReportChart';
 import Spinner from '../../components/Spinner'; // Import the Spinner component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faCartShopping, faCheck, faDollarSign, faUsers } from '@fortawesome/free-solid-svg-icons';
-import axios, { AxiosPrivate } from '../../api/axios';
+import { AxiosPrivate } from '../../api/axios';
 import DashboardCards from './components/DashboardCards';
 import DashboardTable from './components/DashboardTable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { transactionData } from '../../redux/transactionSlice';
+import { faFolderOpen, faHourglass } from '@fortawesome/free-solid-svg-icons';
 
 const DASHBOARD_URL = '/api/dashboard';
 const TRANSACTION_URL = '/api/transaction';
@@ -18,11 +15,13 @@ const TRANSACTION_URL = '/api/transaction';
 const Dashboard = () => {
   const axiosPrivate = AxiosPrivate();
   const dispatch = useDispatch();
+  const transactions = useSelector((state) => state.transaction);
   const [walletBalance, setWalletBalance] = useState(null);
   const [transactionGraph, setTransactionGraph] = useState(null);
   const [transactionLumpsum, setTransactionLumpsum] = useState(null);
   const [interval, setInterval] = useState('Daily');
   const [loading, setLoading] = useState(true); // Add loading state
+  const [error, setError] = useState(null);
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
   const storedUserData = localStorage.getItem('userData');
@@ -30,11 +29,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+
+      console.log(interval)
       setLoading(true); // Set loading to true when starting to fetch data
       const token = localStorage.getItem("accessToken");
       // const token = tokenValue;
-
-      // console.log("token", token)
 
       try {
         // fetch wallet balance
@@ -47,21 +46,23 @@ const Dashboard = () => {
         const graphData = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/graph/${merchantData.merchantCode}?interval=${interval}`)
         const data = graphData.data.data;
         setTransactionGraph(data);
+        console.log(data)
 
         // fetch transaction lumpsum
         const transactionLumpsum = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/lumpsum/${merchantData.merchantCode}`)
         const lumpsum = transactionLumpsum.data.data;
         setTransactionLumpsum(lumpsum);
+        console.log(transactionLumpsum)
 
         // fetch transaction data
 
         const response = await axiosPrivate.get(`${TRANSACTION_URL}/${merchantData.merchantCode}`)
   
         const transactionResponse = await response.data.responseData;
-        console.log(response.data.responseData)
         dispatch(transactionData(response.data.responseData));
 
       } catch (err) {
+        setError('Failed to load dashboard data. Please try again later.');
         console.log(JSON.stringify('Error fetching data ' + JSON.stringify(err)));
       } finally {
         setLoading(false);
@@ -148,7 +149,16 @@ const Dashboard = () => {
       <DashboardCards transactionLumpsum={transactionLumpsum} totalRevenue={totalRevenue} />
 
       {/* report chart */}
-      <ReportChart barData={barData} pieData={pieData} date={interval} />
+
+      {transactions.transactions.length === 0 
+        ? <div className="w-full h-[240px] border border-[#E4E7EC]">
+          <div className='p-4 border-b border-[#E4E7EC]'>Overall Revenue</div>
+          <div className="flex flex-col items-center justify-center gap-8 mt-8">
+            <FontAwesomeIcon icon={faHourglass} size='2x'/>
+            <p>You have not performed any transaction.</p>
+          </div>
+        </div>
+        : <ReportChart barData={barData} pieData={pieData} date={interval} />}
 
       {/* <VolumeValueCards />
 

@@ -29,9 +29,7 @@ const BankForm = () => {
             if (response.status !== 200) {
                 throw new Error('Failed to update profile data');
             }
-            if (complianceData.bankName !== '' && complianceData.accountName !== '' && complianceData.accountNumber !== '') {
-                dispatch(setBankComplete());
-            }
+            dispatch(setBankComplete());
             navigate('/compliance/service-agreement');
         } catch (error) {
             console.error("Error updating profile data", error);

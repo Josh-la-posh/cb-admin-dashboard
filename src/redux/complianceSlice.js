@@ -82,13 +82,54 @@ export const complianceSlice = createSlice({
             }
         },
         setBusinessComplete: (state) => {
-            state.businessComplete = true;
+            const { 
+                firstName,
+                lastName,
+                dateOfBirth,
+                nationality,
+                idDocument,
+                idNumber,
+                sameAsBusinessAddress,
+                documentName,
+            } = state.businessComplete;
+            if (
+                firstName.trim() !== '' &&
+                lastName.trim() !== '' &&
+                dateOfBirth.trim() !== '' &&
+                nationality.trim() !== '' &&
+                idDocument.trim() !== '' &&
+                idNumber.trim() !== '' && 
+                sameAsBusinessAddress.trim() !== '' &&
+                documentName.trim() !== ''
+            ) {
+                state.businessComplete = true;
+            } else {
+                state.businessComplete = false;
+            }
         },
         setBankComplete: (state) => {
-            state.bankComplete = true;
+            const { 
+                bankName,
+                accountName,
+                accountNumber,
+            } = state.bankComplete;
+            if (
+                bankName.trim() !== '' &&
+                accountName.trim() !== '' &&
+                accountNumber.trim() !== ''
+            ) {
+                state.bankComplete = true;
+            } else {
+                state.bankComplete = false;
+            }
         },
         setserviceAgreementComplete: (state) => {
-            state.serviceAgreementComplete = true;
+            const {slaBoolean} = state.serviceAgreementComplete;
+            if (slaBoolean === true) {
+                state.serviceAgreementComplete = true;
+            } else {
+                state.serviceAgreementComplete = false;
+            }
         },
         // Add other setters for each form step
     },

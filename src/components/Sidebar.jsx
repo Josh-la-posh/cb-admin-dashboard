@@ -71,18 +71,18 @@ const Sidebar = ({handleSidebar}) => {
             </div>
           )}
         </div>
-        <Link to="/invoices" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        {/* <Link to="/invoices" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faFlag} size='xs' />
             Invoices
           </div>
-        </Link>
-        <Link to="/wallet" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        </Link> */}
+        {/* <Link to="/wallet" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faWallet} size='xs' />
             Wallet
           </div>
-        </Link>
+        </Link> */}
         {/* <div>
           <button onClick={() => setAggregatorOpen(!isAggregatorOpen)} className="block w-full text-left py-2 pr-4 pl-6 hover:bg-blue-700 flex justify-between">
             <div className='flex items-center gap-2'>

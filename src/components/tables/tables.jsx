@@ -49,8 +49,8 @@ const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionBut
                                 <td key={colIndex} className="px-6 py-4 whitespace-nowrap text-xs lg:text-[12px] text-gray-500">
                                     {column.render
                                         ? column.render(row[column.accessor], row)
-                                        : typeof row[column.accessor] === 'string' && row[column.accessor].length > 11
-                                        ? `${row[column.accessor].slice(0, 11)}...`
+                                        : typeof row[column.accessor] === 'string' && row[column.accessor].length > 17
+                                        ? `${row[column.accessor].slice(0, 17)}...`
                                         : row[column.accessor]}
                                 </td>
                             ))}

@@ -5,6 +5,7 @@ import DisputeTable from './components/DisputesTable';
 import { transactionData } from '../../redux/transactionSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import DisputeForm from './DisputeForm';
 
 const TRANSACTION_URL = '/api/transaction';
 
@@ -14,6 +15,8 @@ function Disputes() {
     const transactions = useSelector((state) => state.transaction.transactions);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedDisputeData, setSelectedDisputeData] = useState({});
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
@@ -43,6 +46,17 @@ function Disputes() {
 
         fetchTransactions();
     }, []);
+
+    const handleOpenModal = (val) => {
+        setSelectedDisputeData(val);
+        setIsModalOpen(true);
+        console.log(val);
+    };
+  
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+      setSelectedDisputeData(null);
+    };
     
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -59,7 +73,14 @@ function Disputes() {
                 </button>
             </div>
 
-            <DisputeTable transactions={transactions}/>
+            {isModalOpen && 
+            (<DisputeForm
+                handleCloseModal={handleCloseModal}
+                data={selectedDisputeData}
+            />
+            )}
+
+            <DisputeTable transactions={transactions} handleOpenModal={handleOpenModal}/>
 
 
         </div>
