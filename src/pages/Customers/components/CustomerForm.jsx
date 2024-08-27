@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomModal from '../../../components/Modal';
 import { AxiosPrivate } from '../../../api/axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { customerData } from '../../../redux/customerSlice';
 import ToggleSwitch from '../../../components/toggleSwitch/ToggleSwitch';
@@ -15,6 +15,7 @@ const UPDATE_CUSTOMER_URL ='edit';
 function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
   const axiosPrivate = AxiosPrivate();
   const dispatch = useDispatch();
+  const customers = useSelector(state => state.customer);
   const [loading, setLoading] = useState(false);
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
@@ -76,14 +77,14 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log('Old customer ', customers.customers.length)
       if (selectedCustomerData) {
         // Update existing customer
         const updateRequest = await axiosPrivate.put(`${CUSTOMER_URL}/${UPDATE_CUSTOMER_URL}/${selectedCustomerData.customerId}`, JSON.stringify(formData));
-        console.log(updateRequest)
         if (updateRequest.status === 200) {
           const response = await axiosPrivate.get(`${CUSTOMER_URL}/${merchantData.merchantCode}`);
           const result = response.data.responseData;
-          console.log('fins',result)
+          console.log('result came ', result.length)
           dispatch(customerData(result));
           setLoading(false);
           toast.success('Customer updated successfully');

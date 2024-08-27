@@ -190,12 +190,12 @@ const ProfileTab = () => {
                 <div className="mb-4">
                     <div className="flex justify-between items-center">
                         <span className="text-[12px] font-medium text-gray-700">Password</span>
-                        <button className="text-sm text-primary hover:text-blue-600 focus:outline-none">
+                        <button className="text-sm text-primary text-blue-600 focus:outline-none">
                             Change Password
                         </button>
                     </div>
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <div className="flex justify-between items-center">
                         <span className="text-[12px] font-medium text-gray-700">Two-factor Auth</span>
                         <label className="flex items-center cursor-pointer">
@@ -207,7 +207,7 @@ const ProfileTab = () => {
                             <div className="ml-3 text-sm font-medium text-gray-700">Disabled</div>
                         </label>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

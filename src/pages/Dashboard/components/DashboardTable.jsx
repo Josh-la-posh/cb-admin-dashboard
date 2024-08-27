@@ -59,6 +59,7 @@ const DashboardTable = () => {
                 columns={columns}
                 data={filteredData}
                 rowsPerPageOptions={[5, 10, 20, 50]}
+                drpp=''
             />
         </div>
     );

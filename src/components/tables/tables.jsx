@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionButton, selectedIndex, displayActionButton }) => {
+const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionButton, selectedIndex, displayActionButton, drpp}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 10);
 
@@ -66,7 +66,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionBut
                 </table>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:justify-between md:items-center mt-4 gap-4">
+            {drpp !== '' && <div className="flex flex-col sm:flex-row sm:justify-between md:items-center mt-4 gap-4">
                 <div className="text-[12px] lg:text-[13px] text-gray-500">
                     <span className="mr-2">Items per page:</span>
                     <select
@@ -108,7 +108,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionBut
                         &gt;
                     </button>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 };

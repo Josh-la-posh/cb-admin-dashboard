@@ -79,7 +79,7 @@ const ProfileForm = () => {
                 </select>
             </div>
             <div className='mb-4 text-[12px]'>
-                <label className="block text-gray-700">Annual Projected Sales Volume</label>
+                <label className="block text-gray-700">Annual Projected Sales Volume (NGN)</label>
                 <input
                     type="text"
                     name="salesVolume"
@@ -91,36 +91,46 @@ const ProfileForm = () => {
             </div>
             <div className='mb-4 text-[12px]'>
                 <label className="block text-gray-700">Industry</label>
-                <input
+                <select
                     type="text"
                     name="industry"
                     value={complianceData.industry}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="mt-1 bg-white block w-full px-3 py-3 border border-gray-300 rounded-md"
                     
-                />
+                >
+                    <option value="techi">Techi</option>
+                    <option value="none">none</option>
+                </select>
             </div>
             <div className='mb-4 text-[12px]'>
                 <label className="block text-gray-700">Category</label>
-                <input
+                <select
                     type="text"
                     name="category"
                     value={complianceData.category}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="mt-1 bg-white block w-full px-3 py-3 border border-gray-300 rounded-md"
                     
-                />
+                >
+                    <option value='fintech'>Fintech</option>
+                    <option value='none'>None</option>
+                </select>
             </div>
             <div className='mb-4 text-[12px]'>
                 <label className="block text-gray-700">Business Type</label>
-                <input
+                <select
                     type="text"
                     name="businessType"
                     value={complianceData.businessType}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="mt-1 bg-white block w-full px-3 py-3 border border-gray-300 rounded-md"
                     
-                />
+                >
+                    <option value='sole'>Sole Proprietor</option>
+                    <option value='ngo'>NGO</option>
+                    <option value='partner'>Partnership</option>
+                </select>
             </div>
             <button type="submit" className="mt-4 bg-priColor text-white py-2 px-4 rounded">
                 Save and Continue

@@ -3,71 +3,70 @@ import DataTable from '../../../components/tables/tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
 
-const formattedDate = (val) => {
-    const date = new Date(val).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      return date;
-}
-
-const columns = [
-    {
-        header: 'Customer Name',
-        accessor: 'customerName',
-        render: (value) => (
-            <span className='font-medimu text-gray-900'>
-                {value}
-            </span>
-        ),
-    },
-    {
-        header: 'Transaction ID',
-        accessor: 'paymentReference',
-    },
-    {
-        header: 'Date Added',
-        accessor: 'paymentDate',
-        render: (value) => (
-            <span>
-                {formattedDate(value)}
-            </span>
-        ),
-    },
-    {
-        header: 'Amount',
-        accessor: 'amount',
-    },
-    {
-        header: 'Payment Channel',
-        accessor: 'paymentChannel',
-    },
-    {
-        header: 'Status',
-        accessor: 'transactionStatus',
-        render: (value) => (
-            <span className={`${value === 'Successful' ? 'text-green-600' : value === 'Failed' ? 'text-red-600' : 'text-orange-400'}`}>
-                {value}
-            </span>
-        ),
-    },
-    {
-        header: 'Action',
-        accessor: 'transactionStatus',
-        render: (value) => (
-            <button className='bg-red-700 text-white text-xs px-2 py-1 rounded-[4px]'>
-                Dispute
-            </button>
-        ),
-    },
-];
-
 const TransactionTable = ({transactions, handleOpenModal}) => {
-
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(null);
+
+    const formattedDate = (val) => {
+        const date = new Date(val).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return date;
+    }
+    
+    const columns = [
+        {
+            header: 'Customer Name',
+            accessor: 'customerName',
+            render: (value) => (
+                <span className='font-medimu text-gray-900'>
+                    {value}
+                </span>
+            ),
+        },
+        {
+            header: 'Transaction ID',
+            accessor: 'paymentReference',
+        },
+        {
+            header: 'Date Added',
+            accessor: 'paymentDate',
+            render: (value) => (
+                <span>
+                    {formattedDate(value)}
+                </span>
+            ),
+        },
+        {
+            header: 'Amount',
+            accessor: 'amount',
+        },
+        {
+            header: 'Payment Channel',
+            accessor: 'paymentChannel',
+        },
+        {
+            header: 'Status',
+            accessor: 'transactionStatus',
+            render: (value) => (
+                <span className={`${value === 'Successful' ? 'text-green-600' : value === 'Failed' ? 'text-red-600' : 'text-orange-400'}`}>
+                    {value}
+                </span>
+            ),
+        },
+        {
+            header: 'Action',
+            accessor: 'transactionStatus',
+            render: (value) => (
+                value !== 'Successful' && <button className='bg-red-700 text-white text-xs px-2 py-1 rounded-[4px]'>
+                    Dispute
+                </button>
+            ),
+        },
+    ];
 
     const handleSearch = (e) => {
         setSearch(e.target.value);

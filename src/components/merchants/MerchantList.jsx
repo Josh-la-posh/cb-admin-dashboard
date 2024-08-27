@@ -88,13 +88,12 @@ const MerchantList = () => {
               <th className="px-6 py-3 text-left text-[9px] md:text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Merchant Name</th>
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
-              <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Document</th>
+              {/* <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Document</th> */}
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Credentials</th>
-              <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Bank</th>
+              {/* <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Bank</th> */}
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Business Type</th>
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Charge Type</th>
               <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-[9px] md:ttext-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className='bg-white divide-y divide-gray-200 text-xs sm:text-sm'>

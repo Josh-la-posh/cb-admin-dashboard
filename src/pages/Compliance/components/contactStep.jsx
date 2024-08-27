@@ -50,13 +50,16 @@ const ContactForm = () => {
             </div>
             <div className='mb-4 text-[12px]'>
                 <label className="block text-gray-700">Phone Number</label>
-                <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={complianceData.phoneNumber}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
+                <div className="flex w-full border border-gray-300 rounded-md">
+                    <div className='flex items-center justify-center w-[55px] border-r-2 border-gray-300'>+234</div>
+                    <input
+                        type="tel"
+                        name="phoneNumber"
+                        value={complianceData.phoneNumber}
+                        onChange={handleChange}
+                        className=" px-3 py-2 flex-grow "
+                    />
+                </div>
             </div>
             <div className='mb-4 text-[12px]'>
                 <label className="block text-gray-700">Office Address</label>
