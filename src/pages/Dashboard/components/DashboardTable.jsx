@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DataTable from '../../../components/tables/tables';
 import { useSelector } from 'react-redux';
+import { dateFormatter } from '../../../components/HelperFunctions/dateFormatter';
 
 const columns = [
     {
@@ -18,7 +19,12 @@ const columns = [
     },
     {
         header: 'Date Added',
-        accessor: 'date',
+        accessor: 'paymentDate',
+        render: (value) => (
+            <span>
+                {dateFormatter(value)}
+            </span>
+        ),
     },
     {
         header: 'Amount',

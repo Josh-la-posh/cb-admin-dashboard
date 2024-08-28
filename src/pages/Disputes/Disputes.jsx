@@ -6,13 +6,16 @@ import { transactionData } from '../../redux/transactionSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import DisputeForm from './DisputeForm';
+import { disputeData } from '../../redux/disputeSlice';
 
 const TRANSACTION_URL = '/api/transaction';
+const DISPUTE_URL = '/api/disputes';
 
 function Disputes() {
     const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const transactions = useSelector((state) => state.transaction.transactions);
+    const disputes = useSelector((state) => state.dispute.disputes);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +48,29 @@ function Disputes() {
         };
 
         fetchTransactions();
+    }, []);
+
+    useEffect(() => {
+        const fetchDisputes = async () => {
+        if (disputes.length === 0) {
+            try {
+            const response = await axiosPrivate.get(DISPUTE_URL)
+            if (response.status !== 200) {
+                throw new Error('Failed to fetch disputes');
+            }
+            const data = await response.data.responseData;
+            dispatch(disputeData(data));
+            setLoading(false);
+            } catch (error) {
+            setError(error.message);
+            setLoading(false);
+            }
+        } else {
+            setLoading(false);
+        }
+        };
+
+        fetchDisputes();
     }, []);
 
     const handleOpenModal = (val) => {

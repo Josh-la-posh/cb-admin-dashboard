@@ -24,6 +24,8 @@ import Disputes from '../pages/Disputes/Disputes';
 import Invoices from '../pages/Invoices/Invoices';
 import BankForm from '../pages/Compliance/components/bankStep';
 import BusinessForm from '../pages/Compliance/components/businessStep';
+import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
+import ChangePasswordPage from '../pages/auth/ChangePasswordPage';
 
 const RoutesSystem = () => {
   return (
@@ -35,6 +37,7 @@ const RoutesSystem = () => {
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/confirm-email' element={<ConfirmEmailPage />} />
       <Route path='/complete-registration' element={<RegisterMultiStepPage />} />
+      <Route path='/reset-password' element={<ResetPasswordPage />} />
 
       {/* protected routes */}
 
@@ -58,6 +61,7 @@ const RoutesSystem = () => {
           <Route path="disputes" element={<Disputes />} />
           <Route path="invoices" element={<Invoices />} />
           <Route path="settings" element={<Settings />} />
+          <Route path='/change-password' element={<ChangePasswordPage />} />
 
           {/* Compliance Routes */}
 

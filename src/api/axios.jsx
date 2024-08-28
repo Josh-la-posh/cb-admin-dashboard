@@ -42,14 +42,16 @@ export const AxiosPrivate = () => {
           (response) => response,
           async (error) => {
             const prevRequest = error?.config;
-            if (error?.response?.status === 401) {
+            if (error?.response?.status === 401 && !prevRequest?.sent) {
                 prevRequest.sent = true;
-                const newAccessToken = await refresh();
-                prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                return axiosPrivate(prevRequest);
-            } else {
-              setAuth({});
-              navigate('/login');
+                try {
+                  const newAccessToken = await refresh();
+                  prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                  return axiosPrivate(prevRequest);
+                } catch (refreshError) {
+                  setAuth({});
+                  navigate('/login', {replace: true});
+                }  
             }
             return Promise.reject(error);
           }

@@ -41,7 +41,7 @@ const MerchantServiceAgreement = () => {
                 throw new Error('Failed to update profile data');
             }
             dispatch(setserviceAgreementComplete());
-            toast.success("Service agreement updated successfully"); // Success toast
+            toast.success("Compliance data updated successfully"); // Success toast
             navigate('/');
         } catch (error) {
             toast.error("Error updating the service agreement");

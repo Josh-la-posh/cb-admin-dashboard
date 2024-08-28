@@ -4,8 +4,14 @@ import IntegrationSettings from '../../components/merchants/IntegrationSettings'
 import Pagination from '../../components/merchants/Pagination';
 import MerchantPopUpForm from './MerchantPopUp';
 import { Link } from 'react-router-dom';
+import truncateString from '../../components/HelperFunctions/wordFormmerter';
+import CopyToClipboardField from '../../components/HelperFunctions/CopyToClipboard';
+import { AxiosPrivate } from '../../api/axios';
+
+const MERCHANT_CREDENTIAL_URL = '/api/merchant/credentials';
 
 const MerchantCredentials = () => {
+  const axiosPrivate = AxiosPrivate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [credentials, setCredentials] = useState(null);
   const [showFullSecret, setShowFullSecret] = useState(false); // State to toggle full client secret visibility
@@ -13,24 +19,13 @@ const MerchantCredentials = () => {
   const closeModal = () => setModalOpen(false);
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
-  const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL
-
-  console.log("merchantData", merchantData)
 
   useEffect(() => {
     const fetchCredentials = async () => {
       if (merchantData) {
-        const url = `${baseUrl}/api/merchant/credentials/${merchantData.merchantCode}`;
-        const token = localStorage.getItem('accessToken');
         try {
-          const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-              'accept': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-          });
-          const data = await response.json();
+          const response = await axiosPrivate.get(`${MERCHANT_CREDENTIAL_URL}/${merchantData.merchantCode}`);
+          const data = response.data;
           if (data.requestSuccessful) {
             setCredentials(data.responseData);
           } else {
@@ -47,18 +42,10 @@ const MerchantCredentials = () => {
 
   const handleGetCredentials = async () => {
     if (merchantData) {
-      const url = `${baseUrl}/api/merchant/credentials/${merchantData.merchantCode}`;
       const token = localStorage.getItem('accessToken');
       try {
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        console.log("ddd", data)
+        const response = await axiosPrivate.get(`${MERCHANT_CREDENTIAL_URL}/${merchantData.merchantCode}`);
+        const data = response.data;
         if (data.requestSuccessful) {
           setCredentials(data.responseData);
         } else {
@@ -74,21 +61,21 @@ const MerchantCredentials = () => {
 
   return (
     <div className="p-8 bg-white min-h-screen relative overflow-auto">
-      <h1 className="text-2xl font-semibold mb-4">Merchant Credentials ({merchantData?.merchantName})</h1>
-      <Link to="/merchants" className="text-blue-800 mb-2 text-[14px] inline-block">Back To Merchant</Link>
+      <h1 className="text-[20px] font-semibold mb-4">Merchant Credentials <span className='text-sm'>({merchantData?.merchantName})</span></h1>
+      <Link to="/merchants" className="text-blue-800 text-[11px] inline-block">Back To Merchant</Link>
 
-      <div className="">
+      <div className="mt-8">
         <MerchantSelector merchant={merchantData} />
-        <div className="mt-6 gap-4">
-          <div className='font-[400] text-[15px] pl-3 pb-3 flex'>
-            <p>Client ID</p>
-            <p className='w-[300px]'>Client Secret</p>
+        <div className="mt-[50px] gap-4 pb-3 lg:pb-6 border-b flex items-center lg:block">
+          <div className='font-[400] text-[15px] pl-3 pb-3 lg:p-0 lg:mb-12 flex flex-col lg:flex-row justify-between lg:justify-start gap-[20px] lg:gap-[unset]'>
+            <p className='w-[190px] mr-6 lg:mr-0'>Client ID</p>
+            <p className='mr-6 lg:mr-0'>Client Secret</p>
           </div>
           {credentials ? (
-            <div className='font-[400] text-[14px] pl-3 py-5 mt-4 flex border-y'>
-              <p className='w-[300px]'>{credentials?.clientId}</p>
+            <div className='font-[400] text-[15px] pl-3 pb-3 lg:p-0 flex flex-col lg:flex-row justify-between lg:justify-start gap-[20px] lg:gap-[unset]'>
+              <p className='w-[190px]'>{credentials?.clientId}</p>
               <div className="flex items-center">
-                <p>{showFullSecret ? credentials?.clientSecret : `${credentials?.clientSecret.slice(0, 10)}...`}</p>
+                <CopyToClipboardField className={`text-black ${showFullSecret ? 'text-xs' : 'text-sm'}`} text={showFullSecret ? truncateString(credentials?.clientSecret, 100) : `${truncateString(credentials?.clientSecret, 10)}...`} value={credentials?.clientSecret}/>
                 <button onClick={toggleSecretVisibility} className="ml-2 text-gray-500">
                   {showFullSecret ? (
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

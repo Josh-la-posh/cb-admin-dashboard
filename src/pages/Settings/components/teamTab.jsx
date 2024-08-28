@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { dateFormatter } from '../../../components/HelperFunctions/dateFormatter';
 
 const TeamTab = () => {
     const [teamMembers, setTeamMembers] = useState([]);
@@ -48,7 +49,7 @@ const TeamTab = () => {
                             <th className="px-4 py-2 text-left text-[11px] text-gray-500 uppercase tracking-wider">Role</th>
                             <th className="px-4 py-2 text-left text-[11px] text-gray-500 uppercase tracking-wider">2FA Status</th>
                             <th className="px-4 py-2 text-left text-[11px] text-gray-500 uppercase tracking-wider">Last Login</th>
-                            <th className="px-4 py-2 text-left text-[11px] text-gray-500 uppercase tracking-wider">Actions</th>
+                            {/* <th className="px-4 py-2 text-left text-[11px] text-gray-500 uppercase tracking-wider">Actions</th> */}
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 text-sm text-gray-700">
@@ -59,8 +60,8 @@ const TeamTab = () => {
                                     <td className="px-4 py-4 whitespace-nowrap">{member.email}</td>
                                     <td className="px-4 py-4 whitespace-nowrap">{member.role}</td>
                                     <td className="px-4 py-4 whitespace-nowrap">{member.twoFAStatus}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap">{member.lastLogin}</td>
-                                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{member.actions}</td>
+                                    <td className="px-4 py-4 whitespace-nowrap">{dateFormatter(member.lastLogin)}</td>
+                                    {/* <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{member.actions}</td> */}
                                 </tr>
                             ))
                         ) : (

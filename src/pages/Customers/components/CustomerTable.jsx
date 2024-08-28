@@ -21,7 +21,7 @@ const columns = [
         accessor: 'status',
         render: (value) => (
             <span className={`${value === true ? 'text-green-600' :  'text-red-600'}`}>
-                {value}
+                {value === true ? 'Active' : 'Inactive'}
             </span>
         ),
     },

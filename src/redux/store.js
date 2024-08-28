@@ -4,6 +4,7 @@ import merchantReducer from '../pages/Merchants/merchantSlice'
 import complianceReducer from './complianceSlice';
 import transactionSlice from './transactionSlice';
 import customerSlice from './customerSlice';
+import disputeSlice from './disputeSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     merchant: merchantReducer,
     compliance: complianceReducer,
     transaction: transactionSlice,
-    customer: customerSlice
+    customer: customerSlice,
+    dispute: disputeSlice
   },
 });

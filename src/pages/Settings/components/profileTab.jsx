@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ProfileTab = () => {
@@ -190,9 +191,9 @@ const ProfileTab = () => {
                 <div className="mb-4">
                     <div className="flex justify-between items-center">
                         <span className="text-[12px] font-medium text-gray-700">Password</span>
-                        <button className="text-sm text-primary text-blue-600 focus:outline-none">
+                        <Link to='/change-password' className="text-sm text-primary text-blue-600 focus:outline-none">
                             Change Password
-                        </button>
+                        </Link>
                     </div>
                 </div>
                 {/* <div className="mb-4">

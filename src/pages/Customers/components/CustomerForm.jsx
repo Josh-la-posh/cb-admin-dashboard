@@ -77,7 +77,6 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log('Old customer ', customers.customers.length)
       if (selectedCustomerData) {
         // Update existing customer
         const updateRequest = await axiosPrivate.put(`${CUSTOMER_URL}/${UPDATE_CUSTOMER_URL}/${selectedCustomerData.customerId}`, JSON.stringify(formData));

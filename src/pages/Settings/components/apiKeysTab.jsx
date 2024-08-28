@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { AxiosPrivate } from '../../../api/axios';
+import truncateString from '../../../components/HelperFunctions/wordFormmerter';
+
+const API_CONFIG_URL = '/api/merchant/credentials';
 
 const APIKeysTab = () => {
-    const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
+    const axiosPrivate = AxiosPrivate();
     const token = localStorage.getItem("accessToken");
+    const storedMerchantData = localStorage.getItem("merchantData");
+    const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null
+
     const [credentials, setCredentials] = useState({
         clientId: '',
         clientSecret: '',
@@ -17,14 +24,8 @@ const APIKeysTab = () => {
     useEffect(() => {
         const fetchCredentials = async () => {
             try {
-                const response = await fetch(`${baseUrl}/api/merchant/credentials/Tes0000024`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const data = await response.json();
+                const response = await axiosPrivate.get(`${API_CONFIG_URL}/${merchantData.merchantCode}`);
+                const data = response.data;
 
                 if (data.requestSuccessful) {
                     setCredentials({
@@ -42,7 +43,7 @@ const APIKeysTab = () => {
         };
 
         fetchCredentials();
-    }, [baseUrl, token]);
+    }, [token]);
 
     const handleShowSecretToggle = () => {
         setShowSecret(prev => !prev);
@@ -88,7 +89,7 @@ const APIKeysTab = () => {
                         <input
                             type={showSecret ? 'text' : 'password'}
                             className="form-input block w-full pr-10 sm:text-sm border-gray-300 rounded-md"
-                            value={credentials.clientSecret || '*******************'}
+                            value={truncateString(credentials.clientSecret, 40) || '*******************'}
                             readOnly
                         />
                         <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">

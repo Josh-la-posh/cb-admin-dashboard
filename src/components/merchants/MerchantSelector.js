@@ -1,7 +1,6 @@
 import React from 'react';
 
 const MerchantSelector = ({ merchant }) => {
-  console.log("MM", merchant)
   return (
     <div className="">
       <p className="block text-sm pl-2 font-medium text-gray-700 mb-1">
@@ -16,9 +15,9 @@ const MerchantSelector = ({ merchant }) => {
           <option>{merchant.merchantName}</option>
           {/* Add other merchant options here */}
         </select>
-        <button className="ml-4 bg-blue-800 text-white px-4 py-1 rounded">
+        {/* <button className="ml-4 bg-blue-800 text-white px-4 py-1 rounded">
           Submit
-        </button>
+        </button> */}
       </div>
     </div>
   );

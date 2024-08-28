@@ -107,7 +107,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className="min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-8">
+    <div className="min-h-screen bg-white border border-[#E4E7EC] rounded-lg p-4 md:p-8">
       <header className="mb-8">
         <div className='flex justify-between align-center'>
           <h1 className="text-[18px] text-[#101928] font-semibold text-gray-800">Welcome back, {userData.firstName}</h1>

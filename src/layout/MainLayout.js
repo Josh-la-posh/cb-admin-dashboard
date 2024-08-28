@@ -15,7 +15,7 @@ const MainLayout = () => {
   return (
     <div className="w-full h-svh max-h-svh bg-gray-100 relative">
       {openSidebar && (
-        <div className='fixed top-0 left-0 w-48 z-20 block sm:hidden'>
+        <div className='fixed top-0 left-0 w-48 z-20 block md:hidden'>
           <Sidebar handleSidebar={handleSidebar}/>
           <button
             className="absolute top-9 right-0 text-white"
@@ -27,10 +27,10 @@ const MainLayout = () => {
           </button>
         </div>
       )}
-      <div className='fixed top-0 left-0 w-48 lg:w-64 z-20 hidden sm:block'>
+      <div className='fixed top-0 left-0 w-48 lg:w-64 z-20 hidden md:block'>
         <Sidebar />
       </div>
-      <div className="flex flex-col overflow-hidden sm:ml-48 lg:ml-64">
+      <div className="flex flex-col overflow-hidden md:ml-48 lg:ml-64">
         <div className='border-b border-gray-200'>
           <Header setOpenSidebar={setOpenSidebar} openSidebar={openSidebar} />
         </div>

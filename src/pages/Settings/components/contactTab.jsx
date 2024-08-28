@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { AxiosPrivate } from '../../../api/axios';
+
+const MERCHANT_URL = "/api/merchant";
 
 const ContactTab = () => {
+    const axiosPrivate = AxiosPrivate();
     const baseUrl = process.env.REACT_APP_API_MERCHANT_BASE_URL;
     const token = localStorage.getItem("accessToken");
     const storedMerchantData = localStorage.getItem('merchantData');
@@ -23,15 +27,10 @@ const ContactTab = () => {
         const fetchUserData = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${baseUrl}/api/merchant/${merchant.merchantCode}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        // Replace with a dynamic token or handle authorization differently
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const data = await response.json();
+                const response = await axiosPrivate.get(`${MERCHANT_URL}/${merchant.merchantCode}`);
+                const data = response.data;
+
+                console.log(data);
 
                 if (data.requestSuccessful) {
                     const contactData = data.responseData;

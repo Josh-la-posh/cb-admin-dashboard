@@ -25,9 +25,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
       localStorage.clear();
       dispatch(logout());
       navigate('/login');
-
     }, 1000)
-
   }
 
   const handleSidebar = () => {
@@ -36,7 +34,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
 
   return (
     <header className="bg-white z-10 flex justify-between items-center p-4 relative">
-      {openSidebar == false && <button className="absolute left-2 block sm:hidden" onClick={handleSidebar}>
+      {openSidebar == false && <button className="absolute left-2 block md:hidden" onClick={handleSidebar}>
         <FontAwesomeIcon icon={faBars} />
       </button>}
 

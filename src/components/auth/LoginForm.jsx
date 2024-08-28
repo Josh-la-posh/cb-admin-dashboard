@@ -103,7 +103,7 @@ const LoginForm = () => {
     } catch (err) {
       console.log('finally', JSON.stringify(err.response));
       if (!err.response) {
-        dispatch(loginFailure('An unexpected error occurred. Try again'));
+        dispatch(loginFailure('No Server Response'));
       } else {
         if (err.response.data.responseCode === '400') {
           toast.error(err.response.data.message || 'Login failed');
@@ -160,7 +160,7 @@ const LoginForm = () => {
             />
             Remember me
           </label>
-          <a href="#" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</a>
+          <Link to="/reset-password" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</Link>
         </div>
         <button
           type="submit"

@@ -1,16 +1,11 @@
 import React from 'react';
 import CustomModal from '../../components/Modal';
-import FormattedDate from '../../components/dateFormatter';
+import { dateFormatter } from '../../components/HelperFunctions/dateFormatter';
 
 
 const TRANSACTION_URL = '/api/transactions';
 
 function TransactionForm({ handleCloseModal, data }) {
-    const formattedDate = new Date(data.paymentDate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
   return (
     <CustomModal handleOpenModal={handleCloseModal}>
       <div className="mb-8">
@@ -115,7 +110,7 @@ function TransactionForm({ handleCloseModal, data }) {
               type='text'
               id="code"
               name="code"
-              value={formattedDate}
+              value={dateFormatter(data.paymentDate)}
               className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
               disabled
             />

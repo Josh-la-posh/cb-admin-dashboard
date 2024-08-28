@@ -14,11 +14,11 @@ const Sidebar = ({handleSidebar}) => {
   return (
     <div className="relative h-[100vh] flex flex-col bg-priColor text-white py-4 text-[12px] sm:text-[14px] lg:text-[16px]">
       {/* <div className="pr-4 pl-6 font-bold text-lg">CodeByte</div> */}
-      <div className='bg-priColor w-[85%] sm:w-full h-14'>
+      <div className='bg-priColor w-[85%] md:w-full h-14'>
         <img src={logo} alt="CodeByte Logo" className="w-full h-full object-cover" />
       </div>
       {/* <nav className="flex-1 my-5 overflow-y-scroll"> */}
-      <nav className="flex-1 my-5 overflow-y-auto">
+      <nav className="flex-1 my-2 overflow-y-auto">
         <Link to="/" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faChartLine} size='xs' />

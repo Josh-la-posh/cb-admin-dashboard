@@ -2,20 +2,12 @@ import React, { useState } from 'react';
 import DataTable from '../../../components/tables/tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import { dateFormatter } from '../../../components/HelperFunctions/dateFormatter';
 
 const TransactionTable = ({transactions, handleOpenModal}) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(null);
-
-    const formattedDate = (val) => {
-        const date = new Date(val).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-          return date;
-    }
     
     const columns = [
         {
@@ -36,7 +28,7 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
             accessor: 'paymentDate',
             render: (value) => (
                 <span>
-                    {formattedDate(value)}
+                    {dateFormatter(value)}
                 </span>
             ),
         },
