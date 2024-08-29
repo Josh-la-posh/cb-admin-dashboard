@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setBusinessComplete,setComplianceData } from '../../../redux/complianceSlice';
 import { AxiosPrivate } from '../../../api/axios';
 
@@ -10,8 +10,13 @@ const BusinessForm = () => {
     const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { updateTitle } = useOutletContext();
 
     const complianceData = useSelector((state) => state.compliance.complianceData);
+
+    useEffect(() => {
+        updateTitle('Business');
+    }, [updateTitle])
 
     const handleChange = (e) => {
         const {name, value} = e.target;

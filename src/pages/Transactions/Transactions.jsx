@@ -17,6 +17,7 @@ const Transactions = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransactionData, setSelectedTransactionData] = useState({});
+  const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
@@ -67,9 +68,12 @@ const Transactions = () => {
         <header className="">
             <h1 className="text-[22px] md:text-[28px] text-[#101928] font-semibold text-gray-800">Transactions</h1>
         </header>
-        <button className='flex items-center justify-center rounded-[8px] gap-[10px] px-[12px] py-[8px] text-white text-xs font-[600] bg-priColor'>
+        <button
+          onClick={() => setIsExportPopupOpen(true)}
+          className='flex items-center justify-center rounded-[8px] gap-[10px] px-[12px] py-[8px] text-white text-xs font-[600] bg-priColor'
+        >
           <FontAwesomeIcon icon={faDownload}/>
-          <span>Export CSV</span>
+          <span>Export</span>
         </button>
     </div>
 
@@ -81,7 +85,7 @@ const Transactions = () => {
     )}
 
       {/* <TransactionTable /> */}
-      <TransactionTable transactions={transactions} handleOpenModal={handleOpenModal}/>
+      <TransactionTable isExportPopupOpen={isExportPopupOpen} setIsExportPopupOpen={setIsExportPopupOpen} transactions={transactions} handleOpenModal={handleOpenModal}/>
 
       
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionButton, selectedIndex, displayActionButton, drpp }) => {
+const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionButton, selectedIndex, displayActionButton, drpp, elementId }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 10);
 
@@ -27,7 +27,7 @@ const DataTable = ({ columns, data, rowsPerPageOptions, onIndexChange, actionBut
 
     return (
         <div className="">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto" id={elementId}>
                 <table className="min-w-full bg-white rounded-lg border border-gray-200">
                     <thead className="bg-[#F0F2F5]">
                         <tr>

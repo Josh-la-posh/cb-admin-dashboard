@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setserviceAgreementComplete, setComplianceData } from '../../../redux/complianceSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -11,9 +11,14 @@ const MerchantServiceAgreement = () => {
     const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { updateTitle } = useOutletContext();
     const [slaBoolean, setSlaBoolean] = useState(false);
 
     const complianceData = useSelector((state) => state.compliance.complianceData);
+
+    useEffect(() => {
+        updateTitle('Service Agreement');
+    }, [updateTitle])
 
     const handleChange = (e) => {
         const {name, value} = e.target;

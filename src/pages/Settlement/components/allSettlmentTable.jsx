@@ -3,6 +3,7 @@ import DataTable from '../../../components/tables/tables';
 import { AxiosPrivate } from '../../../api/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import ExportPopup from '../../../components/HelperFunctions/exportPopup';
 
 const SETTLEMENT_URL = '/api/settlement';
 
@@ -42,7 +43,7 @@ const data = [
     { accountName: 'John Doe Store', accountNumber: '1232415267', batchCode: '249', currency: 'NGN', reference: '121212122', status: 'Open' },
 ];
 
-const AllSettlementTable = () => {
+const AllSettlementTable = ({isExportPopupOpen, setIsExportPopupOpen}) => {
     const axiosPrivate = AxiosPrivate();
     // const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -140,6 +141,7 @@ const AllSettlementTable = () => {
                 onIndexChange={handleSelectedRow}
                 selectedIndex={selectedIndex}
                 displayActionButton={true}
+                elementId='AllSettltmentTable'
                 actionButton={
                     <>
                     {
@@ -160,6 +162,12 @@ const AllSettlementTable = () => {
                     }
                     </>
                 }
+            />
+            <ExportPopup
+                isOpen={isExportPopupOpen}
+                onClose={() => setIsExportPopupOpen(false)}
+                data={filteredData}
+                elementId='AllSettltmentTable'
             />
         </div>
     );

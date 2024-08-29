@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ExportPopup from '../../../components/HelperFunctions/exportPopup';
 import DataTable from '../../../components/tables/tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
 import { dateFormatter } from '../../../components/HelperFunctions/dateFormatter';
+import CustomModal from '../../../components/Modal';
+import { AxiosPrivate } from '../../../api/axios';
+import { toast } from 'react-toastify';
 
-const TransactionTable = ({transactions, handleOpenModal}) => {
+const CREATE_DISPUTE_URL = '/api/disputes';
+
+const TransactionTable = ({transactions, handleOpenModal, isExportPopupOpen, setIsExportPopupOpen}) => {
+    const axiosPrivate = AxiosPrivate();
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [isDispute, setIsDispute] = useState(false);
+    const [description, setDescription] = useState('');
+    const [paymentReference, setPaymentReference] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
     
     const columns = [
         {
@@ -52,13 +64,51 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
         {
             header: 'Action',
             accessor: 'transactionStatus',
-            render: (value) => (
-                value !== 'Successful' && <button className='bg-red-700 text-white text-xs px-2 py-1 rounded-[4px]'>
+            render: (id, row) => (
+                row.transactionStatus !== 'Successful' && 
+                <button
+                    onClick={() => handleDispute(row)}
+                    className='bg-red-700 text-white text-xs px-2 py-1 rounded-[4px]'
+                >
                     Dispute
                 </button>
             ),
         },
     ];
+
+    const submitDispute = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+
+        try {
+            const response = await axiosPrivate.post(CREATE_DISPUTE_URL,
+                JSON.stringify({paymentReference, description})
+            );
+            console.log(response);
+            const data = response.status;
+            if (data === 201) {
+                toast('Sent Successfully');
+                setPaymentReference('');
+                setIsDispute(false);
+            }
+        } catch (err) {
+            if (!err.status) {
+             setErrMsg('No Server Response');   
+            } else {
+                setErrMsg('Unable to send request at this time.')
+            }
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
+    const handleDispute = (id) => {
+        setPaymentReference(id.paymentReference);
+        setIsDispute(true);
+        // console.log('Dispute ID:', id);
+    };
 
     const handleSearch = (e) => {
         setSearch(e.target.value);
@@ -72,23 +122,18 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
         handleOpenModal(filteredData[id]);
     }
     
-
     const handleSelectedRow = (index) => {
         setSelectedIndex(selectedIndex === index ? null : index);
     };
 
     const filteredData = transactions.filter((row) => {
-        // Convert all relevant values to strings and apply the filter
         const rowValues = Object.values(row).map(val => (val || '').toString().toLowerCase());
-    
         const matchesSearch = search
             ? rowValues.some(val => val.includes(search.toLowerCase()))
             : true;
-    
         const matchesStatus = filterStatus
             ? row.status === filterStatus
             : true;
-    
         return matchesSearch && matchesStatus;
     });
 
@@ -108,11 +153,38 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
                         className="absolute left-2 top-2/4 transform -translate-y-2/4 text-gray-400"
                     />
                 </div>
-                <button className='flex items-center justify-center gap-[10px] border border-[#DDD5DD] rounded-[8px] px-[12px] py-[8px] text-sm font-600 text-[#344054]'>
+                <button 
+                    className='flex items-center justify-center gap-[10px] border border-[#DDD5DD] rounded-[8px] px-[12px] py-[8px] text-sm font-600 text-[#344054]'
+                >
                     <FontAwesomeIcon icon={faArrowDownWideShort} style={{color: 'black'}}/>
                     <span>Filter</span>
                 </button>
             </div>
+            {
+                isDispute &&
+                <CustomModal
+                    handleOpenModal={() => setIsDispute(false)}
+                >
+                    <h2 className='mb-8'>Description</h2>
+                    {errMsg && <p>{errMsg}</p>}
+                    <textarea
+                        className='border w-full h-[200px] max-x-[500px] text-sm p-3'
+                        placeholder='Write something ...'
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    <div className="flex justify-end mt-8">
+                        <button
+                            onClick={submitDispute}
+                            className='py-2 px-4 bg-priColor text-white rounded-[8px]'
+                            disabled={loading}
+                        >
+                                {loading ? 'Sending...' : 'Submit'}
+                            </button>
+                    </div>
+
+                </CustomModal>
+            }
 
             <DataTable
                 columns={columns}
@@ -121,6 +193,7 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
                 onIndexChange={handleSelectedRow}
                 selectedIndex={selectedIndex}
                 displayActionButton={true}
+                elementId='transactionTable'
                 actionButton={
                     <>
                     {
@@ -141,6 +214,12 @@ const TransactionTable = ({transactions, handleOpenModal}) => {
                     }
                     </>
                 }
+            />
+            <ExportPopup
+                isOpen={isExportPopupOpen}
+                onClose={() => setIsExportPopupOpen(false)}
+                data={filteredData}
+                elementId='transactionTable'
             />
         </div>
     );

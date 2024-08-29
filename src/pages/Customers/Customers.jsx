@@ -3,7 +3,7 @@ import Card from '../../components/dashboard/Card';
 import CustomerCards from './components/CustomerCards';
 import CustomerTable from './components/CustomerTable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faCloudArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { AxiosPrivate } from '../../api/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { customerData } from '../../redux/customerSlice';
@@ -20,6 +20,7 @@ function Customers() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState(null);
     const [selectedCustomerData, setSelectedCustomerData] = useState({});
+    const [isExportPopupOpen, setIsExportPopupOpen] = useState(false);
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
 
@@ -86,15 +87,18 @@ function Customers() {
                     <h1 className="text-[22px] md:text-[28px] text-[#101928] font-semibold text-gray-800">Customer</h1>
                 </header>
                 <div className="flex flex-row items-start md:items-center gap-4">
-                    <button className='flex flex-1 shrink flex-row items-center justify-center gap-[10px] border border-[#DDD5DD] rounded-[8px] px-[12px] py-[8px] text-[12px] sm:text-sm font-600 text-[#344054]'>
-                        <FontAwesomeIcon icon={faCloudArrowDown} style={{color: 'black'}}/>
+                    <button 
+                        onClick={() => setIsExportPopupOpen(true)}
+                        className='flex flex-1 shrink flex-row items-center justify-center gap-[10px] border border-[#DDD5DD] rounded-[8px] px-[12px] py-[8px] text-[12px] sm:text-sm font-600 text-[#344054]'
+                    >
+                        <FontAwesomeIcon icon={faCloudArrowUp} style={{color: 'black'}}/>
                         <span>Export</span>
                     </button>
                     <button onClick={handleAddOpenModal} className='flex flex-1 sm:flex-[unset] items-center justify-center rounded-[8px] gap-[10px] px-[12px] py-[8px] text-white text-[12px] sm:text-sm font-[600] bg-priColor'>
                         <FontAwesomeIcon icon={faAdd}/>
                         <span>Add</span>
                     </button>
-                    {isModalOpen && 
+                    {isModalOpen &&
                         (<CustomerForm
                             handleOpenModal={handleCloseModal}
                             selectedCustomerData={modalMode === 'add' ? null : selectedCustomerData}
@@ -115,7 +119,7 @@ function Customers() {
                 </div>
             </div> */}
 
-            <CustomerTable handleOpenModal={handleEditOpenModal} customerData={customer.customers} />
+            <CustomerTable isExportPopupOpen={isExportPopupOpen} setIsExportPopupOpen={setIsExportPopupOpen} handleOpenModal={handleEditOpenModal} customerData={customer.customers} />
 
 
         </div>

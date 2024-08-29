@@ -1,5 +1,6 @@
 import React from 'react';
 import DataTable from '../../../components/tables/tables';
+import ExportPopup from '../../../components/HelperFunctions/exportPopup';
 
 const columns = [
     {
@@ -29,10 +30,23 @@ const data = [
     { bankName: 'GTB', accountNumber: '12357654333', accountName: 'Payment from John Doe', status: 'Completed' },
 ];
 
-const BankAccountTable = () => {
+const BankAccountTable = ({isExportPopupOpen, setIsExportPopupOpen}) => {
     return (
         <div className="container mx-auto">
-            <DataTable columns={columns} data={data} rowsPerPageOptions={[5, 10, 20]} display='true' placeholder='Search...' />
+            <DataTable 
+                columns={columns}
+                data={data}
+                rowsPerPageOptions={[5, 10, 20]}
+                display='true'
+                placeholder='Search...'
+                elementId='bankSettlementTable'
+            />
+            <ExportPopup
+                isOpen={isExportPopupOpen}
+                onClose={() => setIsExportPopupOpen(false)}
+                data={data}
+                elementId='bankSettlementTable'
+            />
         </div>
     );
 };

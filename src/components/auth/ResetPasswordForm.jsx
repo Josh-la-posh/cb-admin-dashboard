@@ -44,6 +44,14 @@ const ResetPasswordForm = () => {
         const v1 = PWD_REGEX.test(newPassword);
         const v2 = confirmPassword === newPassword;
 
+        // getting the token from the url
+        const currentUrl = window.location.href;
+        const urlObj = new URL(currentUrl);
+
+        const params = new URLSearchParams(urlObj.search);
+
+        const token = params.get('token');
+
         if (!v1) {
             setErrMsg('Password validation Failed');
             return;
@@ -53,13 +61,11 @@ const ResetPasswordForm = () => {
             return;
         }
 
-
-
         setLoading(true);
 
         try {
             const response = await axios.post(RESET_PASSWORD_URL,
-                JSON.stringify({newPassword, confirmPassword}),
+                JSON.stringify({token, newPassword, confirmPassword}),
                  {
                     headers: {
                         'Accept': '*/*',
@@ -68,8 +74,9 @@ const ResetPasswordForm = () => {
                 }
             );
             const data = response.data;
+            console.log(data);
 
-            if (data.statusCode === 200) {
+            if (data.message === 'Successful') {
                 setSuccess(true);
             };
         } catch (error) {

@@ -1,7 +1,7 @@
 // src/components/ContactForm.js
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setComplianceData, setContactComplete } from '../../../redux/complianceSlice';
 import { AxiosPrivate } from '../../../api/axios';
 
@@ -11,6 +11,7 @@ const ContactForm = () => {
     const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { updateTitle } = useOutletContext();
 
     const complianceData = useSelector((state) => state.compliance.complianceData);
 
@@ -18,6 +19,11 @@ const ContactForm = () => {
         const {name, value} = e.target;
         dispatch(setComplianceData({[name]: value}));
     };
+
+    useEffect(() => {
+        updateTitle('Contact');
+    }, [updateTitle])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

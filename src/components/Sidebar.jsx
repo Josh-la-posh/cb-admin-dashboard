@@ -6,10 +6,15 @@ import { faUserGroup, faHome, faHouse, faGear, faChartLine, faFlag, faEnvelope, 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from "../../src/assets/logo.jpg"
 
-const Sidebar = ({handleSidebar}) => {
+const Sidebar = ({handleSidebar, updateTitle}) => {
   const [isAggregatorOpen, setAggregatorOpen] = useState(false);
   const [isMerchantOpen, setMerchantOpen] = useState(false);
   const [isSettlementOpen, setSettlementOpen] = useState(false);
+
+  const handleChange = (val) => {
+    updateTitle(val);
+    handleSidebar();
+  }
 
   return (
     <div className="relative h-[100vh] flex flex-col bg-priColor text-white py-4 text-[12px] sm:text-[14px] lg:text-[16px]">
@@ -19,37 +24,37 @@ const Sidebar = ({handleSidebar}) => {
       </div>
       {/* <nav className="flex-1 my-5 overflow-y-scroll"> */}
       <nav className="flex-1 my-2 overflow-y-auto">
-        <Link to="/" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/" onClick={() => handleChange('Dashboard')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faChartLine} size='xs' />
             Dashboard
           </div>
         </Link>
-        <Link to="/compliance" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/compliance" onClick={() => handleChange('Compliance')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faCircleCheck} size='xs' />
             Compliance
           </div>
         </Link>
-        <Link to="/customers" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/customers" onClick={() => handleChange('Customer')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faUserGroup} size='xs' />
             Customer
           </div>
         </Link>
-        <Link to="/merchants" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/merchants" onClick={() => handleChange('Merchant')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faHome} size='xs' />
             Merchant
           </div>
         </Link>
-        <Link to="/transaction" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/transaction" onClick={() => handleChange('Transaction')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faCreditCard} size='xs' />
             Transaction
           </div>
         </Link>
-        <Link to="/disputes" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/disputes" onClick={() => handleChange('Dispute')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faFlag} size='xs' />
             Disputes
@@ -65,19 +70,19 @@ const Sidebar = ({handleSidebar}) => {
           </button>
           {isSettlementOpen && (
             <div className="ml-4">
-              <Link to="/settlement/all" onClick={handleSidebar} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">All Settlement</Link>
+              <Link to="/settlement/all" onClick={() => handleChange('All Settlement')} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">All Settlement</Link>
               {/* <Link to="/settlement/configuration" className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Configuration</Link> */}
-              <Link to="/settlement/bank-account" onClick={handleSidebar} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Bank Account</Link>
+              <Link to="/settlement/bank-account" onClick={() => handleChange('Bank Settlement')} className="block py-2 px-4 text-[12px] lg:text-[14px] hover:bg-blue-700">Bank Account</Link>
             </div>
           )}
         </div>
-        {/* <Link to="/invoices" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        {/* <Link to="/invoices" onClick={() => handleChange('Invoices')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faFlag} size='xs' />
             Invoices
           </div>
         </Link> */}
-        {/* <Link to="/wallet" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        {/* <Link to="/wallet" onClick={() => handleChange('Wallet')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faWallet} size='xs' />
             Wallet
@@ -137,13 +142,13 @@ const Sidebar = ({handleSidebar}) => {
         </Link> */}
       </nav>
       <nav className="flex-shrink-0">
-        <Link to="/settings" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/settings" onClick={() => handleChange('Settings')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faGear} size='xs' />
             Settings
           </div>
         </Link>
-        <Link to="/settings" onClick={handleSidebar} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
+        <Link to="/settings" onClick={() => handleChange('Help Center')} className="block py-2 pr-4 pl-6 hover:bg-blue-700">
           <div className='flex items-center gap-2'>
             <FontAwesomeIcon icon={faHeadphones} size='xs' />
             Help Center

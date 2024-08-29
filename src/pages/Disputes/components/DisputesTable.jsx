@@ -1,38 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from '../../../components/tables/tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faDownload, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import ExportPopup from '../../../components/HelperFunctions/exportPopup';
+import { useSelector } from 'react-redux';
+import { dateFormatter } from '../../../components/HelperFunctions/dateFormatter';
 
 const columns = [
     {
         header: 'Customer Name',
         accessor: 'customerName',
+        render: (customerName, row) => (
+            <span>
+                {row.transaction.customerName}
+            </span>
+        ),
     },
     {
         header: 'Transaction ID',
         accessor: 'paymentReference',
+        render: (paymentReference, row) => (
+            <span>
+                {row.transaction.paymentReference.slice(0,17)}
+            </span>
+        ),
     },
     {
         header: 'Dispute ID',
-        accessor: '_id',
+        accessor: 'disputeId',
     },
     {
         header: 'Dispute Amount',
         accessor: 'amountCollected',
+        render: (amountCollected, row) => (
+            <span>
+                {row.transaction.amountCollected}
+            </span>
+        ),
     },
     {
         header: 'Date',
         accessor: 'paymentDate',
+        render: (paymentDate, row) => (
+            <span>
+                {dateFormatter(row.transaction.paymentDate)}
+            </span>
+        ),
     },
     {
         header: 'Payment Channel',
         accessor: 'paymentChannel',
+        render: (paymentChannel, row) => (
+            <span>
+                {row.transaction.paymentChannel}
+            </span>
+        ),
     },
     {
         header: 'Status',
-        accessor: 'transactionStatus',
+        accessor: 'status',
         render: (value) => (
-            <span className={`${value === 'Successful' ? 'text-green-600' : value === 'Failed' ? 'text-red-600' : 'text-orange-400'}`}>
+            <span className={`${value === 'OPEN' ? 'text-green-600' : value === 'CLOSED' ? 'text-red-600' : 'text-orange-400'}`}>
                 {value}
             </span>
         ),
@@ -40,9 +68,10 @@ const columns = [
 ];
 
 
-const DisputeTable = ({transactions, handleOpenModal}) => {
+const DisputeTable = ({disputes, handleOpenModal,  isExportPopupOpen, setIsExportPopupOpen}) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
+    // const disputes = useSelector((state) => state.dispute.disputes);
     const [selectedIndex, setSelectedIndex] = useState(null);
 
     const handleSearch = (e) => {
@@ -62,7 +91,7 @@ const DisputeTable = ({transactions, handleOpenModal}) => {
         handleOpenModal(filteredData[id])
     }
 
-    const disputeData = transactions.filter((data) => data.transactionStatus !== 'Successful');
+    const disputeData = disputes.filter((data) => data.transaction.transactionStatus !== 'Successful');
 
     const filteredData = disputeData.filter((row) => {
         
@@ -114,6 +143,7 @@ const DisputeTable = ({transactions, handleOpenModal}) => {
                 onIndexChange={handleSelectedRow}
                 selectedIndex={selectedIndex}
                 displayActionButton={true}
+                elementId='DisputeTable'
                 actionButton={
                     <>
                     {
@@ -134,6 +164,12 @@ const DisputeTable = ({transactions, handleOpenModal}) => {
                     }
                     </>
                 }
+            />
+            <ExportPopup
+                isOpen={isExportPopupOpen}
+                onClose={() => setIsExportPopupOpen(false)}
+                data={filteredData}
+                elementId='DisputeTable'
             />
         </div>
     );

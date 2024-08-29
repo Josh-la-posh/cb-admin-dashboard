@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toast } from 'react-toastify';
 
 
-const Header = ({ openSidebar, setOpenSidebar }) => {
+const Header = ({ openSidebar, setOpenSidebar, title }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
     }, 1000)
   }
 
-  const handleSidebar = () => {
+  const handleSidebar = ({title}) => {
     setOpenSidebar(true);
   }
 
@@ -38,7 +38,7 @@ const Header = ({ openSidebar, setOpenSidebar }) => {
         <FontAwesomeIcon icon={faBars} />
       </button>}
 
-      <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>Merchant Dashboard</div>
+      <div className={`text-lg font-semibold ${openSidebar == false && 'ml-12'}`}>{title}</div>
       <div className="relative">
         <button onClick={() => setDropdownOpen(!isDropdownOpen)} className="flex items-center">
           {/* <img

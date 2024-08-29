@@ -1,7 +1,7 @@
 // src/components/ProfileForm.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { setComplianceData, setProfileComplete } from '../../../redux/complianceSlice';
 import { AxiosPrivate } from '../../../api/axios';
 
@@ -11,13 +11,18 @@ const ProfileForm = () => {
     const axiosPrivate = AxiosPrivate();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { updateTitle } = useOutletContext();
 
     const complianceData = useSelector((state) => state.compliance.complianceData);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
         dispatch(setComplianceData({[name]: value}));
-    };
+    }
+
+    useEffect(() => {
+        updateTitle('Profile');
+    }, [updateTitle])
 
     useEffect(() => {
         console.log({...complianceData})

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from '../../../components/tables/tables';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import ExportPopup from '../../../components/HelperFunctions/exportPopup';
 
 const columns = [
     {
@@ -27,7 +28,7 @@ const columns = [
     },
 ];
 
-const CustomerTable = ({customerData, handleOpenModal}) => {
+const CustomerTable = ({customerData, handleOpenModal, isExportPopupOpen, setIsExportPopupOpen}) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -107,6 +108,7 @@ const CustomerTable = ({customerData, handleOpenModal}) => {
                 onIndexChange={handleSelectedRow}
                 selectedIndex={selectedIndex}
                 displayActionButton={true}
+                elementId='customerTable'
                 actionButton={
                     <>
                         {
@@ -121,6 +123,12 @@ const CustomerTable = ({customerData, handleOpenModal}) => {
                         }
                     </>
                 }
+            />
+            <ExportPopup
+                isOpen={isExportPopupOpen}
+                onClose={() => setIsExportPopupOpen(false)}
+                data={filteredData}
+                elementId='customerTable'
             />
         </div>
     );

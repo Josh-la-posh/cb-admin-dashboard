@@ -9,6 +9,7 @@ import { setBusinessComplete, setBankComplete, setserviceAgreementComplete, setC
 const COMPLIANCE_DOC_URL = '/api/merchant-document';
 
 const Compliance = () => {
+    const [title, setTitle] = useState('');
     const axiosPrivate = AxiosPrivate();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -16,6 +17,10 @@ const Compliance = () => {
     const data = complianceData.complianceData;
     const storedMerchantData = localStorage.getItem('merchantData');
     const merchantDetails = storedMerchantData ? JSON.parse(storedMerchantData) : null;
+
+    const updateTitle = (val) => {
+        setTitle(val);
+    }
 
     useEffect(() => {
         const fetchMerchantData = async () => {
@@ -42,11 +47,11 @@ const Compliance = () => {
         };
 
         fetchMerchantData();
-    }, []);
+    }, [axiosPrivate, dispatch, merchantDetails, navigate]);
 
     return (
         <div className="bg-white p-6">
-            <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800 mb-8">Compliance</h1>
+            <h1 className="text-[20px] text-[#101928] font-semibold text-gray-800 mb-8">{title}</h1>
             <div className="flex flex-col md:flex-row overflow-y-auto">
                 <div className="relative w-[250px] md:h-full">
                     <div className="md:fixed top-[170px]">
@@ -55,7 +60,7 @@ const Compliance = () => {
                 </div>
                 <div className="ml-4 flex-grow">
                     <div className="min-w-[300px] max-w-[350px]">
-                        <Outlet />
+                        <Outlet context={{ updateTitle }}/>
                     </div>
                 </div>
             </div>
