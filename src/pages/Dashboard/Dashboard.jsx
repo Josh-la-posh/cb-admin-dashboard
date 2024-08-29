@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [walletBalance, setWalletBalance] = useState(null);
   const [transactionGraph, setTransactionGraph] = useState(null);
   const [transactionLumpsum, setTransactionLumpsum] = useState(null);
+  const [isTransactionLumpsumNull, setIsTransactionLumpsumNull] = useState(false);
   const [interval, setInterval] = useState('Daily');
   const [loading, setLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null);
@@ -62,10 +63,28 @@ const Dashboard = () => {
       }
     };
 
-    if (transactionLumpsum === null || transactionGraph !== null || walletBalance !== null || transactions.length === 0) {
-      fetchData();
-    } else {
-      setLoading(false);
+    if (transactionLumpsum === null) {
+      setIsTransactionLumpsumNull(true);
+    }
+    fetchData();
+  }, [interval]);
+
+  useEffect(() => {
+    if (setIsTransactionLumpsumNull) {
+      const nullTransactionLumpsum = async () => {
+        try {
+          // fetch transaction lumpsum
+          const transactionLumpsum = await axiosPrivate.get(`${DASHBOARD_URL}/tnx/lumpsum/${merchantData.merchantCode}?interval=${interval}`);
+          const lumpsum = transactionLumpsum.data.data;
+          setTransactionLumpsum(lumpsum);
+  
+        } catch (err) {
+          setError('Error fetching data');
+          console.log(JSON.stringify('Error fetching data ' + JSON.stringify(err)));
+        } finally {
+          setIsTransactionLumpsumNull(false);
+        }
+      };
     }
   }, [interval]);
 
@@ -126,7 +145,7 @@ const Dashboard = () => {
       </header>
 
       {/* dashboard cards */}
-      <DashboardCards transactionLumpsum={transactionLumpsum} totalRevenue={totalRevenue} />
+      <DashboardCards isLumpsum={isTransactionLumpsumNull} transactionLumpsum={transactionLumpsum} totalRevenue={totalRevenue} />
 
       {/* report chart */}
 

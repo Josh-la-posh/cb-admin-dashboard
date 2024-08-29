@@ -16,7 +16,6 @@ const ChangePasswordForm = () => {
     const [newPassword, setNewPassword] = useState('');
     const [validNewPassword, setValidNewPassword] = useState(false);
     const [NewPasswordFocus, setNewPasswordFocus] = useState(false);
-
     const [confirmPassword, setConfirmPassword] = useState('');
     const [validConfirmPassword, setValidConfirmPassword] = useState(false);
     const [ConfirmPasswordFocus, setConfirmPasswordFocus] = useState(false);
