@@ -160,7 +160,7 @@ const LoginForm = () => {
             />
             Remember me
           </label>
-          <Link to="/reset-password" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</Link>
+          <Link to="/forgot-password" className="text-[10px] lg:text-[11px] text-blue-800 hover:underline">Forgot password?</Link>
         </div>
         <button
           type="submit"

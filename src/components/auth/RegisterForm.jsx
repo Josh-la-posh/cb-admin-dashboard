@@ -169,8 +169,6 @@ const RegisterForm = () => {
             }
 
             errRef.current.focus();
-
-            errRef.current.focus();
         } finally {
             setLoading(false);
         }
