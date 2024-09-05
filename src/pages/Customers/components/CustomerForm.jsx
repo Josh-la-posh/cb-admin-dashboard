@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { customerData } from '../../../redux/customerSlice';
 import ToggleSwitch from '../../../components/toggleSwitch/ToggleSwitch';
 import Spinner from '../../../components/Spinner';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const CUSTOMER_URL = '/api/customers';
@@ -20,8 +21,8 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
   const storedMerchantData = localStorage.getItem('merchantData');
   const merchantData = storedMerchantData ? JSON.parse(storedMerchantData) : null;
   const [formData, setFormData] = useState({
-    merchantCode: '',
-    customerId: '',
+    merchantCode: merchantData.merchantCode,
+    customerId: uuidv4(),
     customerLastName: '',
     customerFirstName: '',
     customerEmail: '',
@@ -225,6 +226,21 @@ function CustomerForm({ handleOpenModal, selectedCustomerData, title }) {
               name="customerCountryCode"
               placeholder="Enter Country"
               value={formData.customerCountryCode}
+              onChange={handleChange}
+              className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
+              disabled={title === 'View' ? true : false}
+            />
+          </div>
+          <div className="">
+            <label className="block text-black text-[11px] lg:text-[13px] mb-1 lg:mb-2 flex items-center" htmlFor="customerStateCode">
+              State
+            </label>
+            <input
+              type="text"
+              id="customerStateCode"
+              name="customerStateCode"
+              placeholder="Enter State"
+              value={formData.customerStateCode}
               onChange={handleChange}
               className="w-full px-3 py-2 text-xs md:text-sm border border-gray rounded-lg focus:outline-none"
               disabled={title === 'View' ? true : false}

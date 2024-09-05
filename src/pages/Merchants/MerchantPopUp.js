@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetForm, updateForm } from '../../pages/Merchants/merchantSlice';
 import CustomModal from '../../components/Modal';
+import { AxiosPrivate } from '../../api/axios';
 
 const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
+  const axiosPrivate = AxiosPrivate();
   const dispatch = useDispatch();
   const formState = useSelector((state) => state.merchant);
   const [token, setToken] = useState('');
@@ -40,32 +42,36 @@ const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
 
     fetchToken();
   }, []);
-
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
+    const newValue = type === 'checkbox' ? checked : value;
     const nameParts = name.split('.');
-
-    const updatedFormState = nameParts.reduceRight((acc, part, index) => {
-      return index === nameParts.length - 1
-        ? { [part]: type === 'checkbox' ? checked : value }
-        : { [part]: acc };
-    }, {});
-
-    dispatch(updateForm(updatedFormState));
+  
+    const updateNestedState = (state, parts, newValue) => {
+      const key = parts[0];
+      if (parts.length === 1) {
+        return { ...state, [key]: newValue };
+      }
+      return {
+        ...state,
+        [key]: updateNestedState(state[key] || {}, parts.slice(1), newValue),
+      };
+    };
+  
+    const updatedFormState = (prevState) =>
+      updateNestedState(prevState, nameParts, newValue);
+  
+    dispatch(updateForm(updatedFormState(formState)));
   };
+  
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${baseUrl}/api/advice`, {
-        method: 'POST',
-        headers: {
-          'accept': '*/*',
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await axiosPrivate('/api/advice',
+        JSON.stringify({
           amount: formState.amount,
           currency: formState.currency,
           merchantRef: formState.merchantReference,
@@ -89,8 +95,8 @@ const MerchantPopUpForm = ({ isModalOpen, closeModal, credentials }) => {
           mcc: formState.mccCategory,
           merchantDescriptor: formState.merchantDescriptor,
         }),
-      });
-      const data = await response.json();
+      );
+      const data = response.data;
       if (data.requestSuccessful) {
         // Open the payment URL in a new tab
         window.open(data.responseData.paymentUrl, '_blank');
